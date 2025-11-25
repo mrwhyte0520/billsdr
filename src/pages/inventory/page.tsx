@@ -149,14 +149,14 @@ export default function InventoryPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [items, setItems] = useState([]);
-  const [movements, setMovements] = useState([]);
-  const [warehouses, setWarehouses] = useState([]);
+  const [items, setItems] = useState<any[]>([]);
+  const [movements, setMovements] = useState<any[]>([]);
+  const [warehouses, setWarehouses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState('');
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [formData, setFormData] = useState({});
+  const [modalType, setModalType] = useState<'item' | 'movement' | 'warehouse' | ''>('');
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const [formData, setFormData] = useState<any>({});
   const fileInputRef = useRef(null);
   
   // Filtros y búsqueda
@@ -179,11 +179,18 @@ export default function InventoryPage() {
   }, [user, activeTab]);
 
   const loadData = async () => {
+    if (!user) {
+      setItems(sampleItems);
+      setMovements(sampleMovements);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       
-      let itemsData = [];
-      let movementsData = [];
+      let itemsData: any[] = [];
+      let movementsData: any[] = [];
       
       if (activeTab === 'items' || activeTab === 'dashboard') {
         try {
@@ -235,7 +242,7 @@ export default function InventoryPage() {
     }
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
@@ -243,7 +250,7 @@ export default function InventoryPage() {
     }
   };
 
-  const handleOpenModal = (type, item = null) => {
+  const handleOpenModal = (type: 'item' | 'movement' | 'warehouse', item: any = null) => {
     setModalType(type);
     setSelectedItem(item);
     setFormData(item || {});
@@ -257,7 +264,7 @@ export default function InventoryPage() {
     setFormData({});
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (modalType === 'item') {
@@ -326,7 +333,7 @@ export default function InventoryPage() {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('¿Está seguro de que desea eliminar este elemento?')) return;
     
     try {
@@ -421,62 +428,62 @@ export default function InventoryPage() {
     <div className="space-y-6">
       {/* Estadísticas principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                <i className="ri-box-3-line text-blue-600"></i>
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-sky-400 rounded-xl flex items-center justify-center shadow-md shadow-purple-500/40">
+                <i className="ri-box-3-line text-slate-950"></i>
               </div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Total Productos</p>
-              <p className="text-2xl font-semibold text-gray-900">{items.length}</p>
+              <p className="text-sm font-medium text-slate-400">Total Productos</p>
+              <p className="text-2xl font-semibold text-slate-50">{items.length}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                <i className="ri-stock-line text-green-600"></i>
+              <div className="w-10 h-10 bg-emerald-500/20 border border-emerald-400/40 rounded-xl flex items-center justify-center">
+                <i className="ri-stock-line text-emerald-300"></i>
               </div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Productos Activos</p>
-              <p className="text-2xl font-semibold text-gray-900">
+              <p className="text-sm font-medium text-slate-400">Productos Activos</p>
+              <p className="text-2xl font-semibold text-slate-50">
                 {items.filter(item => item.is_active).length}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                <i className="ri-alert-line text-red-600"></i>
+              <div className="w-10 h-10 bg-rose-500/15 border border-rose-500/40 rounded-xl flex items-center justify-center">
+                <i className="ri-alert-line text-rose-300"></i>
               </div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Stock Bajo</p>
-              <p className="text-2xl font-semibold text-gray-900">
+              <p className="text-sm font-medium text-slate-400">Stock Bajo</p>
+              <p className="text-2xl font-semibold text-slate-50">
                 {items.filter(item => item.current_stock <= item.minimum_stock).length}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                <i className="ri-arrow-up-down-line text-purple-600"></i>
+              <div className="w-10 h-10 bg-purple-500/20 border border-purple-500/50 rounded-xl flex items-center justify-center">
+                <i className="ri-arrow-up-down-line text-purple-300"></i>
               </div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Movimientos Hoy</p>
-              <p className="text-2xl font-semibold text-gray-900">
+              <p className="text-sm font-medium text-slate-400">Movimientos Hoy</p>
+              <p className="text-2xl font-semibold text-slate-50">
                 {movements.filter(m => 
                   new Date(m.movement_date).toDateString() === new Date().toDateString()
                 ).length}
@@ -487,24 +494,24 @@ export default function InventoryPage() {
       </div>
 
       {/* Valor total del inventario */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Resumen Financiero</h3>
+      <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-6">
+        <h3 className="text-lg font-semibold text-slate-50 mb-4">Resumen Financiero</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-500">Valor Total Costo</p>
-            <p className="text-2xl font-bold text-blue-600">
+            <p className="text-sm font-medium text-slate-400">Valor Total Costo</p>
+            <p className="text-2xl font-bold text-purple-300">
               ${items.reduce((sum, item) => sum + ((item.current_stock || 0) * (item.cost_price || 0)), 0).toLocaleString('es-DO')}
             </p>
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-500">Valor Total Venta</p>
-            <p className="text-2xl font-bold text-green-600">
+            <p className="text-sm font-medium text-slate-400">Valor Total Venta</p>
+            <p className="text-2xl font-bold text-emerald-400">
               ${items.reduce((sum, item) => sum + ((item.current_stock || 0) * (item.selling_price || 0)), 0).toLocaleString('es-DO')}
             </p>
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-500">Ganancia Potencial</p>
-            <p className="text-2xl font-bold text-purple-600">
+            <p className="text-sm font-medium text-slate-400">Ganancia Potencial</p>
+            <p className="text-2xl font-bold text-emerald-400">
               ${items.reduce((sum, item) => sum + ((item.current_stock || 0) * ((item.selling_price || 0) - (item.cost_price || 0))), 0).toLocaleString('es-DO')}
             </p>
           </div>
@@ -512,27 +519,28 @@ export default function InventoryPage() {
       </div>
 
       {/* Productos con stock bajo */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">Productos con Stock Bajo</h3>
+      <div className="rounded-2xl border border-rose-500/40 bg-rose-950/60 shadow-lg shadow-rose-900/60">
+        <div className="px-6 py-4 border-b border-rose-500/40 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-rose-100">Productos con Stock Bajo</h3>
+          <i className="ri-alert-line text-rose-300 text-xl"></i>
         </div>
         <div className="p-6">
           {items.filter(item => item.current_stock <= item.minimum_stock).length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No hay productos con stock bajo</p>
+            <p className="text-rose-200 text-center py-4 text-sm">No hay productos con stock bajo</p>
           ) : (
             <div className="space-y-3">
               {items.filter(item => item.current_stock <= item.minimum_stock).slice(0, 5).map(item => (
-                <div key={item.id} className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                <div key={item.id} className="flex items-center justify-between p-3 rounded-xl bg-rose-900/60 border border-rose-500/40">
                   <div>
-                    <p className="font-medium text-gray-900">{item.name}</p>
-                    <p className="text-sm text-gray-500">SKU: {item.sku}</p>
+                    <p className="font-medium text-rose-50">{item.name}</p>
+                    <p className="text-sm text-rose-200">SKU: {item.sku}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-red-600">
+                    <p className="text-sm font-medium text-rose-200">
                       Stock: {item.current_stock} {item.unit_of_measure}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      Mínimo: {item.minimum_stock}
+                    <p className="text-xs text-rose-300">
+                      Mín: {item.minimum_stock}
                     </p>
                   </div>
                 </div>
@@ -543,34 +551,35 @@ export default function InventoryPage() {
       </div>
 
       {/* Movimientos recientes */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">Movimientos Recientes</h3>
+      <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
+        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-slate-50">Movimientos Recientes</h3>
+          <i className="ri-arrow-up-down-line text-purple-300 text-xl"></i>
         </div>
         <div className="p-6">
           {movements.slice(0, 5).length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No hay movimientos recientes</p>
+            <p className="text-slate-400 text-center py-4 text-sm">No hay movimientos recientes</p>
           ) : (
             <div className="space-y-3">
               {movements.slice(0, 5).map(movement => (
-                <div key={movement.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={movement.id} className="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800">
                   <div>
-                    <p className="font-medium text-gray-900">{movement.inventory_items?.name}</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="font-medium text-slate-50">{movement.inventory_items?.name}</p>
+                    <p className="text-sm text-slate-400">
                       {new Date(movement.movement_date).toLocaleDateString('es-DO')}
                     </p>
                   </div>
                   <div className="text-right">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      movement.movement_type === 'entry' ? 'bg-green-100 text-green-800' :
-                      movement.movement_type === 'exit' ? 'bg-red-100 text-red-800' :
-                      'bg-blue-100 text-blue-800'
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full border ${
+                      movement.movement_type === 'entry' ? 'bg-emerald-950/60 text-emerald-200 border-emerald-500/50' :
+                      movement.movement_type === 'exit' ? 'bg-rose-950/60 text-rose-200 border-rose-500/50' :
+                      movement.movement_type === 'transfer' ? 'bg-sky-950/60 text-sky-200 border-sky-500/50' : 'bg-slate-900/80 text-slate-300 border-slate-700'
                     }`}>
                       {movement.movement_type === 'entry' ? 'Entrada' :
                        movement.movement_type === 'exit' ? 'Salida' :
                        movement.movement_type === 'transfer' ? 'Transferencia' : 'Ajuste'}
                     </span>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-slate-400 mt-1">
                       Cantidad: {movement.quantity}
                     </p>
                   </div>
@@ -586,18 +595,18 @@ export default function InventoryPage() {
   const renderItems = () => (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h3 className="text-lg font-semibold text-gray-900">Productos en Inventario</h3>
+        <h3 className="text-lg font-semibold text-slate-50">Productos en Inventario</h3>
         <div className="flex flex-wrap gap-2">
           <button
             onClick={exportToExcel}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+            className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap shadow-md shadow-emerald-500/30"
           >
             <i className="ri-file-excel-line mr-2"></i>
             Exportar Excel
           </button>
           <button
             onClick={() => handleOpenModal('item')}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+            className="bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
           >
             <i className="ri-add-line mr-2"></i>
             Agregar Producto
@@ -606,10 +615,10 @@ export default function InventoryPage() {
       </div>
 
       {/* Filtros */}
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-200 mb-1">
               Buscar
             </label>
             <input
@@ -617,17 +626,17 @@ export default function InventoryPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar por nombre o SKU..."
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-200 mb-1">
               Categoría
             </label>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+              className="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70 pr-8"
             >
               <option value="">Todas las categorías</option>
               {categories.map(category => (
@@ -636,13 +645,13 @@ export default function InventoryPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-200 mb-1">
               Estado
             </label>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+              className="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70 pr-8"
             >
               <option value="">Todos los estados</option>
               <option value="active">Activos</option>
@@ -657,7 +666,7 @@ export default function InventoryPage() {
                 setCategoryFilter('');
                 setStatusFilter('');
               }}
-              className="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors whitespace-nowrap"
+              className="w-full bg-slate-900/80 text-slate-200 px-4 py-2 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap border border-slate-700"
             >
               <i className="ri-refresh-line mr-2"></i>
               Limpiar Filtros
@@ -666,54 +675,54 @@ export default function InventoryPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-slate-800">
+            <thead className="bg-slate-900/80">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio Costo</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio Venta</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">SKU</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Nombre</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Categoría</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Stock</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Precio Costo</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Precio Venta</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Estado</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-slate-950 divide-y divide-slate-800">
               {filteredItems.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <tr key={item.id} className="hover:bg-slate-900/60">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-50">
                     {item.sku}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                     {item.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                     {item.category || 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <span className={`${item.current_stock <= item.minimum_stock ? 'text-red-600 font-semibold' : ''}`}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
+                    <span className={`${item.current_stock <= item.minimum_stock ? 'text-rose-400 font-semibold' : ''}`}>
                       {item.current_stock} {item.unit_of_measure}
                     </span>
                     {item.minimum_stock && (
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-slate-500">
                         Mín: {item.minimum_stock}
                       </div>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                     ${item.cost_price?.toLocaleString('es-DO') || '0'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                     ${item.selling_price?.toLocaleString('es-DO') || '0'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full border ${
                       item.is_active 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
+                        ? 'bg-emerald-950/60 text-emerald-200 border-emerald-500/50' 
+                        : 'bg-rose-950/60 text-rose-200 border-rose-500/50'
                     }`}>
                       {item.is_active ? 'Activo' : 'Inactivo'}
                     </span>
@@ -721,21 +730,21 @@ export default function InventoryPage() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                     <button
                       onClick={() => handleOpenModal('item', item)}
-                      className="text-blue-600 hover:text-blue-900"
+                      className="text-slate-300 hover:text-purple-300"
                       title="Editar"
                     >
                       <i className="ri-edit-line"></i>
                     </button>
                     <button
                       onClick={() => handleOpenModal('movement', { item_id: item.id, item_name: item.name })}
-                      className="text-green-600 hover:text-green-900"
+                      className="text-emerald-400 hover:text-emerald-300"
                       title="Nuevo Movimiento"
                     >
                       <i className="ri-arrow-up-down-line"></i>
                     </button>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="text-red-600 hover:text-red-900"
+                      className="text-rose-400 hover:text-rose-300"
                       title="Eliminar"
                     >
                       <i className="ri-delete-bin-line"></i>
@@ -747,7 +756,7 @@ export default function InventoryPage() {
           </table>
           {filteredItems.length === 0 && (
             <div className="text-center py-8">
-              <p className="text-gray-500">No se encontraron productos</p>
+              <p className="text-slate-400 text-sm">No se encontraron productos</p>
             </div>
           )}
         </div>
@@ -758,18 +767,18 @@ export default function InventoryPage() {
   const renderMovements = () => (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h3 className="text-lg font-semibold text-gray-900">Movimientos de Inventario</h3>
+        <h3 className="text-lg font-semibold text-slate-50">Movimientos de Inventario</h3>
         <div className="flex flex-wrap gap-2">
           <button
             onClick={exportToExcel}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+            className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap shadow-md shadow-emerald-500/30"
           >
             <i className="ri-file-excel-line mr-2"></i>
             Exportar Excel
           </button>
           <button
             onClick={() => handleOpenModal('movement')}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+            className="bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
           >
             <i className="ri-add-line mr-2"></i>
             Nuevo Movimiento
@@ -778,10 +787,10 @@ export default function InventoryPage() {
       </div>
 
       {/* Filtros */}
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-200 mb-1">
               Buscar
             </label>
             <input
@@ -789,17 +798,17 @@ export default function InventoryPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar por producto o referencia..."
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-200 mb-1">
               Tipo de Movimiento
             </label>
             <select
               value={movementTypeFilter}
               onChange={(e) => setMovementTypeFilter(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+              className="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70 pr-8"
             >
               <option value="">Todos los tipos</option>
               <option value="entry">Entrada</option>
@@ -814,7 +823,7 @@ export default function InventoryPage() {
                 setSearchTerm('');
                 setMovementTypeFilter('');
               }}
-              className="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors whitespace-nowrap"
+              className="w-full bg-slate-900/80 text-slate-200 px-4 py-2 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap border border-slate-700"
             >
               <i className="ri-refresh-line mr-2"></i>
               Limpiar Filtros
@@ -823,56 +832,62 @@ export default function InventoryPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-slate-800">
+            <thead className="bg-slate-900/80">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Costo Unitario</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Costo Total</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Referencia</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notas</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Fecha</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Producto</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Tipo</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Cantidad</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Costo Unitario</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Costo Total</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Referencia</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Notas</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-slate-950 divide-y divide-slate-800">
               {filteredMovements.map((movement) => (
-                <tr key={movement.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <tr key={movement.id} className="hover:bg-slate-900/60">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                     {new Date(movement.movement_date).toLocaleDateString('es-DO')}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                     {movement.inventory_items?.name || 'N/A'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      movement.movement_type === 'entry' ? 'bg-green-100 text-green-800' :
-                      movement.movement_type === 'exit' ? 'bg-red-100 text-red-800' :
-                      movement.movement_type === 'transfer' ? 'bg-blue-100 text-blue-800' :
-                      'bg-yellow-100 text-yellow-800'
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full border ${
+                      movement.movement_type === 'entry'
+                        ? 'bg-emerald-950/60 text-emerald-200 border-emerald-500/50'
+                        : movement.movement_type === 'exit'
+                        ? 'bg-rose-950/60 text-rose-200 border-rose-500/50'
+                        : movement.movement_type === 'transfer'
+                        ? 'bg-sky-950/60 text-sky-200 border-sky-500/50'
+                        : 'bg-slate-900/80 text-slate-300 border-slate-700'
                     }`}>
-                      {movement.movement_type === 'entry' ? 'Entrada' :
-                       movement.movement_type === 'exit' ? 'Salida' :
-                       movement.movement_type === 'transfer' ? 'Transferencia' :
-                       'Ajuste'}
+                      {movement.movement_type === 'entry'
+                        ? 'Entrada'
+                        : movement.movement_type === 'exit'
+                        ? 'Salida'
+                        : movement.movement_type === 'transfer'
+                        ? 'Transferencia'
+                        : 'Ajuste'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                     {movement.quantity}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                     ${movement.unit_cost?.toLocaleString('es-DO') || '0'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                     ${movement.total_cost?.toLocaleString('es-DO') || '0'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                     {movement.reference || 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                     {movement.notes || 'N/A'}
                   </td>
                 </tr>
@@ -881,7 +896,7 @@ export default function InventoryPage() {
           </table>
           {filteredMovements.length === 0 && (
             <div className="text-center py-8">
-              <p className="text-gray-500">No se encontraron movimientos</p>
+              <p className="text-slate-400 text-sm">No se encontraron movimientos</p>
             </div>
           )}
         </div>
@@ -892,10 +907,10 @@ export default function InventoryPage() {
   const renderWarehouses = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold text-gray-900">Gestión de Almacenes</h3>
+        <h3 className="text-lg font-semibold text-slate-50">Gestión de Almacenes</h3>
         <button
           onClick={() => handleOpenModal('warehouse')}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+          className="bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
         >
           <i className="ri-add-line mr-2"></i>
           Nuevo Almacén
@@ -904,34 +919,34 @@ export default function InventoryPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {warehouses.map((warehouse) => (
-          <div key={warehouse.id} className="bg-white rounded-lg shadow p-6">
+          <div key={warehouse.id} className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-6">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <i className="ri-building-line text-blue-600"></i>
+              <div className="w-10 h-10 bg-purple-500/20 border border-purple-500/50 rounded-xl flex items-center justify-center">
+                <i className="ri-building-line text-purple-300"></i>
               </div>
               <div className="flex space-x-2">
                 <button
                   onClick={() => handleOpenModal('warehouse', warehouse)}
-                  className="text-blue-600 hover:text-blue-900"
+                  className="text-slate-300 hover:text-purple-300"
                   title="Editar"
                 >
                   <i className="ri-edit-line"></i>
                 </button>
               </div>
             </div>
-            <h4 className="text-lg font-semibold text-gray-900 mb-2">{warehouse.name}</h4>
-            <p className="text-sm text-gray-500 mb-2">{warehouse.location}</p>
-            <p className="text-xs text-gray-400 mb-4">{warehouse.description}</p>
+            <h4 className="text-lg font-semibold text-slate-50 mb-2">{warehouse.name}</h4>
+            <p className="text-sm text-slate-400 mb-2">{warehouse.location}</p>
+            <p className="text-xs text-slate-500 mb-4">{warehouse.description}</p>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Productos:</span>
-                <span className="font-medium">
+                <span className="text-slate-400">Productos:</span>
+                <span className="font-medium text-slate-200">
                   {items.filter(item => item.warehouse_id === warehouse.id).length}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Stock Total:</span>
-                <span className="font-medium">
+                <span className="text-slate-400">Stock Total:</span>
+                <span className="font-medium text-slate-200">
                   {items
                     .filter(item => item.warehouse_id === warehouse.id)
                     .reduce((sum, item) => sum + (item.current_stock || 0), 0)
@@ -939,8 +954,8 @@ export default function InventoryPage() {
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Valor Total:</span>
-                <span className="font-medium text-green-600">
+                <span className="text-slate-400">Valor Total:</span>
+                <span className="font-medium text-emerald-400">
                   ${items
                     .filter(item => item.warehouse_id === warehouse.id)
                     .reduce((sum, item) => sum + ((item.current_stock || 0) * (item.cost_price || 0)), 0)
@@ -958,24 +973,24 @@ export default function InventoryPage() {
   const renderReports = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold text-gray-900">Reportes de Inventario</h3>
+        <h3 className="text-lg font-semibold text-slate-50">Reportes de Inventario</h3>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Reporte de Stock */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-6">
           <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <i className="ri-file-list-3-line text-blue-600"></i>
+            <div className="w-10 h-10 bg-sky-500/15 border border-sky-400/40 rounded-xl flex items-center justify-center">
+              <i className="ri-file-list-3-line text-sky-300"></i>
             </div>
-            <h4 className="text-lg font-semibold text-gray-900 ml-3">Reporte de Stock</h4>
+            <h4 className="text-lg font-semibold text-slate-50 ml-3">Reporte de Stock</h4>
           </div>
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-slate-400 mb-4">
             Reporte detallado de todos los productos con sus niveles de stock actuales.
           </p>
           <button
             onClick={exportToExcel}
-            className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+            className="w-full bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-sky-500/40"
           >
             <i className="ri-download-line mr-2"></i>
             Generar Reporte
@@ -983,14 +998,14 @@ export default function InventoryPage() {
         </div>
 
         {/* Reporte de Movimientos */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-6">
           <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <i className="ri-arrow-up-down-line text-green-600"></i>
+            <div className="w-10 h-10 bg-emerald-500/15 border border-emerald-400/40 rounded-xl flex items-center justify-center">
+              <i className="ri-arrow-up-down-line text-emerald-300"></i>
             </div>
-            <h4 className="text-lg font-semibold text-gray-900 ml-3">Reporte de Movimientos</h4>
+            <h4 className="text-lg font-semibold text-slate-50 ml-3">Reporte de Movimientos</h4>
           </div>
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-slate-400 mb-4">
             Historial completo de todos los movimientos de inventario realizados.
           </p>
           <button
@@ -998,7 +1013,7 @@ export default function InventoryPage() {
               setActiveTab('movements');
               exportToExcel();
             }}
-            className="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+            className="w-full bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap shadow-md shadow-emerald-500/40"
           >
             <i className="ri-download-line mr-2"></i>
             Generar Reporte
@@ -1006,14 +1021,14 @@ export default function InventoryPage() {
         </div>
 
         {/* Reporte de Valorización */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-6">
           <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-              <i className="ri-money-dollar-circle-line text-purple-600"></i>
+            <div className="w-10 h-10 bg-purple-500/20 border border-purple-500/50 rounded-xl flex items-center justify-center">
+              <i className="ri-money-dollar-circle-line text-purple-300"></i>
             </div>
-            <h4 className="text-lg font-semibold text-gray-900 ml-3">Valorización</h4>
+            <h4 className="text-lg font-semibold text-slate-50 ml-3">Valorización</h4>
           </div>
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-slate-400 mb-4">
             Reporte del valor total del inventario a precios de costo y venta.
           </p>
           <button
@@ -1041,7 +1056,7 @@ export default function InventoryPage() {
               link.click();
               document.body.removeChild(link);
             }}
-            className="w-full bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors whitespace-nowrap"
+            className="w-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/50"
           >
             <i className="ri-download-line mr-2"></i>
             Generar Reporte
@@ -1050,20 +1065,20 @@ export default function InventoryPage() {
       </div>
 
       {/* Estadísticas de reportes */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h4 className="text-lg font-semibold text-gray-900 mb-4">Estadísticas Generales</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-6">
+        <h4 className="text-lg font-semibold text-slate-50 mb-4">Estadísticas Generales</h4>
+        <div className="grid grid-cols-1 md-grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-500">Productos Totales</p>
-            <p className="text-2xl font-bold text-blue-600">{items.length}</p>
+            <p className="text-sm font-medium text-slate-400">Productos Totales</p>
+            <p className="text-2xl font-bold text-sky-400">{items.length}</p>
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-500">Categorías</p>
-            <p className="text-2xl font-bold text-green-600">{categories.length}</p>
+            <p className="text-sm font-medium text-slate-400">Categorías</p>
+            <p className="text-2xl font-bold text-emerald-400">{categories.length}</p>
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-500">Movimientos del Mes</p>
-            <p className="text-2xl font-bold text-purple-600">
+            <p className="text-sm font-medium text-slate-400">Movimientos del Mes</p>
+            <p className="text-2xl font-bold text-purple-400">
               {movements.filter(m => {
                 const movementDate = new Date(m.movement_date);
                 const now = new Date();
@@ -1073,8 +1088,8 @@ export default function InventoryPage() {
             </p>
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-500">Almacenes</p>
-            <p className="text-2xl font-bold text-orange-600">{warehouses.length}</p>
+            <p className="text-sm font-medium text-slate-400">Almacenes</p>
+            <p className="text-2xl font-bold text-amber-400">{warehouses.length}</p>
           </div>
         </div>
       </div>
@@ -1487,10 +1502,10 @@ export default function InventoryPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+              className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
                 activeTab === tab.id
-                  ? 'border-purple-500 text-purple-300'
-                  : 'border-transparent text-slate-400 hover:text-slate-100 hover:border-slate-600'
+                  ? 'border-purple-500 text-purple-300 bg-slate-900/20'
+                  : 'border-transparent text-slate-400 hover:text-purple-300 hover:border-purple-500/50'
               }`}
             >
               <i className={tab.icon}></i>

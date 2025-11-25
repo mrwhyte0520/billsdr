@@ -6,43 +6,43 @@ export default function AccountsPayablePage() {
 
   const modules = [
     {
-      title: 'A/P Reports',
-      description: 'Comprehensive accounts payable reports with filters',
+      title: 'Reportes de Cuentas por Pagar',
+      description: 'Reportes completos de cuentas por pagar con filtros avanzados',
       icon: 'ri-file-chart-line',
       href: '/accounts-payable/reports',
       color: 'blue'
     },
     {
-      title: 'Supplier Management',
-      description: 'Vendor database and maintenance',
+      title: 'Gestión de Proveedores',
+      description: 'Base de datos y mantenimiento de proveedores',
       icon: 'ri-truck-line',
       href: '/accounts-payable/suppliers',
       color: 'green'
     },
     {
-      title: 'Payment Processing',
-      description: 'Check, transfer, and cash payments',
+      title: 'Procesamiento de Pagos',
+      description: 'Pagos por cheque, transferencia y efectivo',
       icon: 'ri-bank-card-line',
       href: '/accounts-payable/payments',
       color: 'purple'
     },
     {
-      title: 'Purchase Orders',
-      description: 'Purchase order management and tracking',
+      title: 'Órdenes de Compra',
+      description: 'Gestión y seguimiento de órdenes de compra',
       icon: 'ri-shopping-cart-line',
       href: '/accounts-payable/purchase-orders',
       color: 'orange'
     },
     {
-      title: 'Quote Requests',
-      description: 'Quotation requests and comparisons',
+      title: 'Solicitudes de Cotización',
+      description: 'Solicitudes de cotización y comparaciones',
       icon: 'ri-file-list-line',
       href: '/accounts-payable/quotes',
       color: 'red'
     },
     {
-      title: 'A/P Advances',
-      description: 'Supplier advance payments',
+      title: 'Anticipos a Proveedores',
+      description: 'Pagos de anticipos a proveedores',
       icon: 'ri-money-dollar-circle-line',
       href: '/accounts-payable/advances',
       color: 'indigo'
@@ -51,28 +51,28 @@ export default function AccountsPayablePage() {
 
   const apStats = [
     {
-      title: 'Total A/P Balance',
+      title: 'Balance Total CxP',
       value: '$185,000',
       change: '+3.8%',
       icon: 'ri-file-list-3-line',
       color: 'red'
     },
     {
-      title: 'Due This Week',
+      title: 'Vence Esta Semana',
       value: '$45,000',
       change: '+12%',
       icon: 'ri-calendar-line',
       color: 'orange'
     },
     {
-      title: 'Overdue Payments',
+      title: 'Pagos Vencidos',
       value: '$12,500',
       change: '-8.5%',
       icon: 'ri-alert-line',
       color: 'red'
     },
     {
-      title: 'Active Suppliers',
+      title: 'Proveedores Activos',
       value: '156',
       change: '+5',
       icon: 'ri-truck-line',
@@ -86,21 +86,21 @@ export default function AccountsPayablePage() {
       rnc: '101234567',
       balance: '$35,000',
       dueDate: '20/01/2024',
-      status: 'Due Soon'
+      status: 'Por Vencer'
     },
     {
       name: 'Distribuidora Nacional SRL',
       rnc: '201234567',
       balance: '$28,000',
       dueDate: '25/01/2024',
-      status: 'Current'
+      status: 'Al Día'
     },
     {
       name: 'Servicios Técnicos EIRL',
       rnc: '301234567',
       balance: '$19,500',
       dueDate: '10/01/2024',
-      status: 'Overdue'
+      status: 'Vencido'
     },
     {
       name: 'Materiales de Construcción SA',
@@ -113,21 +113,21 @@ export default function AccountsPayablePage() {
 
   const recentPurchases = [
     {
-      type: 'Purchase Order',
+      type: 'Orden de Compra',
       supplier: 'Proveedor Industrial SA',
       amount: '$8,500',
       reference: 'PO-2024-045',
       date: '15/01/2024'
     },
     {
-      type: 'Payment',
+      type: 'Pago',
       supplier: 'Distribuidora Nacional SRL',
       amount: '$12,500',
       reference: 'PAY-2024-089',
       date: '14/01/2024'
     },
     {
-      type: 'Invoice Received',
+      type: 'Factura Recibida',
       supplier: 'Servicios Técnicos EIRL',
       amount: '$4,500',
       reference: 'INV-SUP-156',
@@ -144,7 +144,7 @@ export default function AccountsPayablePage() {
       date: '15/01/2024'
     },
     {
-      type: 'Payment Request',
+      type: 'Solicitud de Pago',
       supplier: 'Servicios Urgentes SA',
       amount: '$7,500',
       requestedBy: 'María García',
@@ -160,28 +160,28 @@ export default function AccountsPayablePage() {
   // Approval Functions
   const handleApproveRequest = (type: string, supplier: string, amount: string) => {
     if (confirm(`¿Aprobar ${type} para ${supplier} por ${amount}?`)) {
-      alert(`${type} approved successfully for ${supplier}`);
+      alert(`${type} aprobada correctamente para ${supplier}`);
     }
   };
 
   const handleRejectRequest = (type: string, supplier: string, amount: string) => {
     if (confirm(`¿Rechazar ${type} para ${supplier} por ${amount}?`)) {
-      alert(`${type} rejected for ${supplier}`);
+      alert(`${type} rechazada para ${supplier}`);
     }
   };
 
   // Navigation Functions
   const handleViewAll = (section: string) => {
-    alert(`Viewing all ${section}...`);
+    alert(`Viendo todas las ${section}...`);
   };
 
   return (
     <DashboardLayout>
       <div className="space-y-6 p-6">
-        {/* Header */}
+        {/* Encabezado */}
         <div>
-          <h1 className="text-2xl font-bold text-slate-50">Accounts Payable Module</h1>
-          <p className="text-slate-400">Complete supplier and payment management system</p>
+          <h1 className="text-2xl font-bold text-slate-50">Módulo de Cuentas por Pagar</h1>
+          <p className="text-slate-400">Sistema completo de gestión de proveedores y pagos</p>
         </div>
 
         {/* A/P Stats */}
@@ -214,7 +214,7 @@ export default function AccountsPayablePage() {
           ))}
         </div>
 
-        {/* Modules Grid */}
+        {/* Malla de módulos */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {modules.map((module, index) => (
             <div
@@ -232,17 +232,17 @@ export default function AccountsPayablePage() {
                 onClick={() => handleAccessModule(module.href, module.title)}
                 className="w-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 py-2 px-4 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
               >
-                Access
+                Acceder
               </button>
             </div>
           ))}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Top Suppliers */}
+          {/* Proveedores principales */}
           <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="p-6 border-b border-slate-800">
-              <h3 className="text-lg font-semibold text-slate-50">Top Suppliers by Balance</h3>
+              <h3 className="text-lg font-semibold text-slate-50">Proveedores con Mayor Balance</h3>
             </div>
             <div className="p-6">
               <div className="space-y-4">
@@ -251,14 +251,14 @@ export default function AccountsPayablePage() {
                     <div>
                       <p className="font-medium text-slate-50">{supplier.name}</p>
                       <p className="text-sm text-slate-400">RNC: {supplier.rnc}</p>
-                      <p className="text-xs text-slate-500">Due: {supplier.dueDate}</p>
+                      <p className="text-xs text-slate-500">Vence: {supplier.dueDate}</p>
                     </div>
                     <div className="text-right">
                       <p className="font-semibold text-slate-50">{supplier.balance}</p>
                       <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full border ${
-                        supplier.status === 'Current'
+                        supplier.status === 'Al Día'
                           ? 'border-emerald-500/60 bg-emerald-500/10 text-emerald-300'
-                          : supplier.status === 'Due Soon'
+                          : supplier.status === 'Por Vencer'
                           ? 'border-amber-500/60 bg-amber-500/10 text-amber-300'
                           : 'border-red-500/60 bg-red-500/10 text-red-300'
                       }`}>
@@ -271,16 +271,16 @@ export default function AccountsPayablePage() {
             </div>
           </div>
 
-          {/* Recent Purchases */}
+          {/* Actividad reciente */}
           <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="p-6 border-b border-slate-800">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-slate-50">Recent Activity</h3>
+                <h3 className="text-lg font-semibold text-slate-50">Actividad Reciente</h3>
                 <button
-                  onClick={() => handleViewAll('recent activity')}
+                  onClick={() => handleViewAll('actividades recientes')}
                   className="text-purple-300 hover:text-purple-200 text-sm font-medium whitespace-nowrap"
                 >
-                  View All
+                  Ver todo
                 </button>
               </div>
             </div>
@@ -291,7 +291,7 @@ export default function AccountsPayablePage() {
                     <div className="flex items-center">
                       <div
                         className={`w-10 h-10 rounded-xl flex items-center justify-center mr-3 ${
-                          purchase.type === 'Payment'
+                          purchase.type === 'Pago'
                             ? 'bg-emerald-500/20'
                             : purchase.type === 'Purchase Order'
                             ? 'bg-blue-500/20'
@@ -329,7 +329,7 @@ export default function AccountsPayablePage() {
         {/* Pending Approvals */}
         <div className="rounded-2xl border border-slate-800 bg-slate-950/80">
           <div className="p-6 border-b border-slate-800">
-            <h3 className="text-lg font-semibold text-slate-50">Pending Approvals</h3>
+            <h3 className="text-lg font-semibold text-slate-50">Aprobaciones Pendientes</h3>
           </div>
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -341,7 +341,7 @@ export default function AccountsPayablePage() {
                   <div>
                     <p className="font-medium text-slate-50">{approval.type}</p>
                     <p className="text-sm text-slate-400">{approval.supplier}</p>
-                    <p className="text-xs text-slate-500">Requested by: {approval.requestedBy}</p>
+                    <p className="text-xs text-slate-500">Solicitado por: {approval.requestedBy}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-semibold text-slate-50">{approval.amount}</p>
@@ -350,13 +350,13 @@ export default function AccountsPayablePage() {
                         onClick={() => handleApproveRequest(approval.type, approval.supplier, approval.amount)}
                         className="px-3 py-1 bg-gradient-to-r from-emerald-500 to-emerald-400 text-slate-950 text-xs rounded-lg hover:brightness-110 whitespace-nowrap font-medium shadow-md shadow-emerald-500/30"
                       >
-                        Approve
+                        Aprobar
                       </button>
                       <button
                         onClick={() => handleRejectRequest(approval.type, approval.supplier, approval.amount)}
                         className="px-3 py-1 bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-lg hover:bg-slate-800 whitespace-nowrap"
                       >
-                        Reject
+                        Rechazar
                       </button>
                     </div>
                   </div>
