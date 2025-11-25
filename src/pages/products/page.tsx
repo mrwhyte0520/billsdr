@@ -554,28 +554,25 @@ export default function ProductsPage() {
     <DashboardLayout>
       <div className="p-6 space-y-6">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => window.REACT_APP_NAVIGATE('/dashboard')}
-              className="flex items-center text-slate-400 hover:text-slate-100 transition-colors"
-            >
-              <i className="ri-arrow-left-line mr-2"></i>
-              Volver al Inicio
-            </button>
-            <div className="h-6 w-px bg-slate-700"></div>
+        <div className="flex items-center justify-between mb-6">
+          <div>
             <h1 className="text-2xl font-bold text-slate-50">Gestión de Productos</h1>
+            <p className="text-sm text-slate-400 mt-1">
+              Administra tu catálogo de productos, precios y stock desde un solo lugar.
+            </p>
           </div>
-          <button
-            onClick={() => {
-              resetForm();
-              setShowModal(true);
-            }}
-            className="bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
-          >
-            <i className="ri-add-line mr-2"></i>
-            Agregar Producto
-          </button>
+          <div className="flex space-x-3">
+            <button
+              onClick={() => {
+                resetForm();
+                setShowModal(true);
+              }}
+              className="bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
+            >
+              <i className="ri-add-line mr-2"></i>
+              Agregar Producto
+            </button>
+          </div>
         </div>
 
         {/* Tabs */}

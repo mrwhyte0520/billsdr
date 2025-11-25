@@ -1089,221 +1089,100 @@ export default function InventoryPage() {
           </div>
           <div className="text-center">
             <p className="text-sm font-medium text-slate-400">Almacenes</p>
-            <p className="text-2xl font-bold text-amber-400">{warehouses.length}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderModal = () => {
-    if (!showModal) return null;
-
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">
-              {selectedItem ? 'Editar' : 'Agregar'} {
-                modalType === 'item' ? 'Producto' : 
-                modalType === 'movement' ? 'Movimiento' : 'Almacén'
-              }
-            </h3>
-            <button
-              onClick={handleCloseModal}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              <i className="ri-close-line text-xl"></i>
-            </button>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {modalType === 'item' && (
-              <>
-                {/* Imagen del Producto */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Imagen del Producto
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    {formData.image_url && (
-                      <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden">
-                        <img
-                          src={formData.image_url}
-                          alt="Vista previa"
-                          className="w-full h-full object-cover object-top"
-                        />
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
                       />
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 transition-colors text-center"
-                      >
-                        <i className="ri-upload-cloud-line text-2xl text-gray-400 mb-2 block"></i>
-                        <span className="text-sm text-gray-600">
-                          {formData.image_url ? 'Cambiar imagen' : 'Subir imagen'}
-                        </span>
-                      </button>
                     </div>
+                  )}
+                  <div className="flex-1">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full p-3 border-2 border-dashed border-slate-700 rounded-xl hover:border-purple-400 transition-colors text-center bg-slate-900/80"
+                    >
+                      <i className="ri-upload-cloud-line text-2xl text-slate-400 mb-2 block"></i>
+                      <span className="text-sm text-slate-300">
+                        {formData.image_url ? 'Cambiar imagen' : 'Subir imagen'}
+                      </span>
+                    </button>
                   </div>
                 </div>
+              </div>
 
+              <div>
+                <label className="block text-sm font-medium text-slate-200 mb-1">
+                  SKU *
+                </label>
+                <input
+                  type="text"
+                  value={formData.sku || ''}
+                  onChange={(e) => setFormData({...formData, sku: e.target.value})}
+                  className="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-200 mb-1">
+                  Nombre del Producto *
+                </label>
+                <input
+                  type="text"
+                  value={formData.name || ''}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-200 mb-1">
+                  Descripción
+                </label>
+                <textarea
+                  value={formData.description || ''}
+                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  className="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
+                  rows={3}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-200 mb-1">
+                  Categoría
+                </label>
+                <input
+                  type="text"
+                  value={formData.category || ''}
+                  onChange={(e) => setFormData({...formData, category: e.target.value})}
+                  className="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
+                  placeholder="Ej: Electrónicos, Ropa, Alimentos"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-200 mb-1">
+                  Unidad de Medida
+                </label>
+                <select
+                  value={formData.unit_of_measure || 'unit'}
+                  onChange={(e) => setFormData({...formData, unit_of_measure: e.target.value})}
+                  className="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70 pr-8"
+                >
+                  <option value="unit">Unidad</option>
+                  <option value="kg">Kilogramo</option>
+                  <option value="lb">Libra</option>
+                  <option value="liter">Litro</option>
+                  <option value="meter">Metro</option>
+                  <option value="box">Caja</option>
+                  <option value="pack">Paquete</option>
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    SKU *
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.sku || ''}
-                    onChange={(e) => setFormData({...formData, sku: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nombre del Producto *
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name || ''}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Descripción
-                  </label>
-                  <textarea
-                    value={formData.description || ''}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    rows={3}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Categoría
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.category || ''}
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Ej: Electrónicos, Ropa, Alimentos"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Unidad de Medida
-                  </label>
-                  <select
-                    value={formData.unit_of_measure || 'unit'}
-                    onChange={(e) => setFormData({...formData, unit_of_measure: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
-                  >
-                    <option value="unit">Unidad</option>
-                    <option value="kg">Kilogramo</option>
-                    <option value="lb">Libra</option>
-                    <option value="liter">Litro</option>
-                    <option value="meter">Metro</option>
-                    <option value="box">Caja</option>
-                    <option value="pack">Paquete</option>
-                  </select>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Precio Costo
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.cost_price || ''}
-                      onChange={(e) => setFormData({...formData, cost_price: parseFloat(e.target.value)})}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Precio Venta
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.selling_price || ''}
-                      onChange={(e) => setFormData({...formData, selling_price: parseFloat(e.target.value)})}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Stock Actual
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.current_stock || ''}
-                      onChange={(e) => setFormData({...formData, current_stock: parseFloat(e.target.value)})}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Stock Mínimo
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.minimum_stock || ''}
-                      onChange={(e) => setFormData({...formData, minimum_stock: parseFloat(e.target.value)})}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Stock Máximo
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.maximum_stock || ''}
-                      onChange={(e) => setFormData({...formData, maximum_stock: parseFloat(e.target.value)})}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={formData.is_active !== false}
-                      onChange={(e) => setFormData({...formData, is_active: e.target.checked})}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="ml-2 text-sm text-gray-700">Producto activo</span>
-                  </label>
-                </div>
-              </>
-            )}
-
-            {modalType === 'movement' && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
+                    Precio Costo
                     Producto *
                   </label>
                   <select

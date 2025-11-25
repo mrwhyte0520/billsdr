@@ -106,11 +106,11 @@ export default function CreditNotesPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-blue-100 text-blue-800';
-      case 'applied': return 'bg-green-100 text-green-800';
-      case 'partial': return 'bg-yellow-100 text-yellow-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'pending': return 'border-sky-500/60 bg-sky-500/10 text-sky-300';
+      case 'applied': return 'border-emerald-500/60 bg-emerald-500/10 text-emerald-300';
+      case 'partial': return 'border-amber-400/60 bg-amber-400/10 text-amber-200';
+      case 'cancelled': return 'border-red-500/60 bg-red-500/10 text-red-300';
+      default: return 'border-slate-600/60 bg-slate-700/20 text-slate-200';
     }
   };
 
@@ -153,9 +153,9 @@ export default function CreditNotesPage() {
     
     const summaryData = [
       ['Concepto', 'Valor'],
-      ['Total Notas de Crédito', `RD$ ${totalAmount.toLocaleString()}`],
-      ['Total Aplicado', `RD$ ${totalApplied.toLocaleString()}`],
-      ['Saldo Pendiente', `RD$ ${totalBalance.toLocaleString()}`],
+      ['Total Notas de Crédito', `$ ${totalAmount.toLocaleString()}`],
+      ['Total Aplicado', `$ ${totalApplied.toLocaleString()}`],
+      ['Saldo Pendiente', `$ ${totalBalance.toLocaleString()}`],
       ['Notas Pendientes', pendingNotes.toString()],
       ['Total de Notas', filteredNotes.length.toString()]
     ];
@@ -176,9 +176,9 @@ export default function CreditNotesPage() {
       note.noteNumber,
       note.customerName,
       note.date,
-      `RD$ ${note.amount.toLocaleString()}`,
-      `RD$ ${note.appliedAmount.toLocaleString()}`,
-      `RD$ ${note.balance.toLocaleString()}`,
+      `$ ${note.amount.toLocaleString()}`,
+      `$ ${note.appliedAmount.toLocaleString()}`,
+      `$ ${note.balance.toLocaleString()}`,
       note.reason,
       getStatusName(note.status)
     ]);
@@ -207,9 +207,9 @@ export default function CreditNotesPage() {
       [`Estado: ${statusFilter === 'all' ? 'Todos' : getStatusName(statusFilter)}`],
       [''],
       ['RESUMEN'],
-      ['Total Notas de Crédito', `RD$ ${totalAmount.toLocaleString()}`],
-      ['Total Aplicado', `RD$ ${totalApplied.toLocaleString()}`],
-      ['Saldo Pendiente', `RD$ ${totalBalance.toLocaleString()}`],
+      ['Total Notas de Crédito', `$ ${totalAmount.toLocaleString()}`],
+      ['Total Aplicado', `$ ${totalApplied.toLocaleString()}`],
+      ['Saldo Pendiente', `$ ${totalBalance.toLocaleString()}`],
       ['Notas Pendientes', pendingNotes.toString()],
       ['Total de Notas', filteredNotes.length.toString()],
       [''],
@@ -271,19 +271,19 @@ export default function CreditNotesPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
+      <div className="py-4 space-y-6">
+        <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Notas de Crédito</h1>
-            <nav className="flex space-x-2 text-sm text-gray-600 mt-2">
-              <Link to="/accounts-receivable" className="hover:text-blue-600">Cuentas por Cobrar</Link>
+            <h1 className="text-2xl font-bold text-slate-50">Notas de Crédito</h1>
+            <nav className="flex space-x-2 text-sm text-slate-400 mt-2">
+              <Link to="/accounts-receivable" className="hover:text-purple-300">Cuentas por Cobrar</Link>
               <span>/</span>
               <span>Notas de Crédito</span>
             </nav>
           </div>
           <button 
             onClick={handleNewNote}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+            className="bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-sky-500/40"
           >
             <i className="ri-add-line mr-2"></i>
             Nueva Nota de Crédito
@@ -291,76 +291,76 @@ export default function CreditNotesPage() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Notas</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  RD${filteredNotes.reduce((sum, n) => sum + n.amount, 0).toLocaleString()}
+                <p className="text-sm font-medium text-slate-400">Total Notas</p>
+                <p className="text-2xl font-bold text-sky-400">
+                  ${filteredNotes.reduce((sum, n) => sum + n.amount, 0).toLocaleString()}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <i className="ri-file-text-line text-2xl text-blue-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-sky-500/20 border border-sky-500/50 flex items-center justify-center">
+                <i className="ri-file-text-line text-2xl text-sky-200"></i>
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Saldo Disponible</p>
-                <p className="text-2xl font-bold text-green-600">
-                  RD${filteredNotes.reduce((sum, n) => sum + n.balance, 0).toLocaleString()}
+                <p className="text-sm font-medium text-slate-400">Saldo Disponible</p>
+                <p className="text-2xl font-bold text-emerald-300">
+                  ${filteredNotes.reduce((sum, n) => sum + n.balance, 0).toLocaleString()}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <i className="ri-wallet-line text-2xl text-green-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center">
+                <i className="ri-wallet-line text-2xl text-emerald-200"></i>
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Monto Aplicado</p>
-                <p className="text-2xl font-bold text-purple-600">
-                  RD${filteredNotes.reduce((sum, n) => sum + n.appliedAmount, 0).toLocaleString()}
+                <p className="text-sm font-medium text-slate-400">Monto Aplicado</p>
+                <p className="text-2xl font-bold text-purple-300">
+                  ${filteredNotes.reduce((sum, n) => sum + n.appliedAmount, 0).toLocaleString()}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <i className="ri-check-double-line text-2xl text-purple-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/50 flex items-center justify-center">
+                <i className="ri-check-double-line text-2xl text-purple-200"></i>
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Notas Pendientes</p>
-                <p className="text-2xl font-bold text-orange-600">
+                <p className="text-sm font-medium text-slate-400">Notas Pendientes</p>
+                <p className="text-2xl font-bold text-amber-300">
                   {filteredNotes.filter(n => n.status === 'pending').length}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                <i className="ri-time-line text-2xl text-orange-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center">
+                <i className="ri-time-line text-2xl text-amber-200"></i>
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters and Export */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-4 mt-6">
           <div className="flex-1">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i className="ri-search-line text-gray-400"></i>
+                <i className="ri-search-line text-slate-400"></i>
               </div>
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                className="block w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 placeholder-slate-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                 placeholder="Buscar por cliente, número de nota o motivo..."
               />
             </div>
@@ -370,7 +370,7 @@ export default function CreditNotesPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm pr-8"
+              className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm pr-8"
             >
               <option value="all">Todos los Estados</option>
               <option value="pending">Pendientes</option>
@@ -383,13 +383,13 @@ export default function CreditNotesPage() {
           <div className="flex space-x-2">
             <button
               onClick={exportToPDF}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+              className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-red-500/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>PDF
             </button>
             <button
               onClick={exportToExcel}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
             >
               <i className="ri-file-excel-line mr-2"></i>Excel
             </button>
@@ -397,66 +397,66 @@ export default function CreditNotesPage() {
         </div>
 
         {/* Credit Notes Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+        <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
+          <div className="overflow-x-auto rounded-2xl">
+            <table className="min-w-full divide-y divide-slate-800">
+              <thead className="bg-slate-900/80">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Nota
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Cliente
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Fecha
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Monto
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Aplicado
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Saldo
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Motivo
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Estado
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-slate-950 divide-y divide-slate-800">
                 {filteredNotes.map((note) => (
-                  <tr key={note.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <tr key={note.id} className="hover:bg-slate-900/60">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-50">
                       {note.noteNumber}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {note.customerName}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {note.date}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      RD${note.amount.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-50">
+                      ${note.amount.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      RD${note.appliedAmount.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
+                      ${note.appliedAmount.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
-                      RD${note.balance.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-emerald-300">
+                      ${note.balance.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">
+                    <td className="px-6 py-4 text-sm text-slate-100 max-w-xs truncate">
                       {note.reason}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(note.status)}`}>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(note.status)}`}>
                         {getStatusName(note.status)}
                       </span>
                     </td>
@@ -464,7 +464,7 @@ export default function CreditNotesPage() {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleViewNote(note)}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-sky-400 hover:text-sky-300"
                           title="Ver detalles"
                         >
                           <i className="ri-eye-line"></i>
@@ -472,7 +472,7 @@ export default function CreditNotesPage() {
                         {note.balance > 0 && note.status !== 'cancelled' && (
                           <button
                             onClick={() => handleApplyNote(note)}
-                            className="text-green-600 hover:text-green-900"
+                            className="text-emerald-400 hover:text-emerald-300"
                             title="Aplicar nota"
                           >
                             <i className="ri-check-line"></i>
@@ -481,7 +481,7 @@ export default function CreditNotesPage() {
                         {note.status === 'pending' && (
                           <button
                             onClick={() => handleCancelNote(note.id)}
-                            className="text-red-600 hover:text-red-900"
+                            className="text-red-400 hover:text-red-300"
                             title="Cancelar nota"
                           >
                             <i className="ri-close-circle-line"></i>
@@ -498,13 +498,13 @@ export default function CreditNotesPage() {
 
         {/* New Credit Note Modal */}
         {showNoteModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl shadow-slate-950/80">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Nueva Nota de Crédito</h3>
+                <h3 className="text-lg font-semibold text-slate-50">Nueva Nota de Crédito</h3>
                 <button
                   onClick={() => setShowNoteModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-400 hover:text-slate-100"
                 >
                   <i className="ri-close-line"></i>
                 </button>
@@ -513,12 +513,12 @@ export default function CreditNotesPage() {
               <form onSubmit={handleSaveNote} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Cliente
                     </label>
                     <select 
                       required
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-8"
                     >
                       <option value="">Seleccionar cliente</option>
                       <option value="1">Empresa ABC S.R.L.</option>
@@ -528,38 +528,38 @@ export default function CreditNotesPage() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Fecha
                     </label>
                     <input
                       type="date"
                       required
                       defaultValue={new Date().toISOString().split('T')[0]}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Monto
                     </label>
                     <input
                       type="number"
                       step="0.01"
                       required
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="0.00"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Factura Relacionada (Opcional)
                     </label>
                     <select 
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-8"
                     >
                       <option value="">Seleccionar factura</option>
                       <option value="FAC-001">FAC-001</option>
@@ -570,12 +570,12 @@ export default function CreditNotesPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Motivo
                   </label>
                   <select 
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-8"
                   >
                     <option value="">Seleccionar motivo</option>
                     <option value="Devolución de mercancía">Devolución de mercancía</option>
@@ -588,13 +588,13 @@ export default function CreditNotesPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Concepto
                   </label>
                   <textarea
                     rows={3}
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Descripción detallada de la nota de crédito..."
                   />
                 </div>
@@ -603,13 +603,13 @@ export default function CreditNotesPage() {
                   <button
                     type="button"
                     onClick={() => setShowNoteModal(false)}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-slate-900 border border-slate-700 text-slate-200 py-2 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-sky-500/40"
                   >
                     Crear Nota de Crédito
                   </button>
@@ -621,45 +621,45 @@ export default function CreditNotesPage() {
 
         {/* Apply Credit Note Modal */}
         {showApplyModal && selectedNote && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl shadow-slate-950/80">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Aplicar Nota de Crédito</h3>
+                <h3 className="text-lg font-semibold text-slate-50">Aplicar Nota de Crédito</h3>
                 <button
                   onClick={() => {
                     setShowApplyModal(false);
                     setSelectedNote(null);
                   }}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-400 hover:text-slate-100"
                 >
                   <i className="ri-close-line"></i>
                 </button>
               </div>
               
-              <div className="mb-4 p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600">Nota: <span className="font-medium">{selectedNote.noteNumber}</span></p>
-                <p className="text-sm text-gray-600">Cliente: <span className="font-medium">{selectedNote.customerName}</span></p>
-                <p className="text-lg font-semibold text-green-600">Saldo disponible: RD${selectedNote.balance.toLocaleString()}</p>
+              <div className="mb-4 p-4 rounded-xl border border-slate-700 bg-slate-900/70">
+                <p className="text-sm text-slate-300">Nota: <span className="font-medium text-slate-50">{selectedNote.noteNumber}</span></p>
+                <p className="text-sm text-slate-300">Cliente: <span className="font-medium text-slate-50">{selectedNote.customerName}</span></p>
+                <p className="text-lg font-semibold text-emerald-400">Saldo disponible: ${selectedNote.balance.toLocaleString()}</p>
               </div>
               
               <form onSubmit={handleSaveApplication} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Factura a Aplicar
                   </label>
                   <select 
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-8"
                   >
                     <option value="">Seleccionar factura</option>
-                    <option value="FAC-001">FAC-001 - RD$ 50,000</option>
-                    <option value="FAC-002">FAC-002 - RD$ 75,000</option>
-                    <option value="FAC-003">FAC-003 - RD$ 100,000</option>
+                    <option value="FAC-001">FAC-001 - $ 50,000</option>
+                    <option value="FAC-002">FAC-002 - $ 75,000</option>
+                    <option value="FAC-003">FAC-003 - $ 100,000</option>
                   </select>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Monto a Aplicar
                   </label>
                   <input
@@ -667,18 +667,18 @@ export default function CreditNotesPage() {
                     step="0.01"
                     required
                     max={selectedNote.balance}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="0.00"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Observaciones
                   </label>
                   <textarea
                     rows={3}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Observaciones sobre la aplicación de la nota..."
                   />
                 </div>
@@ -690,13 +690,13 @@ export default function CreditNotesPage() {
                       setShowApplyModal(false);
                       setSelectedNote(null);
                     }}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-slate-900 border border-slate-700 text-slate-200 py-2 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-gradient-to-r from-emerald-500 to-sky-500 text-slate-950 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
                   >
                     Aplicar Nota
                   </button>

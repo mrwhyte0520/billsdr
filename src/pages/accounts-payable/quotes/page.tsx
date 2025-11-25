@@ -447,27 +447,27 @@ export default function QuotesPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Solicitudes de Cotización</h1>
-            <p className="text-gray-600">Gestiona solicitudes y comparación de cotizaciones</p>
+            <h1 className="text-2xl font-bold text-slate-50">Solicitudes de Cotización</h1>
+            <p className="text-sm text-slate-400">Gestiona solicitudes y comparación de cotizaciones</p>
           </div>
           <div className="flex space-x-3">
             <button 
               onClick={exportToPDF}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+              className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-500 transition-colors whitespace-nowrap shadow-md shadow-red-600/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>
               Exportar PDF
             </button>
             <button 
               onClick={exportToExcel}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap shadow-md shadow-emerald-600/40"
             >
               <i className="ri-file-excel-line mr-2"></i>
               Exportar Excel
             </button>
             <button 
               onClick={() => setShowModal(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+              className="bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
             >
               <i className="ri-add-line mr-2"></i>
               Nueva Solicitud
@@ -477,61 +477,61 @@ export default function QuotesPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-file-list-line text-xl text-blue-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center mr-4">
+                <i className="ri-file-list-line text-xl text-blue-300"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Solicitudes</p>
-                <p className="text-2xl font-bold text-gray-900">{quotes.length}</p>
+                <p className="text-sm font-medium text-slate-400">Total Solicitudes</p>
+                <p className="text-2xl font-bold text-slate-50">{quotes.length}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-time-line text-xl text-orange-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-orange-500/20 border border-orange-400/40 flex items-center justify-center mr-4">
+                <i className="ri-time-line text-xl text-orange-300"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Pendientes</p>
-                <p className="text-2xl font-bold text-gray-900">{quotes.filter(q => q.status === 'Pendiente').length}</p>
+                <p className="text-sm font-medium text-slate-400">Pendientes</p>
+                <p className="text-2xl font-bold text-slate-50">{quotes.filter(q => q.status === 'Pendiente').length}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-search-line text-xl text-purple-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/50 flex items-center justify-center mr-4">
+                <i className="ri-search-line text-xl text-purple-300"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">En Evaluación</p>
-                <p className="text-2xl font-bold text-gray-900">{quotes.filter(q => q.status === 'En Evaluación').length}</p>
+                <p className="text-sm font-medium text-slate-400">En Evaluación</p>
+                <p className="text-2xl font-bold text-slate-50">{quotes.filter(q => q.status === 'En Evaluación').length}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-check-line text-xl text-green-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center mr-4">
+                <i className="ri-check-line text-xl text-emerald-300"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Aprobadas</p>
-                <p className="text-2xl font-bold text-gray-900">{quotes.filter(q => q.status === 'Aprobada').length}</p>
+                <p className="text-sm font-medium text-slate-400">Aprobadas</p>
+                <p className="text-2xl font-bold text-slate-50">{quotes.filter(q => q.status === 'Aprobada').length}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+              <label className="block text-sm font-medium text-slate-200 mb-2">Estado</label>
               <select 
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
               >
                 <option value="all">Todos los Estados</option>
                 <option value="Pendiente">Pendiente</option>
@@ -543,7 +543,7 @@ export default function QuotesPage() {
             <div className="md:col-span-2 flex items-end">
               <button 
                 onClick={() => setFilterStatus('all')}
-                className="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors whitespace-nowrap"
+                className="w-full bg-slate-900/80 text-slate-200 py-2 px-4 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap border border-slate-700 text-sm"
               >
                 Limpiar Filtros
               </button>
@@ -552,41 +552,41 @@ export default function QuotesPage() {
         </div>
 
         {/* Quotes Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Lista de Solicitudes de Cotización</h3>
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 overflow-hidden">
+          <div className="p-6 border-b border-slate-800">
+            <h3 className="text-lg font-semibold text-slate-50">Lista de Solicitudes de Cotización</h3>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-slate-800">
+              <thead className="bg-slate-900/80">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Solicitado por</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vencimiento</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Monto Est.</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Número</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Fecha</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Descripción</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Solicitado por</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Vencimiento</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Monto Est.</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Estado</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-slate-950 divide-y divide-slate-800">
                 {filteredQuotes.map((quote) => (
-                  <tr key={quote.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{quote.number}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{quote.date}</td>
-                    <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">{quote.description}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{quote.requestedBy}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{quote.dueDate}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-semibold text-gray-900">
+                  <tr key={quote.id} className="hover:bg-slate-900/60">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-50">{quote.number}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">{quote.date}</td>
+                    <td className="px-6 py-4 text-sm text-slate-100 max-w-xs truncate">{quote.description}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">{quote.requestedBy}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">{quote.dueDate}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-semibold text-slate-50">
                       RD$ {quote.estimatedAmount.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                        quote.status === 'Aprobada' ? 'bg-green-100 text-green-800' :
-                        quote.status === 'Pendiente' ? 'bg-orange-100 text-orange-800' :
-                        quote.status === 'En Evaluación' ? 'bg-purple-100 text-purple-800' :
-                        'bg-red-100 text-red-800'
+                        quote.status === 'Aprobada' ? 'bg-emerald-950/60 text-emerald-200 border border-emerald-500/50' :
+                        quote.status === 'Pendiente' ? 'bg-orange-950/60 text-orange-200 border border-orange-500/50' :
+                        quote.status === 'En Evaluación' ? 'bg-purple-950/60 text-purple-200 border border-purple-500/50' :
+                        'bg-rose-950/60 text-rose-200 border border-rose-500/50'
                       }`}>
                         {quote.status}
                       </span>
@@ -595,20 +595,20 @@ export default function QuotesPage() {
                       <div className="flex space-x-2">
                         <button 
                           onClick={() => handleViewDetails(quote)}
-                          className="text-blue-600 hover:text-blue-900 whitespace-nowrap"
+                          className="text-sky-300 hover:text-sky-100 whitespace-nowrap"
                         >
                           <i className="ri-eye-line"></i>
                         </button>
                         <button 
                           onClick={() => sendQuoteRequest(quote)}
-                          className="text-gray-600 hover:text-gray-900 whitespace-nowrap"
+                          className="text-slate-400 hover:text-slate-100 whitespace-nowrap"
                         >
                           <i className="ri-mail-send-line"></i>
                         </button>
                         {quote.status === 'Pendiente' && (
                           <button 
                             onClick={() => handleEvaluate(quote.id)}
-                            className="text-purple-600 hover:text-purple-900 whitespace-nowrap"
+                            className="text-purple-300 hover:text-purple-100 whitespace-nowrap"
                           >
                             <i className="ri-search-line"></i>
                           </button>
@@ -617,13 +617,13 @@ export default function QuotesPage() {
                           <>
                             <button 
                               onClick={() => handleApprove(quote.id)}
-                              className="text-green-600 hover:text-green-900 whitespace-nowrap"
+                              className="text-emerald-300 hover:text-emerald-100 whitespace-nowrap"
                             >
                               <i className="ri-check-line"></i>
                             </button>
                             <button 
                               onClick={() => handleReject(quote.id)}
-                              className="text-red-600 hover:text-red-900 whitespace-nowrap"
+                              className="text-rose-300 hover:text-rose-100 whitespace-nowrap"
                             >
                               <i className="ri-close-line"></i>
                             </button>
@@ -640,43 +640,50 @@ export default function QuotesPage() {
 
         {/* New Quote Modal */}
         {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">Nueva Solicitud de Cotización</h3>
+          <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl shadow-slate-950/80 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-50">Nueva Solicitud de Cotización</h3>
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="text-slate-400 hover:text-slate-100"
+                >
+                  <i className="ri-close-line text-xl"></i>
+                </button>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Descripción *</label>
+                  <label className="block text-sm font-medium text-slate-200 mb-2">Descripción *</label>
                   <textarea 
                     required
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                     placeholder="Describe los productos o servicios que necesitas..."
                   />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md-grid-cols-2 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Monto Estimado</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Monto Estimado</label>
                     <input 
                       type="number"
                       step="0.01"
                       value={formData.estimatedAmount}
                       onChange={(e) => setFormData({...formData, estimatedAmount: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                       placeholder="0.00"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Fecha Límite *</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Fecha Límite *</label>
                     <input 
                       type="date"
                       required
                       value={formData.dueDate}
                       onChange={(e) => setFormData({...formData, dueDate: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus;border-purple-500/70"
                     />
                   </div>
                 </div>
@@ -684,11 +691,11 @@ export default function QuotesPage() {
                 {/* Suppliers */}
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <label className="block text-sm font-medium text-gray-700">Proveedores a Contactar *</label>
+                    <label className="block text-sm font-medium text-slate-200">Proveedores a Contactar *</label>
                     <button 
                       type="button"
                       onClick={addSupplier}
-                      className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 whitespace-nowrap"
+                      className="bg-emerald-600 text-white px-3 py-1 rounded-xl text-sm hover:bg-emerald-500 whitespace-nowrap shadow-md shadow-emerald-600/40"
                     >
                       <i className="ri-add-line mr-1"></i>
                       Agregar
@@ -701,7 +708,7 @@ export default function QuotesPage() {
                           required
                           value={supplier}
                           onChange={(e) => updateSupplier(index, e.target.value)}
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="flex-1 px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                         >
                           <option value="">Seleccionar proveedor</option>
                           {suppliers.map(sup => (
@@ -712,7 +719,7 @@ export default function QuotesPage() {
                           <button 
                             type="button"
                             onClick={() => removeSupplier(index)}
-                            className="text-red-600 hover:text-red-900 px-2 whitespace-nowrap"
+                            className="text-rose-300 hover:text-rose-100 px-2 whitespace-nowrap"
                           >
                             <i className="ri-delete-bin-line"></i>
                           </button>
@@ -723,12 +730,12 @@ export default function QuotesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Especificaciones Adicionales</label>
+                  <label className="block text-sm font-medium text-slate-200 mb-2">Especificaciones Adicionales</label>
                   <textarea 
                     value={formData.specifications}
                     onChange={(e) => setFormData({...formData, specifications: e.target.value})}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                     placeholder="Especificaciones técnicas, términos de entrega, etc..."
                   />
                 </div>
@@ -737,13 +744,13 @@ export default function QuotesPage() {
                   <button 
                     type="button"
                     onClick={resetForm}
-                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 whitespace-nowrap"
+                    className="px-4 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-200 hover:bg-slate-800 transition-colors whitespace-nowrap text-sm"
                   >
                     Cancelar
                   </button>
                   <button 
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 hover:brightness-110 transition-colors whitespace-nowrap text-sm font-semibold shadow-md shadow-purple-500/40"
                   >
                     Crear Solicitud
                   </button>
@@ -755,14 +762,14 @@ export default function QuotesPage() {
 
         {/* Quote Details Modal */}
         {selectedQuote && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-gray-200">
+          <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl shadow-slate-950/80 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-slate-800">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">Detalles de Cotización - {selectedQuote.number}</h3>
+                  <h3 className="text-lg font-semibold text-slate-50">Detalles de Cotización - {selectedQuote.number}</h3>
                   <button 
                     onClick={() => setSelectedQuote(null)}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-slate-400 hover:text-slate-100"
                   >
                     <i className="ri-close-line text-xl"></i>
                   </button>
@@ -771,41 +778,41 @@ export default function QuotesPage() {
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Número</p>
-                    <p className="text-sm text-gray-900">{selectedQuote.number}</p>
+                    <p className="text-sm font-medium text-slate-400">Número</p>
+                    <p className="text-sm text-slate-100">{selectedQuote.number}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Fecha</p>
-                    <p className="text-sm text-gray-900">{selectedQuote.date}</p>
+                    <p className="text-sm font-medium text-slate-400">Fecha</p>
+                    <p className="text-sm text-slate-100">{selectedQuote.date}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Solicitado por</p>
-                    <p className="text-sm text-gray-900">{selectedQuote.requestedBy}</p>
+                    <p className="text-sm font-medium text-slate-400">Solicitado por</p>
+                    <p className="text-sm text-slate-100">{selectedQuote.requestedBy}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Fecha Límite</p>
-                    <p className="text-sm text-gray-900">{selectedQuote.dueDate}</p>
+                    <p className="text-sm font-medium text-slate-400">Fecha Límite</p>
+                    <p className="text-sm text-slate-100">{selectedQuote.dueDate}</p>
                   </div>
                   <div className="md:col-span-2">
-                    <p className="text-sm font-medium text-gray-600">Descripción</p>
-                    <p className="text-sm text-gray-900">{selectedQuote.description}</p>
+                    <p className="text-sm font-medium text-slate-400">Descripción</p>
+                    <p className="text-sm text-slate-100">{selectedQuote.description}</p>
                   </div>
                 </div>
 
                 {/* Responses */}
                 <div>
-                  <h4 className="text-md font-semibold text-gray-900 mb-4">Respuestas de Proveedores</h4>
+                  <h4 className="text-md font-semibold text-slate-50 mb-4">Respuestas de Proveedores</h4>
                   <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
+                    <table className="min-w-full divide-y divide-slate-800">
+                      <thead className="bg-slate-900/80">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proveedor</th>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiempo Entrega</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Proveedor</th>
+                          <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Monto</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Tiempo Entrega</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Estado</th>
                         </tr>
                       </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className="bg-slate-950 divide-y divide-slate-800">
                         {selectedQuote.responses.map((response: any, index: number) => (
                           <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{response.supplier}</td>

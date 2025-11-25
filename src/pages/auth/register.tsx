@@ -14,10 +14,9 @@ export default function RegisterPage() {
     phone: ''
   });
   const [loading, setLoading] = useState(false);
-  const [socialLoading, setSocialLoading] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const { signUp, signInWithGoogle, signInWithTwitter } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,32 +68,6 @@ export default function RegisterPage() {
     }
     
     setLoading(false);
-  };
-
-  const handleGoogleSignup = async () => {
-    setSocialLoading('google');
-    setError('');
-    
-    const { error } = await signInWithGoogle();
-    
-    if (error) {
-      setError('Error al registrarse con Google. Por favor intenta nuevamente.');
-    }
-    
-    setSocialLoading('');
-  };
-
-  const handleTwitterSignup = async () => {
-    setSocialLoading('twitter');
-    setError('');
-    
-    const { error } = await signInWithTwitter();
-    
-    if (error) {
-      setError('Error al registrarse con X. Por favor intenta nuevamente.');
-    }
-    
-    setSocialLoading('');
   };
 
   if (success) {
@@ -158,47 +131,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* Social Signup Buttons */}
-          <div className="space-y-3 mb-6">
-            <button
-              type="button"
-              onClick={handleGoogleSignup}
-              disabled={socialLoading === 'google'}
-              className="w-full flex items-center justify-center py-2.5 px-4 border border-slate-700 text-sm font-medium rounded-xl text-slate-50 bg-transparent hover:bg-slate-900/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 whitespace-nowrap"
-            >
-              {socialLoading === 'google' ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              ) : (
-                <i className="ri-google-fill mr-2"></i>
-              )}
-              Registrarse con Google
-            </button>
-
-            <button
-              type="button"
-              onClick={handleTwitterSignup}
-              disabled={socialLoading === 'twitter'}
-              className="w-full flex items-center justify-center py-2.5 px-4 border border-slate-700 text-sm font-medium rounded-xl text-slate-50 bg-transparent hover:bg-slate-900/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 whitespace-nowrap"
-            >
-              {socialLoading === 'twitter' ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              ) : (
-                <i className="ri-twitter-x-fill mr-2"></i>
-              )}
-              Registrarse con X
-            </button>
-          </div>
-
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-800"></div>
-            </div>
-            <div className="relative flex justify-center text-xs text-slate-400">
-              <span className="px-2 bg-slate-950/80">O regístrate con email</span>
-            </div>
-          </div>
-
-          <form className="space-y-6" onSubmit={handleRegister}>
+          <form className="space-y-6 mt-2" onSubmit={handleRegister}>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label htmlFor="firstName" className="block text-sm font-medium text-slate-200 mb-2">

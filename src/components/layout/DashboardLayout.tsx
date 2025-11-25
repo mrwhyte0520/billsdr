@@ -7,11 +7,9 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -202,15 +200,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     navigate('/login');
   };
 
-  const handleProfileClick = () => {
-    navigate('/settings');
-    setProfileDropdownOpen(false);
-  };
-
-  const handleNotificationClick = () => {
-    setNotificationsOpen(!notificationsOpen);
-  };
-
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col">
       {/* Top navigation with modules */}
@@ -312,100 +301,17 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <i className="ri-menu-line text-2xl"></i>
             </button>
 
-            {/* Notifications */}
-            <div className="relative">
-              <button
-                type="button"
-                className="-m-1.5 p-1.5 text-slate-400 hover:text-slate-100 relative hover:bg-slate-800 rounded-lg transition-colors duration-200"
-                onClick={handleNotificationClick}
-              >
-                <span className="sr-only">Ver notificaciones</span>
-                <i className="ri-notification-3-line text-xl"></i>
-                <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
-                  3
-                </span>
-              </button>
-
-              {notificationsOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-slate-950 rounded-xl shadow-xl ring-1 ring-black/40 z-50 border border-slate-800">
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-slate-50 mb-4">Notificaciones</h3>
-                    <div className="space-y-3">
-                      <div className="flex items-start space-x-3 p-3 bg-slate-900 rounded-lg border border-slate-800 hover:border-sky-500/60 transition-colors duration-200">
-                        <i className="ri-information-line text-sky-400 mt-1"></i>
-                        <div>
-                          <p className="text-sm font-medium text-slate-50">Nuevo reporte disponible</p>
-                          <p className="text-xs text-slate-400">Hace 2 horas</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start space-x-3 p-3 bg-slate-900 rounded-lg border border-amber-500/60 hover:border-amber-400 transition-colors duration-200">
-                        <i className="ri-warning-line text-amber-300 mt-1"></i>
-                        <div>
-                          <p className="text-sm font-medium text-slate-50">Vencimiento de NCF próximo</p>
-                          <p className="text-xs text-slate-400">Hace 1 día</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start space-x-3 p-3 bg-slate-900 rounded-lg border border-emerald-500/60 hover:border-emerald-400 transition-colors duración-200">
-                        <i className="ri-check-line text-emerald-300 mt-1"></i>
-                        <div>
-                          <p className="text-sm font-medium text-slate-50">Backup completado</p>
-                          <p className="text-xs text-slate-400">Hace 2 días</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-4 pt-3 border-t border-slate-800">
-                      <button className="text-sm text-purple-300 hover:text-purple-200 font-medium">
-                        Ver todas las notificaciones
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Profile dropdown */}
-            <div className="relative">
-              <button
-                type="button"
-                className="-m-1.5 flex items-center p-1.5 hover:bg-slate-800 rounded-lg transition-colors duration-200"
-                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-              >
-                <span className="sr-only">Abrir menú de usuario</span>
-                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 via-fuchsia-500 to-sky-400 flex items-center justify-center shadow-lg shadow-purple-500/40">
-                  <span className="text-sm font-medium text-slate-950">
-                    {user?.email?.charAt(0).toUpperCase() || 'U'}
-                  </span>
-                </div>
-                <span className="hidden lg:flex lg:items-center">
-                  <span className="ml-4 text-sm font-semibold leading-6 text-slate-100" aria-hidden="true">
-                    {user?.email || 'Usuario'}
-                  </span>
-                  <i className="ri-arrow-down-s-line ml-2 text-slate-500"></i>
-                </span>
-              </button>
-
-              {profileDropdownOpen && (
-                <div className="absolute right-0 z-50 mt-2.5 w-48 origin-top-right rounded-xl bg-slate-950 py-2 shadow-xl ring-1 ring-black/40 border border-slate-800">
-                  <button
-                    onClick={handleProfileClick}
-                    className="flex items-center w-full text-left px-4 py-2 text-sm leading-6 text-slate-100 hover:bg-slate-900 transition-colors duration-200"
-                  >
-                    <i className="ri-settings-3-line mr-3 text-slate-400"></i>
-                    Configuración
-                  </button>
-                  <button
-                    onClick={handleSignOut}
-                    className="flex items-center w-full text-left px-4 py-2 text-sm leading-6 text-slate-100 hover:bg-slate-900 transition-colors duration-200"
-                  >
-                    <i className="ri-logout-box-line mr-3 text-slate-400"></i>
-                    Cerrar sesión
-                  </button>
-                </div>
-              )}
-            </div>
+            {/* Logout button */}
+            <button
+              type="button"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg bg-slate-900/80 text-slate-100 hover:bg-slate-800 border border-slate-700 transition-colors duración-200"
+              onClick={handleSignOut}
+            >
+              <i className="ri-logout-box-line mr-2 text-slate-400"></i>
+              Cerrar sesión
+            </button>
           </div>
         </div>
-
         {/* Breadcrumbs row */}
         <div className="border-t border-slate-800 px-4 sm:px-6 lg:px-8 py-2">
           <div className="flex items-center space-x-2 text-sm text-slate-400">
@@ -437,12 +343,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       </main>
 
       {/* Click outside to close dropdowns */}
-      {(profileDropdownOpen || notificationsOpen || moreMenuOpen) && (
+      {moreMenuOpen && (
         <div
           className="fixed inset-0 z-20"
           onClick={() => {
-            setProfileDropdownOpen(false);
-            setNotificationsOpen(false);
             setMoreMenuOpen(false);
           }}
         />

@@ -102,11 +102,11 @@ export default function InvoicesPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'paid': return 'bg-green-100 text-green-800';
-      case 'partial': return 'bg-yellow-100 text-yellow-800';
-      case 'pending': return 'bg-blue-100 text-blue-800';
-      case 'overdue': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'paid': return 'border-emerald-500/60 bg-emerald-500/10 text-emerald-300';
+      case 'partial': return 'border-amber-500/60 bg-amber-500/10 text-amber-300';
+      case 'pending': return 'border-sky-500/60 bg-sky-500/10 text-sky-300';
+      case 'overdue': return 'border-red-500/60 bg-red-500/10 text-red-300';
+      default: return 'border-slate-600/60 bg-slate-700/20 text-slate-200';
     }
   };
 
@@ -146,9 +146,9 @@ export default function InvoicesPage() {
     
     const summaryData = [
       ['Concepto', 'Monto'],
-      ['Total Facturado', `RD$ ${totalAmount.toLocaleString()}`],
-      ['Total Pagado', `RD$ ${totalPaid.toLocaleString()}`],
-      ['Saldo Pendiente', `RD$ ${totalBalance.toLocaleString()}`],
+      ['Total Facturado', `$ ${totalAmount.toLocaleString()}`],
+      ['Total Pagado', `$ ${totalPaid.toLocaleString()}`],
+      ['Saldo Pendiente', `$ ${totalBalance.toLocaleString()}`],
       ['Número de Facturas', filteredInvoices.length.toString()]
     ];
     
@@ -206,9 +206,9 @@ export default function InvoicesPage() {
       [`Estado: ${statusFilter === 'all' ? 'Todos' : statusFilter}`],
       [''],
       ['RESUMEN FINANCIERO'],
-      ['Total Facturado', `RD$ ${totalAmount.toLocaleString()}`],
-      ['Total Pagado', `RD$ ${totalPaid.toLocaleString()}`],
-      ['Saldo Pendiente', `RD$ ${totalBalance.toLocaleString()}`],
+      ['Total Facturado', `$ ${totalAmount.toLocaleString()}`],
+      ['Total Pagado', `$ ${totalPaid.toLocaleString()}`],
+      ['Saldo Pendiente', `$ ${totalBalance.toLocaleString()}`],
       ['Número de Facturas', filteredInvoices.length.toString()],
       [''],
       ['DETALLE DE FACTURAS'],
@@ -246,7 +246,7 @@ export default function InvoicesPage() {
   const handleViewInvoice = (invoiceId: string) => {
     const invoice = invoices.find(inv => inv.id === invoiceId);
     if (invoice) {
-      alert(`Detalles de la factura ${invoice.invoiceNumber}:\n\nCliente: ${invoice.customerName}\nMonto: RD$ ${invoice.amount.toLocaleString()}\nSaldo: RD$ ${invoice.balance.toLocaleString()}\nEstado: ${getStatusName(invoice.status)}`);
+      alert(`Detalles de la factura ${invoice.invoiceNumber}:\n\nCliente: ${invoice.customerName}\nMonto: $ ${invoice.amount.toLocaleString()}\nSaldo: $ ${invoice.balance.toLocaleString()}\nEstado: ${getStatusName(invoice.status)}`);
     }
   };
 
@@ -272,20 +272,23 @@ export default function InvoicesPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Facturas por Cobrar</h1>
+      <div className="py-4 space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-50">Facturas por Cobrar</h1>
+            <p className="text-sm text-slate-400 mt-1">Gestiona tus cuentas por cobrar, registra pagos y genera reportes.</p>
+          </div>
           <div className="flex space-x-3">
             <button 
               onClick={handleNewInvoice}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+              className="bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-sky-500/40"
             >
               <i className="ri-add-line mr-2"></i>
               Nueva Factura
             </button>
             <button 
               onClick={() => handleRegisterPayment()}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
             >
               <i className="ri-money-dollar-circle-line mr-2"></i>
               Registrar Pago
@@ -294,17 +297,17 @@ export default function InvoicesPage() {
         </div>
 
         {/* Filters and Export */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i className="ri-search-line text-gray-400"></i>
+                <i className="ri-search-line text-slate-400"></i>
               </div>
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                className="block w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 placeholder-slate-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                 placeholder="Buscar por cliente o número de factura..."
               />
             </div>
@@ -313,7 +316,7 @@ export default function InvoicesPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm pr-8"
+              className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm pr-8"
             >
               <option value="all">Todos los Estados</option>
               <option value="pending">Pendientes</option>
@@ -325,13 +328,13 @@ export default function InvoicesPage() {
           <div className="flex space-x-2">
             <button
               onClick={exportToPDF}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+              className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-red-500/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>PDF
             </button>
             <button
               onClick={exportToExcel}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
             >
               <i className="ri-file-excel-line mr-2"></i>Excel
             </button>
@@ -339,71 +342,71 @@ export default function InvoicesPage() {
         </div>
 
         {/* Invoices Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+        <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
+          <div className="overflow-x-auto rounded-2xl">
+            <table className="min-w-full divide-y divide-slate-800">
+              <thead className="bg-slate-900/80">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Factura
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Cliente
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Fecha
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Vencimiento
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Monto
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Pagado
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Saldo
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Estado
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-slate-950 divide-y divide-slate-800">
                 {filteredInvoices.map((invoice) => (
-                  <tr key={invoice.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <tr key={invoice.id} className="hover:bg-slate-900/60">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-50">
                       {invoice.invoiceNumber}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {invoice.customerName}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {invoice.date}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {invoice.dueDate}
                       {invoice.daysOverdue > 0 && (
-                        <span className="ml-2 text-red-600 text-xs">
+                        <span className="ml-2 text-red-300 text-xs">
                           ({invoice.daysOverdue} días)
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      RD${invoice.amount.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
+                      ${invoice.amount.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      RD${invoice.paidAmount.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
+                      ${invoice.paidAmount.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      RD${invoice.balance.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-50">
+                      ${invoice.balance.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(invoice.status)}`}>
                         {getStatusName(invoice.status)}
                       </span>
                     </td>
@@ -411,21 +414,21 @@ export default function InvoicesPage() {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleRegisterPayment(invoice)}
-                          className="text-green-600 hover:text-green-900"
+                          className="text-emerald-400 hover:text-emerald-300"
                           title="Registrar Pago"
                         >
                           <i className="ri-money-dollar-circle-line"></i>
                         </button>
                         <button 
                           onClick={() => handleViewInvoice(invoice.id)}
-                          className="text-blue-600 hover:text-blue-900" 
+                          className="text-sky-400 hover:text-sky-300" 
                           title="Ver Detalles"
                         >
                           <i className="ri-eye-line"></i>
                         </button>
                         <button 
                           onClick={() => handlePrintInvoice(invoice.id)}
-                          className="text-purple-600 hover:text-purple-900" 
+                          className="text-purple-400 hover:text-purple-300" 
                           title="Imprimir"
                         >
                           <i className="ri-printer-line"></i>
@@ -441,13 +444,13 @@ export default function InvoicesPage() {
 
         {/* New Invoice Modal */}
         {showInvoiceModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl shadow-slate-950/80">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Nueva Factura</h3>
+                <h3 className="text-lg font-semibold text-slate-50">Nueva Factura</h3>
                 <button
                   onClick={() => setShowInvoiceModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-400 hover:text-slate-100"
                 >
                   <i className="ri-close-line"></i>
                 </button>
@@ -456,12 +459,12 @@ export default function InvoicesPage() {
               <form onSubmit={handleSaveInvoice} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Cliente
                     </label>
                     <select 
                       required
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-8"
                     >
                       <option value="">Seleccionar cliente</option>
                       {customers.map((customer) => (
@@ -473,37 +476,37 @@ export default function InvoicesPage() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Fecha de Vencimiento
                     </label>
                     <input
                       type="date"
                       required
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Descripción
                   </label>
                   <textarea
                     rows={3}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Descripción de los productos o servicios..."
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Monto
                   </label>
                   <input
                     type="number"
                     step="0.01"
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="0.00"
                   />
                 </div>
@@ -512,13 +515,13 @@ export default function InvoicesPage() {
                   <button
                     type="button"
                     onClick={() => setShowInvoiceModal(false)}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-slate-900 border border-slate-700 text-slate-200 py-2 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-sky-500/40"
                   >
                     Crear Factura
                   </button>
@@ -530,43 +533,43 @@ export default function InvoicesPage() {
 
         {/* Payment Modal */}
         {showPaymentModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-96">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 p-6 w-96 shadow-2xl shadow-slate-950/80">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Registrar Pago</h3>
+                <h3 className="text-lg font-semibold text-slate-50">Registrar Pago</h3>
                 <button
                   onClick={() => {
                     setShowPaymentModal(false);
                     setSelectedInvoice(null);
                   }}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-400 hover:text-slate-100"
                 >
                   <i className="ri-close-line"></i>
                 </button>
               </div>
               
               {selectedInvoice && (
-                <div className="mb-4 p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600">Factura: <span className="font-medium">{selectedInvoice.invoiceNumber}</span></p>
-                  <p className="text-sm text-gray-600">Cliente: <span className="font-medium">{selectedInvoice.customerName}</span></p>
-                  <p className="text-lg font-semibold text-blue-600">Saldo: RD${selectedInvoice.balance.toLocaleString()}</p>
+                <div className="mb-4 p-4 bg-slate-900/80 rounded-xl border border-slate-700">
+                  <p className="text-sm text-slate-300">Factura: <span className="font-medium text-slate-50">{selectedInvoice.invoiceNumber}</span></p>
+                  <p className="text-sm text-slate-300">Cliente: <span className="font-medium text-slate-50">{selectedInvoice.customerName}</span></p>
+                  <p className="text-lg font-semibold text-emerald-400">Saldo: ${selectedInvoice.balance.toLocaleString()}</p>
                 </div>
               )}
               
               <form onSubmit={handleSavePayment} className="space-y-4">
                 {!selectedInvoice && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Factura
                     </label>
                     <select 
                       required
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-8"
                     >
                       <option value="">Seleccionar factura</option>
                       {invoices.filter(inv => inv.balance > 0).map((invoice) => (
                         <option key={invoice.id} value={invoice.id}>
-                          {invoice.invoiceNumber} - {invoice.customerName} (RD${invoice.balance.toLocaleString()})
+                          {invoice.invoiceNumber} - {invoice.customerName} (${invoice.balance.toLocaleString()})
                         </option>
                       ))}
                     </select>
@@ -574,26 +577,26 @@ export default function InvoicesPage() {
                 )}
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Monto a Pagar
                   </label>
                   <input
                     type="number"
                     step="0.01"
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="0.00"
                     max={selectedInvoice?.balance || undefined}
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Método de Pago
                   </label>
                   <select 
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-8"
                   >
                     <option value="cash">Efectivo</option>
                     <option value="check">Cheque</option>
@@ -603,12 +606,12 @@ export default function InvoicesPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Referencia
                   </label>
                   <input
                     type="text"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Número de referencia"
                   />
                 </div>
@@ -620,13 +623,13 @@ export default function InvoicesPage() {
                       setShowPaymentModal(false);
                       setSelectedInvoice(null);
                     }}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-slate-900 border border-slate-700 text-slate-200 py-2 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-emerald-600 text-white py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
                   >
                     Registrar Pago
                   </button>

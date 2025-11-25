@@ -152,8 +152,8 @@ export default function PaymentsPage() {
       ['Fecha de Generación:', new Date().toLocaleDateString()],
       [''],
       ['Estadísticas Generales:'],
-      ['Total Pagado:', `RD$ ${payments.filter(p => p.status === 'Completado').reduce((sum, p) => sum + p.amount, 0).toLocaleString()}`],
-      ['Pagos Pendientes:', `RD$ ${payments.filter(p => p.status === 'Pendiente').reduce((sum, p) => sum + p.amount, 0).toLocaleString()}`],
+      ['Total Pagado:', `$ ${payments.filter(p => p.status === 'Completado').reduce((sum, p) => sum + p.amount, 0).toLocaleString()}`],
+      ['Pagos Pendientes:', `$ ${payments.filter(p => p.status === 'Pendiente').reduce((sum, p) => sum + p.amount, 0).toLocaleString()}`],
       ['Total Pagos Completados:', payments.filter(p => p.status === 'Completado').length],
       ['Total Pagos Rechazados:', payments.filter(p => p.status === 'Rechazado').length],
       [''],
@@ -169,7 +169,7 @@ export default function PaymentsPage() {
         payment.reference,
         payment.invoice,
         payment.method,
-        `RD$ ${payment.amount.toLocaleString()}`,
+        `$ ${payment.amount.toLocaleString()}`,
         payment.status,
         payment.description,
         payment.bankAccount
@@ -188,7 +188,7 @@ export default function PaymentsPage() {
         csvData.push([
           method,
           methodPayments.length,
-          `RD$ ${methodTotal.toLocaleString()}`
+          `$ ${methodTotal.toLocaleString()}`
         ]);
       }
     });
@@ -216,24 +216,24 @@ export default function PaymentsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="py-4 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Procesamiento de Pagos</h1>
-            <p className="text-gray-600">Gestiona pagos a proveedores</p>
+            <h1 className="text-2xl font-bold text-slate-50">Procesamiento de Pagos</h1>
+            <p className="text-slate-400">Gestiona pagos a proveedores</p>
           </div>
           <div className="flex space-x-3">
             <button 
               onClick={exportToExcel}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
             >
               <i className="ri-file-excel-line mr-2"></i>
               Exportar Excel
             </button>
             <button 
               onClick={() => setShowModal(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+              className="bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-sky-500/40"
             >
               <i className="ri-add-line mr-2"></i>
               Nuevo Pago
@@ -243,61 +243,61 @@ export default function PaymentsPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-money-dollar-circle-line text-xl text-blue-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-sky-500/20 border border-sky-500/50 flex items-center justify-center mr-4">
+                <i className="ri-money-dollar-circle-line text-xl text-sky-200"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Pagado</p>
-                <p className="text-2xl font-bold text-gray-900">RD$ {payments.filter(p => p.status === 'Completado').reduce((sum, p) => sum + p.amount, 0).toLocaleString()}</p>
+                <p className="text-sm font-medium text-slate-400">Total Pagado</p>
+                <p className="text-2xl font-bold text-slate-50">${payments.filter(p => p.status === 'Completado').reduce((sum, p) => sum + p.amount, 0).toLocaleString()}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-time-line text-xl text-orange-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center mr-4">
+                <i className="ri-time-line text-xl text-amber-200"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Pendientes</p>
-                <p className="text-2xl font-bold text-gray-900">RD$ {payments.filter(p => p.status === 'Pendiente').reduce((sum, p) => sum + p.amount, 0).toLocaleString()}</p>
+                <p className="text-sm font-medium text-slate-400">Pendientes</p>
+                <p className="text-2xl font-bold text-amber-300">${payments.filter(p => p.status === 'Pendiente').reduce((sum, p) => sum + p.amount, 0).toLocaleString()}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-check-line text-xl text-green-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center mr-4">
+                <i className="ri-check-line text-xl text-emerald-200"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Pagos Completados</p>
-                <p className="text-2xl font-bold text-gray-900">{payments.filter(p => p.status === 'Completado').length}</p>
+                <p className="text-sm font-medium text-slate-400">Pagos Completados</p>
+                <p className="text-2xl font-bold text-emerald-300">{payments.filter(p => p.status === 'Completado').length}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-close-line text-xl text-red-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-red-500/20 border border-red-500/50 flex items-center justify-center mr-4">
+                <i className="ri-close-line text-xl text-red-200"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Rechazados</p>
-                <p className="text-2xl font-bold text-gray-900">{payments.filter(p => p.status === 'Rechazado').length}</p>
+                <p className="text-sm font-medium text-slate-400">Rechazados</p>
+                <p className="text-2xl font-bold text-red-300">{payments.filter(p => p.status === 'Rechazado').length}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-6 shadow-lg shadow-slate-900/60">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+              <label className="block text-sm font-medium text-slate-200 mb-2">Estado</label>
               <select 
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               >
                 <option value="all">Todos los Estados</option>
                 <option value="Completado">Completado</option>
@@ -306,11 +306,11 @@ export default function PaymentsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Método de Pago</label>
+              <label className="block text-sm font-medium text-slate-200 mb-2">Método de Pago</label>
               <select 
                 value={filterMethod}
                 onChange={(e) => setFilterMethod(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               >
                 <option value="all">Todos los Métodos</option>
                 {paymentMethods.map(method => (
@@ -321,7 +321,7 @@ export default function PaymentsPage() {
             <div className="flex items-end">
               <button 
                 onClick={() => {setFilterStatus('all'); setFilterMethod('all');}}
-                className="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors whitespace-nowrap"
+                className="w-full bg-slate-900 border border-slate-700 text-slate-200 py-2 px-4 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap"
               >
                 Limpiar Filtros
               </button>
@@ -330,52 +330,52 @@ export default function PaymentsPage() {
         </div>
 
         {/* Payments Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Lista de Pagos</h3>
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
+          <div className="p-6 border-b border-slate-800">
+            <h3 className="text-lg font-semibold text-slate-50">Lista de Pagos</h3>
           </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-x-auto rounded-b-2xl">
+            <table className="min-w-full divide-y divide-slate-800">
+              <thead className="bg-slate-900/80">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proveedor</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Referencia</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Método</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Fecha</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Proveedor</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Referencia</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Método</th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-slate-400 uppercase tracking-wider">Monto</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Estado</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-slate-950 divide-y divide-slate-800">
                 {filteredPayments.map((payment) => (
-                  <tr key={payment.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{payment.date}</td>
+                  <tr key={payment.id} className="hover:bg-slate-900/60">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">{payment.date}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{payment.supplier}</div>
-                        <div className="text-sm text-gray-500">{payment.invoice}</div>
+                        <div className="text-sm font-medium text-slate-50">{payment.supplier}</div>
+                        <div className="text-sm text-slate-400">{payment.invoice}</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{payment.reference}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">{payment.reference}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                        payment.method === 'Transferencia' ? 'bg-blue-100 text-blue-800' :
-                        payment.method === 'Cheque' ? 'bg-green-100 text-green-800' :
-                        payment.method === 'Efectivo' ? 'bg-orange-100 text-orange-800' :
-                        'bg-purple-100 text-purple-800'
+                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full border ${
+                        payment.method === 'Transferencia' ? 'bg-sky-500/10 text-sky-300 border-sky-500/60' :
+                        payment.method === 'Cheque' ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/60' :
+                        payment.method === 'Efectivo' ? 'bg-amber-500/10 text-amber-300 border-amber-500/60' :
+                        'bg-purple-500/10 text-purple-300 border-purple-500/60'
                       }`}>
                         {payment.method}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-semibold text-gray-900">
-                      RD$ {payment.amount.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-semibold text-slate-50">
+                      ${payment.amount.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                        payment.status === 'Completado' ? 'bg-green-100 text-green-800' :
-                        payment.status === 'Pendiente' ? 'bg-orange-100 text-orange-800' :
-                        'bg-red-100 text-red-800'
+                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full border ${
+                        payment.status === 'Completado' ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/60' :
+                        payment.status === 'Pendiente' ? 'bg-amber-500/10 text-amber-300 border-amber-500/60' :
+                        'bg-red-500/10 text-red-300 border-red-500/60'
                       }`}>
                         {payment.status}
                       </span>
@@ -384,13 +384,13 @@ export default function PaymentsPage() {
                       <div className="flex space-x-2">
                         <button 
                           onClick={() => handleViewDetails(payment)}
-                          className="text-blue-600 hover:text-blue-900 whitespace-nowrap"
+                          className="text-sky-400 hover:text-sky-300 whitespace-nowrap"
                         >
                           <i className="ri-eye-line"></i>
                         </button>
                         <button 
                           onClick={() => printPayment(payment)}
-                          className="text-gray-600 hover:text-gray-900 whitespace-nowrap"
+                          className="text-slate-300 hover:text-slate-50 whitespace-nowrap"
                         >
                           <i className="ri-printer-line"></i>
                         </button>
@@ -398,13 +398,13 @@ export default function PaymentsPage() {
                           <>
                             <button 
                               onClick={() => handleApprovePayment(payment.id)}
-                              className="text-green-600 hover:text-green-900 whitespace-nowrap"
+                              className="text-emerald-400 hover:text-emerald-300 whitespace-nowrap"
                             >
                               <i className="ri-check-line"></i>
                             </button>
                             <button 
                               onClick={() => handleRejectPayment(payment.id)}
-                              className="text-red-600 hover:text-red-900 whitespace-nowrap"
+                              className="text-red-400 hover:text-red-300 whitespace-nowrap"
                             >
                               <i className="ri-close-line"></i>
                             </button>
@@ -421,20 +421,20 @@ export default function PaymentsPage() {
 
         {/* New Payment Modal */}
         {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">Nuevo Pago</h3>
+          <div className="fixed inset-0 bg-black/60 flex items-center justifyCenter z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 shadow-2xl shadow-slate-950/80 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-slate-800">
+                <h3 className="text-lg font-semibold text-slate-50">Nuevo Pago</h3>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Proveedor *</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Proveedor *</label>
                     <select 
                       required
                       value={formData.supplier}
                       onChange={(e) => setFormData({...formData, supplier: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
                       <option value="">Seleccionar proveedor</option>
                       {suppliers.map(supplier => (
@@ -443,22 +443,22 @@ export default function PaymentsPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Factura</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Factura</label>
                     <input 
                       type="text"
                       value={formData.invoice}
                       onChange={(e) => setFormData({...formData, invoice: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="INV-001234"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Método de Pago *</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Método de Pago *</label>
                     <select 
                       required
                       value={formData.method}
                       onChange={(e) => setFormData({...formData, method: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
                       {paymentMethods.map(method => (
                         <option key={method} value={method}>{method}</option>
@@ -466,23 +466,23 @@ export default function PaymentsPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Monto *</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Monto *</label>
                     <input 
                       type="number"
                       required
                       step="0.01"
                       value={formData.amount}
                       onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="0.00"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Cuenta Bancaria</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Cuenta Bancaria</label>
                     <select 
                       value={formData.bankAccount}
                       onChange={(e) => setFormData({...formData, bankAccount: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
                       <option value="">Seleccionar cuenta</option>
                       {bankAccounts.map(account => (
@@ -491,22 +491,22 @@ export default function PaymentsPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Fecha *</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Fecha *</label>
                     <input 
                       type="date"
                       required
                       value={formData.date}
                       onChange={(e) => setFormData({...formData, date: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Descripción</label>
                     <textarea 
                       value={formData.description}
                       onChange={(e) => setFormData({...formData, description: e.target.value})}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="Descripción del pago..."
                     />
                   </div>
@@ -515,13 +515,13 @@ export default function PaymentsPage() {
                   <button 
                     type="button"
                     onClick={resetForm}
-                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 whitespace-nowrap"
+                    className="px-4 py-2 border border-slate-700 rounded-xl text-slate-200 bg-slate-900 hover:bg-slate-800 whitespace-nowrap"
                   >
                     Cancelar
                   </button>
                   <button 
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
+                    className="px-4 py-2 bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 rounded-xl hover:brightness-110 whitespace-nowrap font-semibold shadow-md shadow-sky-500/40"
                   >
                     Registrar Pago
                   </button>
@@ -533,14 +533,14 @@ export default function PaymentsPage() {
 
         {/* Payment Details Modal */}
         {selectedPayment && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl max-w-lg w-full mx-4">
-              <div className="p-6 border-b border-gray-200">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 shadow-2xl shadow-slate-950/80 max-w-lg w-full mx-4">
+              <div className="p-6 border-b border-slate-800">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">Detalles del Pago</h3>
+                  <h3 className="text-lg font-semibold text-slate-50">Detalles del Pago</h3>
                   <button 
                     onClick={() => setSelectedPayment(null)}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-slate-400 hover:text-slate-100"
                   >
                     <i className="ri-close-line text-xl"></i>
                   </button>
@@ -549,46 +549,46 @@ export default function PaymentsPage() {
               <div className="p-6 space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Referencia</p>
-                    <p className="text-sm text-gray-900">{selectedPayment.reference}</p>
+                    <p className="text-sm font-medium text-slate-400">Referencia</p>
+                    <p className="text-sm text-slate-100">{selectedPayment.reference}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Fecha</p>
-                    <p className="text-sm text-gray-900">{selectedPayment.date}</p>
+                    <p className="text-sm font-medium text-slate-400">Fecha</p>
+                    <p className="text-sm text-slate-100">{selectedPayment.date}</p>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-sm font-medium text-gray-600">Proveedor</p>
-                    <p className="text-sm text-gray-900">{selectedPayment.supplier}</p>
+                    <p className="text-sm font-medium text-slate-400">Proveedor</p>
+                    <p className="text-sm text-slate-100">{selectedPayment.supplier}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Factura</p>
-                    <p className="text-sm text-gray-900">{selectedPayment.invoice}</p>
+                    <p className="text-sm font-medium text-slate-400">Factura</p>
+                    <p className="text-sm text-slate-100">{selectedPayment.invoice}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Método</p>
-                    <p className="text-sm text-gray-900">{selectedPayment.method}</p>
+                    <p className="text-sm font-medium text-slate-400">Método</p>
+                    <p className="text-sm text-slate-100">{selectedPayment.method}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Monto</p>
-                    <p className="text-lg font-bold text-gray-900">RD$ {selectedPayment.amount.toLocaleString()}</p>
+                    <p className="text-sm font-medium text-slate-400">Monto</p>
+                    <p className="text-lg font-bold text-emerald-300">${selectedPayment.amount.toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Estado</p>
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      selectedPayment.status === 'Completado' ? 'bg-green-100 text-green-800' :
-                      selectedPayment.status === 'Pendiente' ? 'bg-orange-100 text-orange-800' :
-                      'bg-red-100 text-red-800'
+                    <p className="text-sm font-medium text-slate-400">Estado</p>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full border ${
+                      selectedPayment.status === 'Completado' ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/60' :
+                      selectedPayment.status === 'Pendiente' ? 'bg-amber-500/10 text-amber-300 border-amber-500/60' :
+                      'bg-red-500/10 text-red-300 border-red-500/60'
                     }`}>
                       {selectedPayment.status}
                     </span>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-sm font-medium text-gray-600">Cuenta Bancaria</p>
-                    <p className="text-sm text-gray-900">{selectedPayment.bankAccount}</p>
+                    <p className="text-sm font-medium text-slate-400">Cuenta Bancaria</p>
+                    <p className="text-sm text-slate-100">{selectedPayment.bankAccount}</p>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-sm font-medium text-gray-600">Descripción</p>
-                    <p className="text-sm text-gray-900">{selectedPayment.description}</p>
+                    <p className="text-sm font-medium text-slate-400">Descripción</p>
+                    <p className="text-sm text-slate-100">{selectedPayment.description}</p>
                   </div>
                 </div>
               </div>

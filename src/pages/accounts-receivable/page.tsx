@@ -16,7 +16,7 @@ export default function AccountsReceivablePage() {
       icon: 'ri-file-list-3-line',
       path: '/accounts-receivable/invoices',
       color: 'bg-blue-500',
-      stats: 'RD$ 435,000'
+      stats: '$ 435,000'
     },
     {
       title: 'Gestión de Clientes',
@@ -32,7 +32,7 @@ export default function AccountsReceivablePage() {
       icon: 'ri-money-dollar-circle-line',
       path: '/accounts-receivable/payments',
       color: 'bg-green-500',
-      stats: 'RD$ 285,000'
+      stats: '$ 285,000'
     },
     {
       title: 'Recibos de Cobro',
@@ -48,7 +48,7 @@ export default function AccountsReceivablePage() {
       icon: 'ri-wallet-line',
       path: '/accounts-receivable/advances',
       color: 'bg-orange-500',
-      stats: 'RD$ 150,000'
+      stats: '$ 150,000'
     },
     {
       title: 'Notas de Crédito',
@@ -56,7 +56,7 @@ export default function AccountsReceivablePage() {
       icon: 'ri-file-reduce-line',
       path: '/accounts-receivable/credit-notes',
       color: 'bg-emerald-500',
-      stats: 'RD$ 45,000'
+      stats: '$ 45,000'
     },
     {
       title: 'Notas de Débito',
@@ -64,7 +64,7 @@ export default function AccountsReceivablePage() {
       icon: 'ri-file-add-line',
       path: '/accounts-receivable/debit-notes',
       color: 'bg-red-500',
-      stats: 'RD$ 25,000'
+      stats: '$ 25,000'
     },
     {
       title: 'Reportes CxC',
@@ -146,8 +146,14 @@ export default function AccountsReceivablePage() {
               className="rounded-2xl border border-slate-800 bg-slate-950/80 p-6 hover:border-purple-500/70 hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-200 group"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${module.color.replace('bg-', 'bg-')} shadow-md shadow-slate-900/40`}>
-                  <i className={`${module.icon} text-2xl text-white`}></i>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${module.color} shadow-md shadow-slate-900/40`}>
+                  <i
+                    className={`${
+                      module.path === '/accounts-receivable/receipts'
+                        ? 'ri-receipt-line'
+                        : module.icon
+                    } text-2xl text-white`}
+                  ></i>
                 </div>
                 <span className="text-sm font-medium text-slate-400">{module.stats}</span>
               </div>

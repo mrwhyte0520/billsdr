@@ -72,10 +72,10 @@ export default function CustomersPage() {
 
   const getCustomerStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-gray-100 text-gray-800';
-      case 'blocked': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'active': return 'border-emerald-500/60 bg-emerald-500/10 text-emerald-300';
+      case 'inactive': return 'border-slate-500/60 bg-slate-700/20 text-slate-200';
+      case 'blocked': return 'border-red-500/60 bg-red-500/10 text-red-300';
+      default: return 'border-slate-500/60 bg-slate-700/20 text-slate-200';
     }
   };
 
@@ -115,8 +115,8 @@ export default function CustomersPage() {
       ['Concepto', 'Valor'],
       ['Total de Clientes', customers.length.toString()],
       ['Clientes Activos', activeCustomers.toString()],
-      ['Límite de Crédito Total', `RD$ ${totalCreditLimit.toLocaleString()}`],
-      ['Saldo Total Pendiente', `RD$ ${totalBalance.toLocaleString()}`]
+      ['Límite de Crédito Total', `$ ${totalCreditLimit.toLocaleString()}`],
+      ['Saldo Total Pendiente', `$ ${totalBalance.toLocaleString()}`]
     ];
     
     (doc as any).autoTable({
@@ -135,8 +135,8 @@ export default function CustomersPage() {
       customer.document,
       customer.phone,
       customer.email,
-      `RD$ ${customer.creditLimit.toLocaleString()}`,
-      `RD$ ${customer.currentBalance.toLocaleString()}`,
+      `$ ${customer.creditLimit.toLocaleString()}`,
+      `$ ${customer.currentBalance.toLocaleString()}`,
       getCustomerStatusName(customer.status)
     ]);
     
@@ -164,8 +164,8 @@ export default function CustomersPage() {
       ['ESTADÍSTICAS'],
       ['Total de Clientes', customers.length.toString()],
       ['Clientes Activos', activeCustomers.toString()],
-      ['Límite de Crédito Total', `RD$ ${totalCreditLimit.toLocaleString()}`],
-      ['Saldo Total Pendiente', `RD$ ${totalBalance.toLocaleString()}`],
+      ['Límite de Crédito Total', `$ ${totalCreditLimit.toLocaleString()}`],
+      ['Saldo Total Pendiente', `$ ${totalBalance.toLocaleString()}`],
       [''],
       ['DETALLE DE CLIENTES'],
       ['Cliente', 'Documento', 'Teléfono', 'Email', 'Dirección', 'Límite Crédito', 'Saldo Actual', 'Estado'],
@@ -204,7 +204,7 @@ export default function CustomersPage() {
   };
 
   const handleCustomerStatement = (customer: Customer) => {
-    alert(`Estado de cuenta para ${customer.name}:\n\nSaldo actual: RD$ ${customer.currentBalance.toLocaleString()}\nLímite de crédito: RD$ ${customer.creditLimit.toLocaleString()}`);
+    alert(`Estado de cuenta para ${customer.name}:\n\nSaldo actual: $ ${customer.currentBalance.toLocaleString()}\nLímite de crédito: $ ${customer.creditLimit.toLocaleString()}`);
   };
 
   const handleSaveCustomer = (e: React.FormEvent) => {
@@ -216,12 +216,15 @@ export default function CustomersPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Gestión de Clientes</h1>
+      <div className="py-4 space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-50">Gestión de Clientes</h1>
+            <p className="text-sm text-slate-400 mt-1">Administra la información de tus clientes y sus límites de crédito.</p>
+          </div>
           <button 
             onClick={handleNewCustomer}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+            className="bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
           >
             <i className="ri-user-add-line mr-2"></i>
             Nuevo Cliente
@@ -229,17 +232,17 @@ export default function CustomersPage() {
         </div>
 
         {/* Filters and Export */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i className="ri-search-line text-gray-400"></i>
+                <i className="ri-search-line text-slate-400"></i>
               </div>
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                className="block w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 placeholder-slate-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                 placeholder="Buscar por nombre o documento..."
               />
             </div>
@@ -248,7 +251,7 @@ export default function CustomersPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm pr-8"
+              className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm pr-8"
             >
               <option value="all">Todos los Estados</option>
               <option value="active">Activos</option>
@@ -259,13 +262,13 @@ export default function CustomersPage() {
           <div className="flex space-x-2">
             <button
               onClick={exportToPDF}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+              className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-red-500/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>PDF
             </button>
             <button
               onClick={exportToExcel}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
             >
               <i className="ri-file-excel-line mr-2"></i>Excel
             </button>
@@ -273,60 +276,60 @@ export default function CustomersPage() {
         </div>
 
         {/* Customers Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+        <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
+          <div className="overflow-x-auto rounded-2xl">
+            <table className="min-w-full divide-y divide-slate-800">
+              <thead className="bg-slate-900/80">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Cliente
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Documento
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Contacto
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Límite Crédito
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Saldo Actual
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Estado
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-slate-950 divide-y divide-slate-800">
                 {filteredCustomers.map((customer) => (
-                  <tr key={customer.id} className="hover:bg-gray-50">
+                  <tr key={customer.id} className="hover:bg-slate-900/60">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{customer.name}</div>
-                        <div className="text-sm text-gray-500">{customer.address}</div>
+                        <div className="text-sm font-medium text-slate-50">{customer.name}</div>
+                        <div className="text-sm text-slate-400">{customer.address}</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {customer.document}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm text-gray-900">{customer.phone}</div>
-                        <div className="text-sm text-gray-500">{customer.email}</div>
+                        <div className="text-sm text-slate-100">{customer.phone}</div>
+                        <div className="text-sm text-slate-400">{customer.email}</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      RD${customer.creditLimit.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
+                      ${customer.creditLimit.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      RD${customer.currentBalance.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-50">
+                      ${customer.currentBalance.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getCustomerStatusColor(customer.status)}`}>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getCustomerStatusColor(customer.status)}`}>
                         {getCustomerStatusName(customer.status)}
                       </span>
                     </td>
@@ -334,21 +337,21 @@ export default function CustomersPage() {
                       <div className="flex space-x-2">
                         <button 
                           onClick={() => handleEditCustomer(customer)}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-sky-400 hover:text-sky-300"
                           title="Editar cliente"
                         >
                           <i className="ri-edit-line"></i>
                         </button>
                         <button 
                           onClick={() => handleViewCustomer(customer)}
-                          className="text-green-600 hover:text-green-900"
+                          className="text-emerald-400 hover:text-emerald-300"
                           title="Ver detalles"
                         >
                           <i className="ri-eye-line"></i>
                         </button>
                         <button 
                           onClick={() => handleCustomerStatement(customer)}
-                          className="text-purple-600 hover:text-purple-900"
+                          className="text-purple-400 hover:text-purple-300"
                           title="Estado de cuenta"
                         >
                           <i className="ri-file-list-line"></i>
@@ -364,10 +367,10 @@ export default function CustomersPage() {
 
         {/* Customer Modal */}
         {showCustomerModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl shadow-slate-950/80">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">
+                <h3 className="text-lg font-semibold text-slate-50">
                   {selectedCustomer ? 'Editar Cliente' : 'Nuevo Cliente'}
                 </h3>
                 <button
@@ -375,7 +378,7 @@ export default function CustomersPage() {
                     setShowCustomerModal(false);
                     setSelectedCustomer(null);
                   }}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-400 hover:text-slate-100"
                 >
                   <i className="ri-close-line"></i>
                 </button>
@@ -384,27 +387,27 @@ export default function CustomersPage() {
               <form onSubmit={handleSaveCustomer} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Nombre/Razón Social
                     </label>
                     <input
                       type="text"
                       required
                       defaultValue={selectedCustomer?.name || ''}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="Nombre del cliente"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       RNC/Cédula
                     </label>
                     <input
                       type="text"
                       required
                       defaultValue={selectedCustomer?.document || ''}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="000-0000000-0"
                     />
                   </div>
@@ -412,65 +415,65 @@ export default function CustomersPage() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Teléfono
                     </label>
                     <input
                       type="tel"
                       required
                       defaultValue={selectedCustomer?.phone || ''}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="809-000-0000"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Email
                     </label>
                     <input
                       type="email"
                       required
                       defaultValue={selectedCustomer?.email || ''}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="cliente@email.com"
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Dirección
                   </label>
                   <textarea
                     rows={2}
                     defaultValue={selectedCustomer?.address || ''}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Dirección completa del cliente"
                   />
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Límite de Crédito
                     </label>
                     <input
                       type="number"
                       step="0.01"
                       defaultValue={selectedCustomer?.creditLimit || ''}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="0.00"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
                       Estado
                     </label>
                     <select 
                       defaultValue={selectedCustomer?.status || 'active'}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                      className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-8"
                     >
                       <option value="active">Activo</option>
                       <option value="inactive">Inactivo</option>
@@ -486,13 +489,13 @@ export default function CustomersPage() {
                       setShowCustomerModal(false);
                       setSelectedCustomer(null);
                     }}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-slate-900 border border-slate-700 text-slate-200 py-2 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
                   >
                     {selectedCustomer ? 'Actualizar' : 'Crear'} Cliente
                   </button>
@@ -504,16 +507,16 @@ export default function CustomersPage() {
 
         {/* Customer Details Modal */}
         {showCustomerDetails && selectedCustomer && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl shadow-slate-950/80">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-semibold">Detalles del Cliente</h3>
+                <h3 className="text-lg font-semibold text-slate-50">Detalles del Cliente</h3>
                 <button
                   onClick={() => {
                     setShowCustomerDetails(false);
                     setSelectedCustomer(null);
                   }}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-400 hover:text-slate-100"
                 >
                   <i className="ri-close-line"></i>
                 </button>
@@ -522,45 +525,45 @@ export default function CustomersPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">Nombre/Razón Social</label>
-                    <p className="text-lg font-semibold text-gray-900">{selectedCustomer.name}</p>
+                    <label className="block text-sm font-medium text-slate-400">Nombre/Razón Social</label>
+                    <p className="text-lg font-semibold text-slate-50">{selectedCustomer.name}</p>
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">RNC/Cédula</label>
-                    <p className="text-gray-900">{selectedCustomer.document}</p>
+                    <label className="block text-sm font-medium text-slate-400">RNC/Cédula</label>
+                    <p className="text-slate-100">{selectedCustomer.document}</p>
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">Teléfono</label>
-                    <p className="text-gray-900">{selectedCustomer.phone}</p>
+                    <label className="block text-sm font-medium text-slate-400">Teléfono</label>
+                    <p className="text-slate-100">{selectedCustomer.phone}</p>
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">Email</label>
-                    <p className="text-gray-900">{selectedCustomer.email}</p>
+                    <label className="block text-sm font-medium text-slate-400">Email</label>
+                    <p className="text-slate-100">{selectedCustomer.email}</p>
                   </div>
                 </div>
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">Dirección</label>
-                    <p className="text-gray-900">{selectedCustomer.address}</p>
+                    <label className="block text-sm font-medium text-slate-400">Dirección</label>
+                    <p className="text-slate-100">{selectedCustomer.address}</p>
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">Límite de Crédito</label>
-                    <p className="text-lg font-semibold text-blue-600">RD${selectedCustomer.creditLimit.toLocaleString()}</p>
+                    <label className="block text-sm font-medium text-slate-400">Límite de Crédito</label>
+                    <p className="text-lg font-semibold text-sky-400">${selectedCustomer.creditLimit.toLocaleString()}</p>
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">Saldo Actual</label>
-                    <p className="text-lg font-semibold text-red-600">RD${selectedCustomer.currentBalance.toLocaleString()}</p>
+                    <label className="block text-sm font-medium text-slate-400">Saldo Actual</label>
+                    <p className="text-lg font-semibold text-emerald-400">${selectedCustomer.currentBalance.toLocaleString()}</p>
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">Estado</label>
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getCustomerStatusColor(selectedCustomer.status)}`}>
+                    <label className="block text-sm font-medium text-slate-400">Estado</label>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getCustomerStatusColor(selectedCustomer.status)}`}>
                       {getCustomerStatusName(selectedCustomer.status)}
                     </span>
                   </div>
@@ -573,14 +576,14 @@ export default function CustomersPage() {
                     setShowCustomerDetails(false);
                     setShowCustomerModal(true);
                   }}
-                  className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+                  className="flex-1 bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
                 >
                   <i className="ri-edit-line mr-2"></i>
                   Editar Cliente
                 </button>
                 <button
                   onClick={() => handleCustomerStatement(selectedCustomer)}
-                  className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+                  className="flex-1 bg-emerald-600 text-white py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
                 >
                   <i className="ri-file-list-line mr-2"></i>
                   Estado de Cuenta

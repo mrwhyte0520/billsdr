@@ -77,20 +77,20 @@ export default function SalesReportsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Reportes de Ventas</h1>
-            <p className="text-gray-600">Análisis detallado de ventas y rendimiento</p>
+            <h1 className="text-2xl font-bold text-slate-50">Reportes de Ventas</h1>
+            <p className="text-sm text-slate-400">Análisis detallado de ventas y rendimiento</p>
           </div>
           <div className="flex space-x-3">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap"
+              className="px-4 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-200 hover:bg-slate-800 hover:border-purple-500/70 transition-colors whitespace-nowrap text-sm"
             >
               <i className="ri-filter-line mr-2"></i>
               Filtros
             </button>
             <button
               onClick={handleGenerateReport}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-sky-400 text-slate-950 hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-sky-500/40 text-sm"
             >
               <i className="ri-refresh-line mr-2"></i>
               Generar Reporte
@@ -100,14 +100,14 @@ export default function SalesReportsPage() {
 
         {/* Filters */}
         {showFilters && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Reporte</label>
+                <label className="block text-sm font-medium text-slate-200 mb-2">Tipo de Reporte</label>
                 <select
                   value={selectedReport}
                   onChange={(e) => setSelectedReport(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70 pr-8"
                 >
                   {reportTypes.map((type) => (
                     <option key={type.id} value={type.id}>{type.name}</option>
@@ -115,11 +115,11 @@ export default function SalesReportsPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Período</label>
+                <label className="block text-sm font-medium text-slate-200 mb-2">Período</label>
                 <select
                   value={selectedPeriod}
                   onChange={(e) => setSelectedPeriod(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70 pr-8"
                 >
                   {periods.map((period) => (
                     <option key={period.id} value={period.id}>{period.name}</option>
@@ -127,25 +127,25 @@ export default function SalesReportsPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Acciones</label>
+                <label className="block text-sm font-medium text-slate-200 mb-2">Acciones</label>
                 <div className="flex space-x-2">
                   <button
                     onClick={() => handleExportReport('pdf')}
-                    className="flex-1 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm whitespace-nowrap"
+                    className="flex-1 px-3 py-2 rounded-xl bg-red-600 text-white hover:bg-red-500 transition-colors text-xs sm:text-sm whitespace-nowrap shadow-md shadow-red-600/40"
                   >
                     <i className="ri-file-pdf-line mr-1"></i>
                     PDF
                   </button>
                   <button
                     onClick={() => handleExportReport('excel')}
-                    className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm whitespace-nowrap"
+                    className="flex-1 px-3 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 transition-colors text-xs sm:text-sm whitespace-nowrap shadow-md shadow-emerald-600/40"
                   >
                     <i className="ri-file-excel-line mr-1"></i>
                     Excel
                   </button>
                   <button
                     onClick={handlePrintReport}
-                    className="flex-1 px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm whitespace-nowrap"
+                    className="flex-1 px-3 py-2 rounded-xl bg-slate-800 text-slate-100 hover:bg-slate-700 transition-colors text-xs sm:text-sm whitespace-nowrap"
                   >
                     <i className="ri-printer-line mr-1"></i>
                     Imprimir
@@ -158,93 +158,93 @@ export default function SalesReportsPage() {
 
         {/* Sales Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Ventas Totales</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{salesSummary.totalSales}</p>
+                <p className="text-sm font-medium text-slate-400">Ventas Totales</p>
+                <p className="text-2xl font-bold text-slate-50 mt-1">{salesSummary.totalSales}</p>
               </div>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-blue-100">
-                <i className="ri-money-dollar-circle-line text-xl text-blue-600"></i>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-blue-500/20 border border-blue-400/40">
+                <i className="ri-money-dollar-circle-line text-xl text-blue-300"></i>
               </div>
             </div>
             <div className="mt-4">
-              <span className="text-sm font-medium text-green-600">+12.5%</span>
-              <span className="text-sm text-gray-500 ml-1">vs período anterior</span>
+              <span className="text-sm font-medium text-emerald-400">+12.5%</span>
+              <span className="text-sm text-slate-400 ml-1">vs período anterior</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Facturas Emitidas</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{salesSummary.totalInvoices}</p>
+                <p className="text-sm font-medium text-slate-400">Facturas Emitidas</p>
+                <p className="text-2xl font-bold text-slate-50 mt-1">{salesSummary.totalInvoices}</p>
               </div>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-green-100">
-                <i className="ri-file-text-line text-xl text-green-600"></i>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-emerald-500/20 border border-emerald-400/40">
+                <i className="ri-file-text-line text-xl text-emerald-300"></i>
               </div>
             </div>
             <div className="mt-4">
-              <span className="text-sm font-medium text-green-600">+8.2%</span>
-              <span className="text-sm text-gray-500 ml-1">vs período anterior</span>
+              <span className="text-sm font-medium text-emerald-400">+8.2%</span>
+              <span className="text-sm text-slate-400 ml-1">vs período anterior</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Ticket Promedio</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{salesSummary.averageTicket}</p>
+                <p className="text-sm font-medium text-slate-400">Ticket Promedio</p>
+                <p className="text-2xl font-bold text-slate-50 mt-1">{salesSummary.averageTicket}</p>
               </div>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-purple-100">
-                <i className="ri-calculator-line text-xl text-purple-600"></i>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-purple-500/20 border border-purple-500/50">
+                <i className="ri-calculator-line text-xl text-purple-300"></i>
               </div>
             </div>
             <div className="mt-4">
-              <span className="text-sm font-medium text-green-600">+5.1%</span>
-              <span className="text-sm text-gray-500 ml-1">vs período anterior</span>
+              <span className="text-sm font-medium text-emerald-400">+5.1%</span>
+              <span className="text-sm text-slate-400 ml-1">vs período anterior</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Margen de Ganancia</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{salesSummary.profitMargin}</p>
+                <p className="text-sm font-medium text-slate-400">Margen de Ganancia</p>
+                <p className="text-2xl font-bold text-slate-50 mt-1">{salesSummary.profitMargin}</p>
               </div>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-orange-100">
-                <i className="ri-line-chart-line text-xl text-orange-600"></i>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-orange-500/20 border border-orange-400/50">
+                <i className="ri-line-chart-line text-xl text-orange-300"></i>
               </div>
             </div>
             <div className="mt-4">
-              <span className="text-sm font-medium text-green-600">+2.3%</span>
-              <span className="text-sm text-gray-500 ml-1">vs período anterior</span>
+              <span className="text-sm font-medium text-emerald-400">+2.3%</span>
+              <span className="text-sm text-slate-400 ml-1">vs período anterior</span>
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Top Products */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Productos Más Vendidos</h3>
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
+            <div className="p-6 border-b border-slate-800">
+              <h3 className="text-lg font-semibold text-slate-50">Productos Más Vendidos</h3>
             </div>
             <div className="p-6">
               <div className="space-y-4">
                 {topProducts.map((product, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex items-center justify-between p-4 bg-slate-900/80 rounded-xl border border-slate-800">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                        <span className="text-sm font-bold text-blue-600">{index + 1}</span>
+                      <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">
+                        <span className="text-sm font-bold text-blue-300">{index + 1}</span>
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{product.name}</p>
-                        <p className="text-sm text-gray-600">Vendidos: {product.quantity} unidades</p>
+                        <p className="font-medium text-slate-50">{product.name}</p>
+                        <p className="text-sm text-slate-400">Vendidos: {product.quantity} unidades</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-green-600">{product.revenue}</p>
-                      <p className="text-sm text-gray-500">Margen: {product.margin}</p>
+                      <p className="font-semibold text-emerald-400">{product.revenue}</p>
+                      <p className="text-sm text-slate-400">Margen: {product.margin}</p>
                     </div>
                   </div>
                 ))}
@@ -253,26 +253,26 @@ export default function SalesReportsPage() {
           </div>
 
           {/* Top Customers */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Mejores Clientes</h3>
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
+            <div className="p-6 border-b border-slate-800">
+              <h3 className="text-lg font-semibold text-slate-50">Mejores Clientes</h3>
             </div>
             <div className="p-6">
               <div className="space-y-4">
                 {topCustomers.map((customer, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex items-center justify-between p-4 bg-slate-900/80 rounded-xl border border-slate-800">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                        <span className="text-sm font-bold text-green-600">{index + 1}</span>
+                      <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center mr-3">
+                        <span className="text-sm font-bold text-emerald-300">{index + 1}</span>
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{customer.name}</p>
-                        <p className="text-sm text-gray-600">{customer.invoices} facturas</p>
+                        <p className="font-medium text-slate-50">{customer.name}</p>
+                        <p className="text-sm text-slate-400">{customer.invoices} facturas</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-green-600">{customer.revenue}</p>
-                      <p className="text-sm text-gray-500">{customer.lastPurchase}</p>
+                      <p className="font-semibold text-emerald-400">{customer.revenue}</p>
+                      <p className="text-sm text-slate-400">{customer.lastPurchase}</p>
                     </div>
                   </div>
                 ))}
@@ -282,21 +282,21 @@ export default function SalesReportsPage() {
         </div>
 
         {/* Payment Methods */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Métodos de Pago</h3>
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
+          <div className="p-6 border-b border-slate-800">
+            <h3 className="text-lg font-semibold text-slate-50">Métodos de Pago</h3>
           </div>
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {paymentMethods.map((method, index) => (
-                <div key={index} className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-                    <i className="ri-bank-card-line text-2xl text-blue-600"></i>
+                <div key={index} className="text-center rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow-sm shadow-slate-950/60">
+                  <div className="w-16 h-16 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto mb-4 border border-blue-400/40">
+                    <i className="ri-bank-card-line text-2xl text-blue-300"></i>
                   </div>
-                  <h4 className="font-semibold text-gray-900 mb-2">{method.method}</h4>
-                  <p className="text-2xl font-bold text-green-600 mb-1">{method.amount}</p>
-                  <p className="text-sm text-gray-600 mb-1">{method.percentage} del total</p>
-                  <p className="text-xs text-gray-500">{method.transactions} transacciones</p>
+                  <h4 className="font-semibold text-slate-50 mb-2">{method.method}</h4>
+                  <p className="text-2xl font-bold text-emerald-400 mb-1">{method.amount}</p>
+                  <p className="text-sm text-slate-400 mb-1">{method.percentage} del total</p>
+                  <p className="text-xs text-slate-500">{method.transactions} transacciones</p>
                 </div>
               ))}
             </div>

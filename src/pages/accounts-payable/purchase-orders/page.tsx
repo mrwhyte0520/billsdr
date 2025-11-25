@@ -331,27 +331,27 @@ export default function PurchaseOrdersPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Órdenes de Compra</h1>
-            <p className="text-gray-600">Gestiona órdenes de compra y seguimiento</p>
+            <h1 className="text-2xl font-bold text-slate-50">Órdenes de Compra</h1>
+            <p className="text-sm text-slate-400">Gestiona órdenes de compra y seguimiento</p>
           </div>
           <div className="flex space-x-3">
             <button 
               onClick={exportToPDF}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+              className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-500 transition-colors whitespace-nowrap shadow-md shadow-red-600/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>
               Exportar PDF
             </button>
             <button 
               onClick={exportToExcel}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap shadow-md shadow-emerald-600/40"
             >
               <i className="ri-file-excel-line mr-2"></i>
               Exportar Excel
             </button>
             <button 
               onClick={() => setShowModal(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+              className="bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40"
             >
               <i className="ri-add-line mr-2"></i>
               Nueva Orden
@@ -361,61 +361,61 @@ export default function PurchaseOrdersPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-shopping-cart-line text-xl text-blue-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center mr-4">
+                <i className="ri-shopping-cart-line text-xl text-blue-300"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Órdenes</p>
-                <p className="text-2xl font-bold text-gray-900">{orders.length}</p>
+                <p className="text-sm font-medium text-slate-400">Total Órdenes</p>
+                <p className="text-2xl font-bold text-slate-50">{orders.length}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-time-line text-xl text-orange-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-orange-500/20 border border-orange-400/40 flex items-center justify-center mr-4">
+                <i className="ri-time-line text-xl text-orange-300"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Pendientes</p>
-                <p className="text-2xl font-bold text-gray-900">{orders.filter(o => o.status === 'Pendiente').length}</p>
+                <p className="text-sm font-medium text-slate-400">Pendientes</p>
+                <p className="text-2xl font-bold text-slate-50">{orders.filter(o => o.status === 'Pendiente').length}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-check-line text-xl text-green-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center mr-4">
+                <i className="ri-check-line text-xl text-emerald-300"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Aprobadas</p>
-                <p className="text-2xl font-bold text-gray-900">{orders.filter(o => o.status === 'Aprobada').length}</p>
+                <p className="text-sm font-medium text-slate-400">Aprobadas</p>
+                <p className="text-2xl font-bold text-slate-50">{orders.filter(o => o.status === 'Aprobada').length}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-money-dollar-circle-line text-xl text-purple-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/50 flex items-center justify-center mr-4">
+                <i className="ri-money-dollar-circle-line text-xl text-purple-300"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Valor Total</p>
-                <p className="text-2xl font-bold text-gray-900">RD$ {orders.reduce((sum, o) => sum + o.total, 0).toLocaleString()}</p>
+                <p className="text-sm font-medium text-slate-400">Valor Total</p>
+                <p className="text-2xl font-bold text-emerald-400">RD$ {orders.reduce((sum, o) => sum + o.total, 0).toLocaleString()}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+              <label className="block text-sm font-medium text-slate-200 mb-2">Estado</label>
               <select 
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
               >
                 <option value="all">Todos los Estados</option>
                 <option value="Pendiente">Pendiente</option>
@@ -427,7 +427,7 @@ export default function PurchaseOrdersPage() {
             <div className="md:col-span-2 flex items-end">
               <button 
                 onClick={() => setFilterStatus('all')}
-                className="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors whitespace-nowrap"
+                className="w-full bg-slate-900/80 text-slate-200 py-2 px-4 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap border border-slate-700 text-sm"
               >
                 Limpiar Filtros
               </button>
@@ -436,39 +436,39 @@ export default function PurchaseOrdersPage() {
         </div>
 
         {/* Orders Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Lista de Órdenes de Compra</h3>
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 overflow-hidden">
+          <div className="p-6 border-b border-slate-800">
+            <h3 className="text-lg font-semibold text-slate-50">Lista de Órdenes de Compra</h3>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-slate-800">
+              <thead className="bg-slate-900/80">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proveedor</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Entrega</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Número</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Fecha</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Proveedor</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Entrega</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Total</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Estado</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-slate-950 divide-y divide-slate-800">
                 {filteredOrders.map((order) => (
-                  <tr key={order.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{order.number}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{order.date}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{order.supplier}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{order.deliveryDate}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-semibold text-gray-900">
+                  <tr key={order.id} className="hover:bg-slate-900/60">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-50">{order.number}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">{order.date}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">{order.supplier}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">{order.deliveryDate}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-semibold text-slate-50">
                       RD$ {order.total.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                        order.status === 'Aprobada' ? 'bg-green-100 text-green-800' :
-                        order.status === 'Pendiente' ? 'bg-orange-100 text-orange-800' :
-                        order.status === 'Recibida' ? 'bg-blue-100 text-blue-800' :
-                        'bg-red-100 text-red-800'
+                        order.status === 'Aprobada' ? 'bg-emerald-950/60 text-emerald-200 border border-emerald-500/50' :
+                        order.status === 'Pendiente' ? 'bg-orange-950/60 text-orange-200 border border-orange-500/50' :
+                        order.status === 'Recibida' ? 'bg-sky-950/60 text-sky-200 border border-sky-500/50' :
+                        'bg-rose-950/60 text-rose-200 border border-rose-500/50'
                       }`}>
                         {order.status}
                       </span>
@@ -477,20 +477,20 @@ export default function PurchaseOrdersPage() {
                       <div className="flex space-x-2">
                         <button 
                           onClick={() => printOrder(order)}
-                          className="text-gray-600 hover:text-gray-900 whitespace-nowrap"
+                          className="text-slate-400 hover:text-slate-100 whitespace-nowrap"
                         >
                           <i className="ri-printer-line"></i>
                         </button>
                         <button 
                           onClick={() => handleEdit(order)}
-                          className="text-indigo-600 hover:text-indigo-900 whitespace-nowrap"
+                          className="text-purple-300 hover:text-purple-100 whitespace-nowrap"
                         >
                           <i className="ri-edit-line"></i>
                         </button>
                         {order.status === 'Pendiente' && (
                           <button 
                             onClick={() => handleApprove(order.id)}
-                            className="text-green-600 hover:text-green-900 whitespace-nowrap"
+                            className="text-emerald-300 hover:text-emerald-100 whitespace-nowrap"
                           >
                             <i className="ri-check-line"></i>
                           </button>
@@ -498,7 +498,7 @@ export default function PurchaseOrdersPage() {
                         {order.status === 'Aprobada' && (
                           <button 
                             onClick={() => handleReceive(order.id)}
-                            className="text-blue-600 hover:text-blue-900 whitespace-nowrap"
+                            className="text-sky-300 hover:text-sky-100 whitespace-nowrap"
                           >
                             <i className="ri-inbox-line"></i>
                           </button>
@@ -506,7 +506,7 @@ export default function PurchaseOrdersPage() {
                         {(order.status === 'Pendiente' || order.status === 'Aprobada') && (
                           <button 
                             onClick={() => handleCancel(order.id)}
-                            className="text-red-600 hover:text-red-900 whitespace-nowrap"
+                            className="text-rose-300 hover:text-rose-100 whitespace-nowrap"
                           >
                             <i className="ri-close-line"></i>
                           </button>
@@ -522,22 +522,29 @@ export default function PurchaseOrdersPage() {
 
         {/* Order Modal */}
         {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">
+          <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl shadow-slate-950/80 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-50">
                   {editingOrder ? 'Editar Orden de Compra' : 'Nueva Orden de Compra'}
                 </h3>
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="text-slate-400 hover:text-slate-100"
+                >
+                  <i className="ri-close-line text-xl"></i>
+                </button>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Proveedor *</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Proveedor *</label>
                     <select 
                       required
                       value={formData.supplier}
                       onChange={(e) => setFormData({...formData, supplier: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                     >
                       <option value="">Seleccionar proveedor</option>
                       {suppliers.map(supplier => (
@@ -546,13 +553,13 @@ export default function PurchaseOrdersPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Fecha de Entrega *</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Fecha de Entrega *</label>
                     <input 
                       type="date"
                       required
                       value={formData.deliveryDate}
                       onChange={(e) => setFormData({...formData, deliveryDate: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                     />
                   </div>
                 </div>
@@ -560,11 +567,11 @@ export default function PurchaseOrdersPage() {
                 {/* Items */}
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <h4 className="text-md font-semibold text-gray-900">Productos</h4>
+                    <h4 className="text-md font-semibold text-slate-50">Productos</h4>
                     <button 
                       type="button"
                       onClick={addProduct}
-                      className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 whitespace-nowrap"
+                      className="bg-emerald-600 text-white px-3 py-1 rounded-xl text-sm hover:bg-emerald-500 whitespace-nowrap shadow-md shadow-emerald-600/40"
                     >
                       <i className="ri-add-line mr-1"></i>
                       Agregar Producto
@@ -572,14 +579,14 @@ export default function PurchaseOrdersPage() {
                   </div>
                   <div className="space-y-3">
                     {formData.products.map((item, index) => (
-                      <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 p-3 border border-gray-200 rounded-lg">
+                      <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 p-3 border border-slate-800 rounded-xl bg-slate-900/70">
                         <div className="md:col-span-2">
                           <input 
                             type="text"
                             placeholder="Nombre del producto"
                             value={item.name}
                             onChange={(e) => updateProduct(index, 'name', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            className="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-700 text-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                           />
                         </div>
                         <div>
@@ -588,7 +595,7 @@ export default function PurchaseOrdersPage() {
                             placeholder="Cantidad"
                             value={item.quantity}
                             onChange={(e) => updateProduct(index, 'quantity', Math.max(1, Math.floor(parseFloat(e.target.value || '1'))))}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            className="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-700 text-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                           />
                         </div>
                         <div>
@@ -598,18 +605,18 @@ export default function PurchaseOrdersPage() {
                             placeholder="Precio"
                             value={item.price}
                             onChange={(e) => updateProduct(index, 'price', Math.max(0, parseFloat(e.target.value || '0')))}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            className="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-700 text-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                           />
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium text-gray-900">
+                          <span className="text-sm font-medium text-slate-50">
                             RD$ {(item.quantity * item.price).toLocaleString()}
                           </span>
                           {formData.products.length > 1 && (
                             <button 
                               type="button"
                               onClick={() => removeProduct(index)}
-                              className="text-red-600 hover:text-red-900 whitespace-nowrap"
+                              className="text-rose-300 hover:text-rose-100 whitespace-nowrap"
                             >
                               <i className="ri-delete-bin-line"></i>
                             </button>
@@ -618,14 +625,14 @@ export default function PurchaseOrdersPage() {
                       </div>
                     ))}
                   </div>
-                  <div className="mt-4 text-right">
-                    <p className="text-lg font-bold text-gray-900">
-                      Subtotal: RD$ {calculateSubtotal().toLocaleString()}
+                  <div className="mt-4 text-right space-y-1">
+                    <p className="text-sm font-medium text-slate-300">
+                      Subtotal: <span className="text-slate-50">RD$ {calculateSubtotal().toLocaleString()}</span>
                     </p>
-                    <p className="text-lg font-bold text-gray-900">
-                      ITBIS: RD$ {calculateItbis().toLocaleString()}
+                    <p className="text-sm font-medium text-slate-300">
+                      ITBIS: <span className="text-slate-50">RD$ {calculateItbis().toLocaleString()}</span>
                     </p>
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-lg font-bold text-emerald-400">
                       Total: RD$ {calculateTotal().toLocaleString()}
                     </p>
                   </div>
@@ -635,13 +642,13 @@ export default function PurchaseOrdersPage() {
                   <button 
                     type="button"
                     onClick={resetForm}
-                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 whitespace-nowrap"
+                    className="px-4 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-200 hover:bg-slate-800 transition-colors whitespace-nowrap text-sm"
                   >
                     Cancelar
                   </button>
                   <button 
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 hover:brightness-110 transition-colors whitespace-nowrap text-sm font-semibold shadow-md shadow-purple-500/40"
                   >
                     {editingOrder ? 'Actualizar' : 'Crear'} Orden
                   </button>

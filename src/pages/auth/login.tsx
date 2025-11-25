@@ -8,14 +8,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [socialLoading, setSocialLoading] = useState('');
   const [error, setError] = useState('');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
   
-  const { signIn, signInWithGoogle, signInWithTwitter, resetPassword, getRememberedUser } = useAuth();
+  const { signIn, resetPassword, getRememberedUser } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,32 +46,6 @@ export default function LoginPage() {
     }
     
     setLoading(false);
-  };
-
-  const handleGoogleLogin = async () => {
-    setSocialLoading('google');
-    setError('');
-    
-    const { error } = await signInWithGoogle();
-    
-    if (error) {
-      setError('Error al iniciar sesión con Google. Por favor intenta nuevamente.');
-    }
-    
-    setSocialLoading('');
-  };
-
-  const handleTwitterLogin = async () => {
-    setSocialLoading('twitter');
-    setError('');
-    
-    const { error } = await signInWithTwitter();
-    
-    if (error) {
-      setError('Error al iniciar sesión con X. Por favor intenta nuevamente.');
-    }
-    
-    setSocialLoading('');
   };
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -212,47 +185,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          {/* Social Login Buttons */}
-          <div className="space-y-3 mb-6">
-            <button
-              type="button"
-              onClick={handleGoogleLogin}
-              disabled={socialLoading === 'google'}
-              className="w-full flex items-center justify-center py-2.5 px-4 border border-slate-700 text-sm font-medium rounded-xl text-slate-50 bg-transparent hover:bg-slate-900/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 whitespace-nowrap"
-            >
-              {socialLoading === 'google' ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              ) : (
-                <i className="ri-google-fill mr-2"></i>
-              )}
-              Continuar con Google
-            </button>
-
-            <button
-              type="button"
-              onClick={handleTwitterLogin}
-              disabled={socialLoading === 'twitter'}
-              className="w-full flex items-center justify-center py-2.5 px-4 border border-slate-700 text-sm font-medium rounded-xl text-slate-50 bg-transparent hover:bg-slate-900/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 whitespace-nowrap"
-            >
-              {socialLoading === 'twitter' ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              ) : (
-                <i className="ri-twitter-x-fill mr-2"></i>
-              )}
-              Continuar con X
-            </button>
-          </div>
-
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-800"></div>
-            </div>
-            <div className="relative flex justify-center text-xs text-slate-400">
-              <span className="px-2 bg-slate-950/80">O continúa con email</span>
-            </div>
-          </div>
-
-          <form className="space-y-6" onSubmit={handleLogin}>
+          <form className="space-y-6 mt-2" onSubmit={handleLogin}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-slate-200 mb-2">
                 Correo Electrónico

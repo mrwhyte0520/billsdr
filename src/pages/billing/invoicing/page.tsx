@@ -1,13 +1,7 @@
 import { useState } from 'react';
 import DashboardLayout from '../../../components/layout/DashboardLayout';
 
-export default function InvoicingPage() {
-  const [showNewInvoiceModal, setShowNewInvoiceModal] = useState(false);
-  const [selectedInvoice, setSelectedInvoice] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-
-  const invoices = [
+const initialInvoices = [
     {
       id: 'FAC-2024-189',
       customer: 'Empresa ABC SRL',
@@ -84,6 +78,17 @@ export default function InvoicingPage() {
     }
   ];
 
+export default function InvoicingPage() {
+  const [showNewInvoiceModal, setShowNewInvoiceModal] = useState(false);
+  const [viewInvoice, setViewInvoice] = useState<any | null>(null);
+  const [editingInvoice, setEditingInvoice] = useState<any | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [invoices, setInvoices] = useState(initialInvoices);
+  const [formCustomerId, setFormCustomerId] = useState('');
+  const [formDueDate, setFormDueDate] = useState('');
+  const [formNotes, setFormNotes] = useState('');
+
   const customers = [
     { id: '1', name: 'Empresa ABC SRL', email: 'contacto@empresaabc.com', phone: '809-555-0101' },
     { id: '2', name: 'Comercial XYZ EIRL', email: 'ventas@comercialxyz.com', phone: '809-555-0102' },
@@ -102,11 +107,11 @@ export default function InvoicingPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'paid': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'overdue': return 'bg-red-100 text-red-800';
-      case 'draft': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'paid': return 'bg-emerald-950/60 text-emerald-200 border border-emerald-500/50';
+      case 'pending': return 'bg-amber-950/60 text-amber-200 border border-amber-500/50';
+      case 'overdue': return 'bg-rose-950/60 text-rose-200 border border-rose-500/50';
+      case 'draft': return 'bg-slate-900/80 text-slate-200 border border-slate-700';
+      default: return 'bg-slate-900/80 text-slate-200 border border-slate-700';
     }
   };
 
@@ -128,26 +133,40 @@ export default function InvoicingPage() {
   });
 
   const handleCreateInvoice = () => {
+    setEditingInvoice(null);
+    setFormCustomerId('');
+    setFormDueDate('');
+    setFormNotes('');
     setShowNewInvoiceModal(true);
   };
 
   const handleViewInvoice = (invoiceId: string) => {
-    setSelectedInvoice(invoiceId);
-    alert(`Visualizando factura: ${invoiceId}`);
+    const invoice = invoices.find(inv => inv.id === invoiceId);
+    if (invoice) {
+      setViewInvoice(invoice);
+    }
   };
 
   const handleEditInvoice = (invoiceId: string) => {
-    alert(`Editando factura: ${invoiceId}`);
+    const invoice = invoices.find(inv => inv.id === invoiceId);
+    if (!invoice) return;
+
+    setEditingInvoice(invoice);
+
+    const customerMatch = customers.find(c => c.name === invoice.customer || c.email === invoice.customerEmail);
+    setFormCustomerId(customerMatch ? customerMatch.id : '');
+    setFormDueDate(invoice.dueDate || '');
+    setFormNotes('');
+
+    setShowNewInvoiceModal(true);
   };
 
   const handleDeleteInvoice = (invoiceId: string) => {
     if (confirm(`¿Está seguro de eliminar la factura ${invoiceId}?`)) {
+      setInvoices(prev => prev.filter(inv => inv.id !== invoiceId));
+      setViewInvoice((prev: any | null) => (prev?.id === invoiceId ? null : prev));
       alert(`Factura ${invoiceId} eliminada`);
     }
-  };
-
-  const handleSendInvoice = (invoiceId: string, customerEmail: string) => {
-    alert(`Enviando factura ${invoiceId} a ${customerEmail}`);
   };
 
   const handlePrintInvoice = (invoiceId: string) => {
@@ -156,15 +175,193 @@ export default function InvoicingPage() {
 
   const handleMarkAsPaid = (invoiceId: string) => {
     if (confirm(`¿Marcar factura ${invoiceId} como pagada?`)) {
+      setInvoices(prev => prev.map(inv =>
+        inv.id === invoiceId ? { ...inv, status: 'paid' } : inv
+      ));
       alert(`Factura ${invoiceId} marcada como pagada`);
     }
   };
 
   const handleDuplicateInvoice = (invoiceId: string) => {
-    alert(`Duplicando factura: ${invoiceId}`);
+    const original = invoices.find(inv => inv.id === invoiceId);
+    if (!original) return;
+
+    const copyNumber = invoices.filter(inv => inv.id.startsWith(`${invoiceId}-COPIA`)).length + 1;
+    const newId = `${invoiceId}-COPIA-${copyNumber}`;
+
+    const duplicate = {
+      ...original,
+      id: newId,
+      status: 'draft' as const,
+      date: new Date().toISOString().split('T')[0],
+    };
+
+    setInvoices(prev => [...prev, duplicate]);
+    alert(`Factura duplicada como ${newId}`);
+  };
+
+  const handleSaveDraft = () => {
+    if (editingInvoice) {
+      const customer = customers.find(c => c.id === formCustomerId);
+      setInvoices(prev => prev.map(inv =>
+        inv.id === editingInvoice.id
+          ? {
+              ...inv,
+              customer: customer ? customer.name : inv.customer,
+              customerEmail: customer ? customer.email : inv.customerEmail,
+              dueDate: formDueDate || inv.dueDate,
+            }
+          : inv
+      ));
+      alert(`Factura ${editingInvoice.id} actualizada como borrador`);
+    } else {
+      alert('Guardando factura como borrador...');
+    }
+
+    setShowNewInvoiceModal(false);
+    setEditingInvoice(null);
+  };
+
+  const handleCreateOrUpdateInvoice = () => {
+    if (editingInvoice) {
+      const customer = customers.find(c => c.id === formCustomerId);
+      setInvoices(prev => prev.map(inv =>
+        inv.id === editingInvoice.id
+          ? {
+              ...inv,
+              customer: customer ? customer.name : inv.customer,
+              customerEmail: customer ? customer.email : inv.customerEmail,
+              dueDate: formDueDate || inv.dueDate,
+            }
+          : inv
+      ));
+      alert(`Factura ${editingInvoice.id} actualizada correctamente`);
+    } else {
+      alert('Creando y enviando factura...');
+    }
+
+    setShowNewInvoiceModal(false);
+    setEditingInvoice(null);
   };
 
   const handleExportInvoices = (format: string) => {
+    if (format === 'pdf') {
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) {
+        alert('No se pudo abrir la ventana de impresión. Verifique los bloqueadores de ventanas emergentes.');
+        return;
+      }
+
+      const rowsHtml = filteredInvoices
+        .map(inv => `
+          <tr>
+            <td style="padding: 8px; border: 1px solid #e5e7eb; font-size: 12px;">${inv.id}</td>
+            <td style="padding: 8px; border: 1px solid #e5e7eb; font-size: 12px;">${inv.customer}</td>
+            <td style="padding: 8px; border: 1px solid #e5e7eb; font-size: 12px;">${new Date(inv.date).toLocaleDateString('es-DO')}</td>
+            <td style="padding: 8px; border: 1px solid #e5e7eb; font-size: 12px;">${new Date(inv.dueDate).toLocaleDateString('es-DO')}</td>
+            <td style="padding: 8px; border: 1px solid #e5e7eb; font-size: 12px;">RD$ ${inv.total.toLocaleString()}</td>
+            <td style="padding: 8px; border: 1px solid #e5e7eb; font-size: 12px; text-transform: capitalize;">${inv.status}</td>
+          </tr>
+        `)
+        .join('');
+
+      printWindow.document.write(`
+        <html>
+          <head>
+            <meta charSet="utf-8" />
+            <title>Listado de Facturas</title>
+            <style>
+              body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 24px; }
+              h1 { font-size: 20px; margin-bottom: 4px; }
+              p { font-size: 12px; color: #6b7280; margin-bottom: 16px; }
+              table { border-collapse: collapse; width: 100%; }
+              thead { background-color: #f3f4f6; }
+              th { padding: 8px; border: 1px solid #e5e7eb; font-size: 12px; text-align: left; }
+            </style>
+          </head>
+          <body>
+            <h1>Listado de Facturas</h1>
+            <p>Generado el ${new Date().toLocaleString('es-DO')}</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>No. Factura</th>
+                  <th>Cliente</th>
+                  <th>Emisión</th>
+                  <th>Vencimiento</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </body>
+        </html>
+      `);
+
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      return;
+    }
+
+    if (format === 'excel') {
+      const header = [
+        'No. Factura',
+        'Cliente',
+        'Email',
+        'Emisión',
+        'Vencimiento',
+        'Monto',
+        'ITBIS',
+        'Total',
+        'Estado',
+      ];
+
+      const rows = filteredInvoices.map(inv => [
+        inv.id,
+        inv.customer,
+        inv.customerEmail,
+        new Date(inv.date).toLocaleDateString('es-DO'),
+        new Date(inv.dueDate).toLocaleDateString('es-DO'),
+        inv.amount.toString(),
+        inv.tax.toString(),
+        inv.total.toString(),
+        inv.status,
+      ]);
+
+      // Construir CSV con separador ";" (más amigable para Excel en configuración regional ES)
+      const csvBody = [header, ...rows]
+        .map(row => row
+          .map(value => {
+            const safe = String(value ?? '').trim();
+            if (safe.includes(';') || safe.includes('"') || safe.includes('\n')) {
+              return '"' + safe.replace(/"/g, '""') + '"';
+            }
+            return safe;
+          })
+          .join(';')
+        )
+        .join('\r\n');
+
+      // Añadir BOM para que Excel detecte correctamente UTF-8 y acentos
+      const BOM = "\uFEFF";
+      const csvContent = BOM + csvBody;
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `facturas_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      return;
+    }
+
     alert(`Exportando facturas en formato ${format.toUpperCase()}`);
   };
 
@@ -174,27 +371,27 @@ export default function InvoicingPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Facturación</h1>
-            <p className="text-gray-600">Gestión completa de facturas y documentos fiscales</p>
+            <h1 className="text-2xl font-bold text-slate-50">Facturación</h1>
+            <p className="text-sm text-slate-400">Gestión completa de facturas y documentos fiscales</p>
           </div>
           <div className="flex space-x-3">
             <button
               onClick={() => handleExportInvoices('pdf')}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+              className="px-4 py-2 rounded-xl bg-red-600 text-white hover:bg-red-500 transition-colors whitespace-nowrap shadow-md shadow-red-600/40 text-sm"
             >
               <i className="ri-file-pdf-line mr-2"></i>
               Exportar PDF
             </button>
             <button
               onClick={() => handleExportInvoices('excel')}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 transition-colors whitespace-nowrap shadow-md shadow-emerald-600/40 text-sm"
             >
               <i className="ri-file-excel-line mr-2"></i>
               Exportar Excel
             </button>
             <button
               onClick={handleCreateInvoice}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-purple-500/40 text-sm"
             >
               <i className="ri-add-line mr-2"></i>
               Nueva Factura
@@ -204,83 +401,83 @@ export default function InvoicingPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Facturas</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{invoices.length}</p>
+                <p className="text-sm font-medium text-slate-400">Total Facturas</p>
+                <p className="text-2xl font-bold text-slate-50 mt-1">{invoices.length}</p>
               </div>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-blue-100">
-                <i className="ri-file-text-line text-xl text-blue-600"></i>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-blue-500/20 border border-blue-400/40">
+                <i className="ri-file-text-line text-xl text-blue-300"></i>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Facturas Pagadas</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">
+                <p className="text-sm font-medium text-slate-400">Facturas Pagadas</p>
+                <p className="text-2xl font-bold text-slate-50 mt-1">
                   {invoices.filter(inv => inv.status === 'paid').length}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-green-100">
-                <i className="ri-check-line text-xl text-green-600"></i>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-emerald-500/20 border border-emerald-400/40">
+                <i className="ri-check-line text-xl text-emerald-300"></i>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Facturas Pendientes</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">
+                <p className="text-sm font-medium text-slate-400">Facturas Pendientes</p>
+                <p className="text-2xl font-bold text-slate-50 mt-1">
                   {invoices.filter(inv => inv.status === 'pending').length}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-yellow-100">
-                <i className="ri-time-line text-xl text-yellow-600"></i>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-amber-500/20 border border-amber-400/40">
+                <i className="ri-time-line text-xl text-amber-300"></i>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Facturas Vencidas</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">
+                <p className="text-sm font-medium text-slate-400">Facturas Vencidas</p>
+                <p className="text-2xl font-bold text-slate-50 mt-1">
                   {invoices.filter(inv => inv.status === 'overdue').length}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-red-100">
-                <i className="ri-alert-line text-xl text-red-600"></i>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-rose-500/20 border border-rose-400/50">
+                <i className="ri-alert-line text-xl text-rose-300"></i>
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Buscar</label>
+              <label className="block text-sm font-medium text-slate-200 mb-2">Buscar</label>
               <div className="relative">
                 <input
                   type="text"
                   placeholder="Buscar por cliente o número de factura..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  className="w-full pl-10 pr-4 py-2 rounded-xl bg-transparent border border-slate-700 text-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                 />
-                <i className="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <i className="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"></i>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+              <label className="block text-sm font-medium text-slate-200 mb-2">Estado</label>
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm pr-8"
+                className="w-full px-3 py-2 rounded-xl bg-transparent border border-slate-700 text-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70 pr-8"
               >
                 <option value="all">Todos los estados</option>
                 <option value="paid">Pagadas</option>
@@ -295,7 +492,7 @@ export default function InvoicingPage() {
                   setSearchTerm('');
                   setStatusFilter('all');
                 }}
-                className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap"
+                className="w-full px-4 py-2 rounded-xl bg-slate-900/80 text-slate-200 hover:bg-slate-800 transition-colors whitespace-nowrap border border-slate-700 text-sm"
               >
                 <i className="ri-refresh-line mr-2"></i>
                 Limpiar Filtros
@@ -305,56 +502,56 @@ export default function InvoicingPage() {
         </div>
 
         {/* Invoices Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60 overflow-hidden">
+          <div className="p-6 border-b border-slate-800">
+            <h3 className="text-lg font-semibold text-slate-50">
               Facturas ({filteredInvoices.length})
             </h3>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
+            <table className="w-full divide-y divide-slate-800">
+              <thead className="bg-slate-900/80">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Número
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Cliente
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Fecha
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Vencimiento
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Total
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Estado
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-slate-950 divide-y divide-slate-800">
                 {filteredInvoices.map((invoice) => (
                   <tr key={invoice.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">{invoice.id}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{invoice.customer}</div>
-                      <div className="text-sm text-gray-500">{invoice.customerEmail}</div>
+                      <div className="text-sm text-slate-100">{invoice.customer}</div>
+                      <div className="text-sm text-slate-400">{invoice.customerEmail}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {new Date(invoice.date).toLocaleDateString('es-DO')}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {new Date(invoice.dueDate).toLocaleDateString('es-DO')}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-50">
                       RD$ {invoice.total.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -366,36 +563,29 @@ export default function InvoicingPage() {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleViewInvoice(invoice.id)}
-                          className="text-blue-600 hover:text-blue-900 p-1"
+                          className="text-sky-300 hover:text-sky-100 p-1"
                           title="Ver factura"
                         >
                           <i className="ri-eye-line"></i>
                         </button>
                         <button
                           onClick={() => handleEditInvoice(invoice.id)}
-                          className="text-green-600 hover:text-green-900 p-1"
+                          className="text-emerald-300 hover:text-emerald-100 p-1"
                           title="Editar factura"
                         >
                           <i className="ri-edit-line"></i>
                         </button>
                         <button
                           onClick={() => handlePrintInvoice(invoice.id)}
-                          className="text-gray-600 hover:text-gray-900 p-1"
+                          className="text-slate-400 hover:text-slate-100 p-1"
                           title="Imprimir factura"
                         >
                           <i className="ri-printer-line"></i>
                         </button>
-                        <button
-                          onClick={() => handleSendInvoice(invoice.id, invoice.customerEmail)}
-                          className="text-purple-600 hover:text-purple-900 p-1"
-                          title="Enviar por email"
-                        >
-                          <i className="ri-mail-line"></i>
-                        </button>
                         {invoice.status === 'pending' && (
                           <button
                             onClick={() => handleMarkAsPaid(invoice.id)}
-                            className="text-green-600 hover:text-green-900 p-1"
+                            className="text-emerald-300 hover:text-emerald-100 p-1"
                             title="Marcar como pagada"
                           >
                             <i className="ri-check-line"></i>
@@ -403,14 +593,14 @@ export default function InvoicingPage() {
                         )}
                         <button
                           onClick={() => handleDuplicateInvoice(invoice.id)}
-                          className="text-orange-600 hover:text-orange-900 p-1"
+                          className="text-amber-300 hover:text-amber-100 p-1"
                           title="Duplicar factura"
                         >
                           <i className="ri-file-copy-line"></i>
                         </button>
                         <button
                           onClick={() => handleDeleteInvoice(invoice.id)}
-                          className="text-red-600 hover:text-red-900 p-1"
+                          className="text-rose-300 hover:text-rose-100 p-1"
                           title="Eliminar factura"
                         >
                           <i className="ri-delete-bin-line"></i>
@@ -424,26 +614,33 @@ export default function InvoicingPage() {
           </div>
         </div>
 
-        {/* New Invoice Modal */}
+        {/* New Invoice Modal (crear / editar) */}
         {showNewInvoiceModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-gray-200">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">Nueva Factura</h3>
-                  <button
-                    onClick={() => setShowNewInvoiceModal(false)}
-                    className="text-gray-400 hover:text-gray-600"
-                  >
-                    <i className="ri-close-line text-xl"></i>
-                  </button>
-                </div>
+          <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl shadow-slate-950/80 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-50">
+                  {editingInvoice ? `Editar Factura - ${editingInvoice.id}` : 'Nueva Factura'}
+                </h3>
+                <button
+                  onClick={() => {
+                    setShowNewInvoiceModal(false);
+                    setEditingInvoice(null);
+                  }}
+                  className="text-slate-400 hover:text-slate-100"
+                >
+                  <i className="ri-close-line text-xl"></i>
+                </button>
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Cliente</label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8">
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Cliente</label>
+                    <select
+                      value={formCustomerId}
+                      onChange={(e) => setFormCustomerId(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl bg-transparent border border-slate-700 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70 pr-8"
+                    >
                       <option value="">Seleccionar cliente...</option>
                       {customers.map((customer) => (
                         <option key={customer.id} value={customer.id}>{customer.name}</option>
@@ -451,31 +648,33 @@ export default function InvoicingPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Fecha de Vencimiento</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Fecha de Vencimiento</label>
                     <input
                       type="date"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      value={formDueDate}
+                      onChange={(e) => setFormDueDate(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl bg-transparent border border-slate-700 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                     />
                   </div>
                 </div>
                 
                 <div className="mt-6">
-                  <h4 className="text-md font-medium text-gray-900 mb-4">Productos/Servicios</h4>
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <h4 className="text-md font-medium text-slate-50 mb-4">Productos/Servicios</h4>
+                  <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/80">
                     <table className="w-full">
-                      <thead className="bg-gray-50">
+                      <thead className="bg-slate-900/80">
                         <tr>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Producto</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cantidad</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Precio</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acción</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Producto</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Cantidad</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Precio</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Total</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Acción</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td className="px-4 py-3">
-                            <select className="w-full px-2 py-1 border border-gray-300 rounded text-sm pr-8">
+                            <select className="w-full px-2 py-1 rounded-lg bg-transparent border border-slate-700 text-sm text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70 pr-8">
                               <option value="">Seleccionar producto...</option>
                               {products.map((product) => (
                                 <option key={product.id} value={product.id}>{product.name}</option>
@@ -483,16 +682,16 @@ export default function InvoicingPage() {
                             </select>
                           </td>
                           <td className="px-4 py-3">
-                            <input type="number" min="1" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                            <input type="number" min="1" className="w-full px-2 py-1 rounded-lg bg-transparent border border-slate-700 text-sm text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70" />
                           </td>
                           <td className="px-4 py-3">
-                            <input type="number" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                            <input type="number" className="w-full px-2 py-1 rounded-lg bg-transparent border border-slate-700 text-sm text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70" />
                           </td>
                           <td className="px-4 py-3">
-                            <span className="text-sm font-medium">RD$ 0.00</span>
+                            <span className="text-sm font-medium text-slate-50">RD$ 0.00</span>
                           </td>
                           <td className="px-4 py-3">
-                            <button className="text-red-600 hover:text-red-800">
+                            <button className="text-rose-300 hover:text-rose-100">
                               <i className="ri-delete-bin-line"></i>
                             </button>
                           </td>
@@ -500,7 +699,7 @@ export default function InvoicingPage() {
                       </tbody>
                     </table>
                   </div>
-                  <button className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap">
+                  <button className="mt-4 px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 transition-colors whitespace-nowrap text-sm shadow-md shadow-emerald-600/40">
                     <i className="ri-add-line mr-2"></i>
                     Agregar Producto
                   </button>
@@ -508,58 +707,126 @@ export default function InvoicingPage() {
 
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Notas</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Notas</label>
                     <textarea
                       rows={4}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      value={formNotes}
+                      onChange={(e) => setFormNotes(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl bg-transparent border border-slate-700 text-slate-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500/70"
                       placeholder="Notas adicionales..."
                     ></textarea>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Subtotal:</span>
-                        <span className="text-sm font-medium">RD$ 0.00</span>
+                        <span className="text-sm text-slate-400">Subtotal:</span>
+                        <span className="text-sm font-medium text-slate-50">RD$ 0.00</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">ITBIS (18%):</span>
-                        <span className="text-sm font-medium">RD$ 0.00</span>
+                        <span className="text-sm text-slate-400">ITBIS (18%):</span>
+                        <span className="text-sm font-medium text-slate-50">RD$ 0.00</span>
                       </div>
-                      <div className="border-t border-gray-200 pt-2">
+                      <div className="border-t border-slate-800 pt-2">
                         <div className="flex justify-between">
-                          <span className="text-base font-semibold">Total:</span>
-                          <span className="text-base font-semibold">RD$ 0.00</span>
+                          <span className="text-base font-semibold text-slate-50">Total:</span>
+                          <span className="text-base font-semibold text-emerald-400">RD$ 0.00</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="p-6 border-t border-gray-200 flex justify-end space-x-3">
+              <div className="p-6 border-t border-slate-800 flex justify-end space-x-3">
                 <button
-                  onClick={() => setShowNewInvoiceModal(false)}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap"
+                  onClick={() => {
+                    setShowNewInvoiceModal(false);
+                    setEditingInvoice(null);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-slate-900/80 text-slate-200 hover:bg-slate-800 border border-slate-700 transition-colors whitespace-nowrap text-sm"
                 >
                   Cancelar
                 </button>
                 <button
-                  onClick={() => {
-                    alert('Guardando factura como borrador...');
-                    setShowNewInvoiceModal(false);
-                  }}
-                  className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors whitespace-nowrap"
+                  onClick={handleSaveDraft}
+                  className="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 transition-colors whitespace-nowrap text-sm font-semibold shadow-md shadow-amber-500/40"
                 >
-                  Guardar Borrador
+                  {editingInvoice ? 'Actualizar como Borrador' : 'Guardar Borrador'}
                 </button>
                 <button
-                  onClick={() => {
-                    alert('Creando y enviando factura...');
-                    setShowNewInvoiceModal(false);
-                  }}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+                  onClick={handleCreateOrUpdateInvoice}
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-400 text-slate-950 hover:brightness-110 transition-colors whitespace-nowrap text-sm font-semibold shadow-md shadow-purple-500/40"
                 >
-                  Crear Factura
+                  {editingInvoice ? 'Actualizar Factura' : 'Crear Factura'}
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* View Invoice Modal */}
+        {viewInvoice && (
+          <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl shadow-slate-950/80 max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-50">Detalle de Factura - {viewInvoice.id}</h3>
+                <button
+                  onClick={() => setViewInvoice(null)}
+                  className="text-slate-400 hover:text-slate-100"
+                >
+                  <i className="ri-close-line text-xl"></i>
+                </button>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm font-medium text-slate-400">Cliente</p>
+                    <p className="text-sm text-slate-100">{viewInvoice.customer}</p>
+                    <p className="text-xs text-slate-400">{viewInvoice.customerEmail}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-400">Fechas</p>
+                    <p className="text-xs text-slate-300">Emisión: {new Date(viewInvoice.date).toLocaleDateString('es-DO')}</p>
+                    <p className="text-xs text-slate-300">Vencimiento: {new Date(viewInvoice.dueDate).toLocaleDateString('es-DO')}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-400">Estado</p>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(viewInvoice.status)}`}>
+                      {getStatusText(viewInvoice.status)}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-400">Totales</p>
+                    <p className="text-xs text-slate-300">Monto: RD$ {viewInvoice.amount.toLocaleString()}</p>
+                    <p className="text-xs text-slate-300">ITBIS: RD$ {viewInvoice.tax.toLocaleString()}</p>
+                    <p className="text-sm font-semibold text-emerald-400 mt-1">Total: RD$ {viewInvoice.total.toLocaleString()}</p>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <h4 className="text-sm font-semibold text-slate-50 mb-2">Productos/Servicios</h4>
+                  <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/80">
+                    <table className="w-full text-xs">
+                      <thead className="bg-slate-900/80 text-slate-400">
+                        <tr>
+                          <th className="px-4 py-2 text-left">Descripción</th>
+                          <th className="px-4 py-2 text-right">Cantidad</th>
+                          <th className="px-4 py-2 text-right">Precio</th>
+                          <th className="px-4 py-2 text-right">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-800">
+                        {viewInvoice.items.map((item: any, idx: number) => (
+                          <tr key={idx} className="text-slate-100">
+                            <td className="px-4 py-2">{item.description}</td>
+                            <td className="px-4 py-2 text-right">{item.quantity}</td>
+                            <td className="px-4 py-2 text-right">RD$ {item.price.toLocaleString()}</td>
+                            <td className="px-4 py-2 text-right">RD$ {item.total.toLocaleString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

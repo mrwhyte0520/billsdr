@@ -99,11 +99,11 @@ export default function PaymentsPage() {
 
   const getPaymentMethodColor = (method: string) => {
     switch (method) {
-      case 'cash': return 'bg-green-100 text-green-800';
-      case 'check': return 'bg-blue-100 text-blue-800';
-      case 'transfer': return 'bg-purple-100 text-purple-800';
-      case 'card': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'cash': return 'border-emerald-500/60 bg-emerald-500/10 text-emerald-300';
+      case 'check': return 'border-sky-500/60 bg-sky-500/10 text-sky-300';
+      case 'transfer': return 'border-purple-500/60 bg-purple-500/10 text-purple-300';
+      case 'card': return 'border-amber-500/60 bg-amber-500/10 text-amber-300';
+      default: return 'border-slate-600/60 bg-slate-700/20 text-slate-200';
     }
   };
 
@@ -135,12 +135,12 @@ export default function PaymentsPage() {
     
     const summaryData = [
       ['Concepto', 'Monto'],
-      ['Total Recibido', `RD$ ${totalPayments.toLocaleString()}`],
+      ['Total Recibido', `$ ${totalPayments.toLocaleString()}`],
       ['Número de Pagos', filteredPayments.length.toString()],
-      ['Efectivo', `RD$ ${(paymentsByMethod.cash || 0).toLocaleString()}`],
-      ['Transferencias', `RD$ ${(paymentsByMethod.transfer || 0).toLocaleString()}`],
-      ['Cheques', `RD$ ${(paymentsByMethod.check || 0).toLocaleString()}`],
-      ['Tarjetas', `RD$ ${(paymentsByMethod.card || 0).toLocaleString()}`]
+      ['Efectivo', `$ ${(paymentsByMethod.cash || 0).toLocaleString()}`],
+      ['Transferencias', `$ ${(paymentsByMethod.transfer || 0).toLocaleString()}`],
+      ['Cheques', `$ ${(paymentsByMethod.check || 0).toLocaleString()}`],
+      ['Tarjetas', `$ ${(paymentsByMethod.card || 0).toLocaleString()}`]
     ];
     
     (doc as any).autoTable({
@@ -158,7 +158,7 @@ export default function PaymentsPage() {
       payment.date,
       payment.customerName,
       payment.invoiceNumber,
-      `RD$ ${payment.amount.toLocaleString()}`,
+      `$ ${payment.amount.toLocaleString()}`,
       getPaymentMethodName(payment.paymentMethod),
       payment.reference
     ]);
@@ -187,12 +187,12 @@ export default function PaymentsPage() {
       [`Fecha de generación: ${new Date().toLocaleDateString()}`],
       [''],
       ['RESUMEN DE PAGOS'],
-      ['Total Recibido', `RD$ ${totalPayments.toLocaleString()}`],
+      ['Total Recibido', `$ ${totalPayments.toLocaleString()}`],
       ['Número de Pagos', filteredPayments.length.toString()],
-      ['Efectivo', `RD$ ${(paymentsByMethod.cash || 0).toLocaleString()}`],
-      ['Transferencias', `RD$ ${(paymentsByMethod.transfer || 0).toLocaleString()}`],
-      ['Cheques', `RD$ ${(paymentsByMethod.check || 0).toLocaleString()}`],
-      ['Tarjetas', `RD$ ${(paymentsByMethod.card || 0).toLocaleString()}`],
+      ['Efectivo', `$ ${(paymentsByMethod.cash || 0).toLocaleString()}`],
+      ['Transferencias', `$ ${(paymentsByMethod.transfer || 0).toLocaleString()}`],
+      ['Cheques', `$ ${(paymentsByMethod.check || 0).toLocaleString()}`],
+      ['Tarjetas', `$ ${(paymentsByMethod.card || 0).toLocaleString()}`],
       [''],
       ['DETALLE DE PAGOS'],
       ['Fecha', 'Cliente', 'Factura', 'Monto', 'Método', 'Referencia'],
@@ -221,7 +221,7 @@ export default function PaymentsPage() {
   const handleViewPayment = (paymentId: string) => {
     const payment = payments.find(pay => pay.id === paymentId);
     if (payment) {
-      alert(`Detalles del pago:\n\nCliente: ${payment.customerName}\nFactura: ${payment.invoiceNumber}\nMonto: RD$ ${payment.amount.toLocaleString()}\nMétodo: ${getPaymentMethodName(payment.paymentMethod)}\nReferencia: ${payment.reference}`);
+      alert(`Detalles del pago:\n\nCliente: ${payment.customerName}\nFactura: ${payment.invoiceNumber}\nMonto: $ ${payment.amount.toLocaleString()}\nMétodo: ${getPaymentMethodName(payment.paymentMethod)}\nReferencia: ${payment.reference}`);
     }
   };
 
@@ -241,12 +241,15 @@ export default function PaymentsPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Pagos Recibidos</h1>
+      <div className="py-4 space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-50">Pagos Recibidos</h1>
+            <p className="text-sm text-slate-400 mt-1">Consulta y registra los pagos recibidos de tus clientes.</p>
+          </div>
           <button 
             onClick={handleNewPayment}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+            className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
           >
             <i className="ri-money-dollar-circle-line mr-2"></i>
             Registrar Pago
@@ -254,17 +257,17 @@ export default function PaymentsPage() {
         </div>
 
         {/* Filters and Export */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i className="ri-search-line text-gray-400"></i>
+                <i className="ri-search-line text-slate-400"></i>
               </div>
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                className="block w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 placeholder-slate-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                 placeholder="Buscar por cliente, factura o referencia..."
               />
             </div>
@@ -273,7 +276,7 @@ export default function PaymentsPage() {
             <select
               value={methodFilter}
               onChange={(e) => setMethodFilter(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm pr-8"
+              className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm pr-8"
             >
               <option value="all">Todos los Métodos</option>
               <option value="cash">Efectivo</option>
@@ -285,13 +288,13 @@ export default function PaymentsPage() {
           <div className="flex space-x-2">
             <button
               onClick={exportToPDF}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+              className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-red-500/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>PDF
             </button>
             <button
               onClick={exportToExcel}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
             >
               <i className="ri-file-excel-line mr-2"></i>Excel
             </button>
@@ -299,69 +302,69 @@ export default function PaymentsPage() {
         </div>
 
         {/* Payments Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+        <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
+          <div className="overflow-x-auto rounded-2xl">
+            <table className="min-w-full divide-y divide-slate-800">
+              <thead className="bg-slate-900/80">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Fecha
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Cliente
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Factura
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Monto
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Método
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Referencia
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-slate-950 divide-y divide-slate-800">
                 {filteredPayments.map((payment) => (
-                  <tr key={payment.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <tr key={payment.id} className="hover:bg-slate-900/60">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {payment.date}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {payment.customerName}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {payment.invoiceNumber}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      RD${payment.amount.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-50">
+                      ${payment.amount.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPaymentMethodColor(payment.paymentMethod)}`}>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getPaymentMethodColor(payment.paymentMethod)}`}>
                         {getPaymentMethodName(payment.paymentMethod)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {payment.reference}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
                         <button 
                           onClick={() => handleViewPayment(payment.id)}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-sky-400 hover:text-sky-300"
                           title="Ver detalles"
                         >
                           <i className="ri-eye-line"></i>
                         </button>
                         <button 
                           onClick={() => handlePrintPayment(payment.id)}
-                          className="text-purple-600 hover:text-purple-900"
+                          className="text-purple-400 hover:text-purple-300"
                           title="Imprimir recibo"
                         >
                           <i className="ri-printer-line"></i>
@@ -377,16 +380,16 @@ export default function PaymentsPage() {
 
         {/* Payment Modal */}
         {showPaymentModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-96">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 p-6 w-96 shadow-2xl shadow-slate-950/80">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Registrar Pago</h3>
+                <h3 className="text-lg font-semibold text-slate-50">Registrar Pago</h3>
                 <button
                   onClick={() => {
                     setShowPaymentModal(false);
                     setSelectedPayment(null);
                   }}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-400 hover:text-slate-100"
                 >
                   <i className="ri-close-line"></i>
                 </button>
@@ -394,42 +397,42 @@ export default function PaymentsPage() {
               
               <form onSubmit={handleSavePayment} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Factura
                   </label>
                   <select 
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-8"
                   >
                     <option value="">Seleccionar factura</option>
                     {invoices.filter(inv => inv.balance > 0).map((invoice) => (
                       <option key={invoice.id} value={invoice.id}>
-                        {invoice.invoiceNumber} - {invoice.customerName} (RD${invoice.balance.toLocaleString()})
+                        {invoice.invoiceNumber} - {invoice.customerName} (${invoice.balance.toLocaleString()})
                       </option>
                     ))}
                   </select>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Monto a Pagar
                   </label>
                   <input
                     type="number"
                     step="0.01"
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="0.00"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Método de Pago
                   </label>
                   <select 
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-8"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-8"
                   >
                     <option value="cash">Efectivo</option>
                     <option value="check">Cheque</option>
@@ -439,13 +442,13 @@ export default function PaymentsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Referencia
                   </label>
                   <input
                     type="text"
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Número de referencia"
                   />
                 </div>
@@ -457,13 +460,13 @@ export default function PaymentsPage() {
                       setShowPaymentModal(false);
                       setSelectedPayment(null);
                     }}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-slate-900 border border-slate-700 text-slate-200 py-2 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+                    className="flex-1 bg-emerald-600 text-white py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
                   >
                     Registrar Pago
                   </button>

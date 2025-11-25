@@ -195,8 +195,8 @@ export default function SuppliersPage() {
       supplier.rnc,
       supplier.phone,
       supplier.category,
-      `RD$ ${supplier.creditLimit.toLocaleString()}`,
-      `RD$ ${supplier.balance.toLocaleString()}`,
+      `$ ${supplier.creditLimit.toLocaleString()}`,
+      `$ ${supplier.balance.toLocaleString()}`,
       supplier.status
     ]);
 
@@ -226,8 +226,8 @@ export default function SuppliersPage() {
 
     doc.autoTable({
       body: [
-        ['Total Límite de Crédito:', `RD$ ${totalCreditLimit.toLocaleString()}`],
-        ['Total Balance Actual:', `RD$ ${totalBalance.toLocaleString()}`],
+        ['Total Límite de Crédito:', `$ ${totalCreditLimit.toLocaleString()}`],
+        ['Total Balance Actual:', `$ ${totalBalance.toLocaleString()}`],
         ['Proveedores Activos:', `${activeSuppliers} de ${filteredSuppliers.length}`]
       ],
       startY: doc.lastAutoTable.finalY + 20,
@@ -284,31 +284,31 @@ export default function SuppliersPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="py-4 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Gestión de Proveedores</h1>
-            <p className="text-gray-600">Base de datos de proveedores y vendedores</p>
+            <h1 className="text-2xl font-bold text-slate-50">Gestión de Proveedores</h1>
+            <p className="text-slate-400">Base de datos de proveedores y vendedores</p>
           </div>
           <div className="flex space-x-3">
             <button 
               onClick={exportToPDF}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+              className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-red-500/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>
               Exportar PDF
             </button>
             <button 
               onClick={exportToExcel}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
             >
               <i className="ri-file-excel-line mr-2"></i>
               Exportar Excel
             </button>
             <button 
               onClick={() => setShowModal(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+              className="bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 px-4 py-2 rounded-xl hover:brightness-110 transition-colors whitespace-nowrap font-semibold shadow-md shadow-sky-500/40"
             >
               <i className="ri-add-line mr-2"></i>
               Nuevo Proveedor
@@ -318,74 +318,74 @@ export default function SuppliersPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-truck-line text-xl text-blue-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-sky-500/20 border border-sky-500/50 flex items-center justify-center mr-4">
+                <i className="ri-truck-line text-xl text-sky-200"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Proveedores</p>
-                <p className="text-2xl font-bold text-gray-900">{suppliers.length}</p>
+                <p className="text-sm font-medium text-slate-400">Total Proveedores</p>
+                <p className="text-2xl font-bold text-slate-50">{suppliers.length}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-check-line text-xl text-green-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center mr-4">
+                <i className="ri-check-line text-xl text-emerald-200"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Activos</p>
-                <p className="text-2xl font-bold text-gray-900">{suppliers.filter(s => s.status === 'Activo').length}</p>
+                <p className="text-sm font-medium text-slate-400">Activos</p>
+                <p className="text-2xl font-bold text-emerald-300">{suppliers.filter(s => s.status === 'Activo').length}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-money-dollar-circle-line text-xl text-orange-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center mr-4">
+                <i className="ri-money-dollar-circle-line text-xl text-amber-200"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Balance Total</p>
-                <p className="text-2xl font-bold text-gray-900">RD$ {suppliers.reduce((sum, s) => sum + s.balance, 0).toLocaleString()}</p>
+                <p className="text-sm font-medium text-slate-400">Balance Total</p>
+                <p className="text-2xl font-bold text-amber-300">${suppliers.reduce((sum, s) => sum + s.balance, 0).toLocaleString()}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                <i className="ri-credit-card-line text-xl text-purple-600"></i>
+              <div className="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/50 flex items-center justify-center mr-4">
+                <i className="ri-credit-card-line text-xl text-purple-200"></i>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Crédito Disponible</p>
-                <p className="text-2xl font-bold text-gray-900">RD$ {suppliers.reduce((sum, s) => sum + (s.creditLimit - s.balance), 0).toLocaleString()}</p>
+                <p className="text-sm font-medium text-slate-400">Crédito Disponible</p>
+                <p className="text-2xl font-bold text-purple-300">${suppliers.reduce((sum, s) => sum + (s.creditLimit - s.balance), 0).toLocaleString()}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-6 shadow-lg shadow-slate-900/60">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Buscar</label>
+              <label className="block text-sm font-medium text-slate-200 mb-2">Buscar</label>
               <div className="relative">
                 <input 
                   type="text"
                   placeholder="Buscar por nombre, RNC o email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 placeholder-slate-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
-                <i className="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <i className="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+              <label className="block text-sm font-medium text-slate-200 mb-2">Estado</label>
               <select 
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               >
                 <option value="all">Todos los Estados</option>
                 <option value="Activo">Activo</option>
@@ -395,7 +395,7 @@ export default function SuppliersPage() {
             <div className="flex items-end">
               <button 
                 onClick={() => {setSearchTerm(''); setFilterStatus('all');}}
-                className="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors whitespace-nowrap"
+                className="w-full bg-slate-900 border border-slate-700 text-slate-200 py-2 px-4 rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap"
               >
                 Limpiar Filtros
               </button>
@@ -404,47 +404,49 @@ export default function SuppliersPage() {
         </div>
 
         {/* Suppliers Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Lista de Proveedores</h3>
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-950/60">
+          <div className="p-6 border-b border-slate-800">
+            <h3 className="text-lg font-semibold text-slate-50">Lista de Proveedores</h3>
           </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-x-auto rounded-b-2xl">
+            <table className="min-w-full divide-y divide-slate-800">
+              <thead className="bg-slate-900/80">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proveedor</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">RNC</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Límite Crédito</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Proveedor</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">RNC</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Categoría</th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-slate-400 uppercase tracking-wider">Balance</th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-slate-400 uppercase tracking-wider">Límite Crédito</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Estado</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-slate-950 divide-y divide-slate-800">
                 {filteredSuppliers.map((supplier) => (
-                  <tr key={supplier.id} className="hover:bg-gray-50">
+                  <tr key={supplier.id} className="hover:bg-slate-900/60">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{supplier.name}</div>
-                        <div className="text-sm text-gray-500">{supplier.email}</div>
+                        <div className="text-sm font-medium text-slate-50">{supplier.name}</div>
+                        <div className="text-sm text-slate-400">{supplier.email}</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{supplier.rnc}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">{supplier.rnc}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                      <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/40">
                         {supplier.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
-                      RD$ {supplier.balance.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-amber-300">
+                      ${supplier.balance.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
-                      RD$ {supplier.creditLimit.toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-slate-50">
+                      ${supplier.creditLimit.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                        supplier.status === 'Activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full border ${
+                        supplier.status === 'Activo'
+                          ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/60'
+                          : 'bg-red-500/10 text-red-300 border-red-500/60'
                       }`}>
                         {supplier.status}
                       </span>
@@ -453,19 +455,19 @@ export default function SuppliersPage() {
                       <div className="flex space-x-2">
                         <button 
                           onClick={() => handleViewDetails(supplier)}
-                          className="text-blue-600 hover:text-blue-900 whitespace-nowrap"
+                          className="text-sky-400 hover:text-sky-300 whitespace-nowrap"
                         >
                           <i className="ri-eye-line"></i>
                         </button>
                         <button 
                           onClick={() => handleEdit(supplier)}
-                          className="text-indigo-600 hover:text-indigo-900 whitespace-nowrap"
+                          className="text-purple-300 hover:text-purple-200 whitespace-nowrap"
                         >
                           <i className="ri-edit-line"></i>
                         </button>
                         <button 
                           onClick={() => handleDelete(supplier.id)}
-                          className="text-red-600 hover:text-red-900 whitespace-nowrap"
+                          className="text-red-400 hover:text-red-300 whitespace-nowrap"
                         >
                           <i className="ri-delete-bin-line"></i>
                         </button>
@@ -480,14 +482,14 @@ export default function SuppliersPage() {
 
         {/* Details Modal */}
         {showDetailsModal && selectedSupplier && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-gray-200">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 shadow-2xl shadow-slate-950/80 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-slate-800">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">Detalles del Proveedor</h3>
+                  <h3 className="text-lg font-semibold text-slate-50">Detalles del Proveedor</h3>
                   <button 
                     onClick={() => setShowDetailsModal(false)}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-slate-400 hover:text-slate-100"
                   >
                     <i className="ri-close-line text-xl"></i>
                   </button>
@@ -496,54 +498,54 @@ export default function SuppliersPage() {
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">Nombre</h4>
-                    <p className="text-gray-900">{selectedSupplier.name}</p>
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">Nombre</h4>
+                    <p className="text-slate-50">{selectedSupplier.name}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">RNC</h4>
-                    <p className="text-gray-900">{selectedSupplier.rnc}</p>
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">RNC</h4>
+                    <p className="text-slate-100">{selectedSupplier.rnc}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">Email</h4>
-                    <p className="text-gray-900">{selectedSupplier.email}</p>
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">Email</h4>
+                    <p className="text-slate-100">{selectedSupplier.email}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">Teléfono</h4>
-                    <p className="text-gray-900">{selectedSupplier.phone}</p>
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">Teléfono</h4>
+                    <p className="text-slate-100">{selectedSupplier.phone}</p>
                   </div>
                   <div className="md:col-span-2">
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">Dirección</h4>
-                    <p className="text-gray-900">{selectedSupplier.address}</p>
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">Dirección</h4>
+                    <p className="text-slate-100">{selectedSupplier.address}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">Categoría</h4>
-                    <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">Categoría</h4>
+                    <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/40">
                       {selectedSupplier.category}
                     </span>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">Estado</h4>
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      selectedSupplier.status === 'Activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">Estado</h4>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full border ${
+                      selectedSupplier.status === 'Activo' ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/60' : 'bg-red-500/10 text-red-300 border-red-500/60'
                     }`}>
                       {selectedSupplier.status}
                     </span>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">Límite de Crédito</h4>
-                    <p className="text-gray-900">RD$ {selectedSupplier.creditLimit.toLocaleString()}</p>
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">Límite de Crédito</h4>
+                    <p className="text-emerald-300">${selectedSupplier.creditLimit.toLocaleString()}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">Balance Actual</h4>
-                    <p className="text-gray-900">RD$ {selectedSupplier.balance.toLocaleString()}</p>
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">Balance Actual</h4>
+                    <p className="text-amber-300">${selectedSupplier.balance.toLocaleString()}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">Términos de Pago</h4>
-                    <p className="text-gray-900">{selectedSupplier.paymentTerms}</p>
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">Términos de Pago</h4>
+                    <p className="text-slate-100">{selectedSupplier.paymentTerms}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500 mb-1">Contacto</h4>
-                    <p className="text-gray-900">{selectedSupplier.contact}</p>
+                    <h4 className="text-sm font-medium text-slate-400 mb-1">Contacto</h4>
+                    <p className="text-slate-100">{selectedSupplier.contact}</p>
                   </div>
                 </div>
                 <div className="flex justify-end space-x-3 mt-6">
@@ -552,13 +554,13 @@ export default function SuppliersPage() {
                       setShowDetailsModal(false);
                       handleEdit(selectedSupplier);
                     }}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
+                    className="px-4 py-2 bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 rounded-xl hover:brightness-110 whitespace-nowrap font-semibold shadow-md shadow-sky-500/40"
                   >
                     Editar
                   </button>
                   <button 
                     onClick={() => setShowDetailsModal(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 whitespace-nowrap"
+                    className="px-4 py-2 border border-slate-700 rounded-xl text-slate-200 bg-slate-900 hover:bg-slate-800 whitespace-nowrap"
                   >
                     Cerrar
                   </button>
@@ -570,77 +572,77 @@ export default function SuppliersPage() {
 
         {/* Modal */}
         {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-950 rounded-2xl border border-slate-800 shadow-2xl shadow-slate-950/80 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-slate-800">
+                <h3 className="text-lg font-semibold text-slate-50">
                   {editingSupplier ? 'Editar Proveedor' : 'Nuevo Proveedor'}
                 </h3>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Nombre *</label>
                     <input 
                       type="text"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">RNC *</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">RNC *</label>
                     <input 
                       type="text"
                       required
                       value={formData.rnc}
                       onChange={(e) => setFormData({...formData, rnc: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Email</label>
                     <input 
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Teléfono</label>
                     <input 
                       type="text"
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Dirección</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Dirección</label>
                     <textarea 
                       value={formData.address}
                       onChange={(e) => setFormData({...formData, address: e.target.value})}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Límite de Crédito</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Límite de Crédito</label>
                     <input 
                       type="number"
                       value={formData.creditLimit}
                       onChange={(e) => setFormData({...formData, creditLimit: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Términos de Pago</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Términos de Pago</label>
                     <select 
                       value={formData.paymentTerms}
                       onChange={(e) => setFormData({...formData, paymentTerms: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
                       {paymentTermsOptions.map(term => (
                         <option key={term} value={term}>{term}</option>
@@ -648,11 +650,11 @@ export default function SuppliersPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Categoría</label>
                     <select 
                       value={formData.category}
                       onChange={(e) => setFormData({...formData, category: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
                       {categories.map(category => (
                         <option key={category} value={category}>{category}</option>
@@ -660,11 +662,11 @@ export default function SuppliersPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">Estado</label>
                     <select 
                       value={formData.status}
                       onChange={(e) => setFormData({...formData, status: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
                       <option value="Activo">Activo</option>
                       <option value="Inactivo">Inactivo</option>
@@ -675,13 +677,13 @@ export default function SuppliersPage() {
                   <button 
                     type="button"
                     onClick={resetForm}
-                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 whitespace-nowrap"
+                    className="px-4 py-2 border border-slate-700 rounded-xl text-slate-200 bg-slate-900 hover:bg-slate-800 whitespace-nowrap"
                   >
                     Cancelar
                   </button>
                   <button 
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
+                    className="px-4 py-2 bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 rounded-xl hover:brightness-110 whitespace-nowrap font-semibold shadow-md shadow-sky-500/40"
                   >
                     {editingSupplier ? 'Actualizar' : 'Crear'} Proveedor
                   </button>

@@ -53,12 +53,12 @@ export default function ReportsPage() {
       
       return [
         customer.name,
-        `RD$ ${current.toLocaleString()}`,
-        `RD$ ${days1to30.toLocaleString()}`,
-        `RD$ ${days31to60.toLocaleString()}`,
-        `RD$ ${days61to90.toLocaleString()}`,
-        `RD$ ${over90.toLocaleString()}`,
-        `RD$ ${customer.currentBalance.toLocaleString()}`
+        `$ ${current.toLocaleString()}`,
+        `$ ${days1to30.toLocaleString()}`,
+        `$ ${days31to60.toLocaleString()}`,
+        `$ ${days61to90.toLocaleString()}`,
+        `$ ${over90.toLocaleString()}`,
+        `$ ${customer.currentBalance.toLocaleString()}`
       ];
     });
     
@@ -106,8 +106,8 @@ export default function ReportsPage() {
         
         const invoiceData = customerInvoices.map(inv => [
           inv.invoiceNumber,
-          `RD$ ${inv.amount.toLocaleString()}`,
-          `RD$ ${inv.balance.toLocaleString()}`,
+          `$ ${inv.amount.toLocaleString()}`,
+          `$ ${inv.balance.toLocaleString()}`,
           inv.daysOverdue > 0 ? `${inv.daysOverdue} días` : 'Al día'
         ]);
         
@@ -130,7 +130,7 @@ export default function ReportsPage() {
         
         const paymentData = customerPayments.map(pay => [
           pay.date,
-          `RD$ ${pay.amount.toLocaleString()}`,
+          `$ ${pay.amount.toLocaleString()}`,
           pay.paymentMethod === 'transfer' ? 'Transferencia' :
           pay.paymentMethod === 'check' ? 'Cheque' :
           pay.paymentMethod === 'cash' ? 'Efectivo' : 'Tarjeta'
@@ -147,7 +147,7 @@ export default function ReportsPage() {
       
       // Resumen
       doc.setFontSize(12);
-      doc.text(`Saldo Actual: RD$ ${customer.currentBalance.toLocaleString()}`, 20, doc.internal.pageSize.height - 30);
+      doc.text(`Saldo Actual: $ ${customer.currentBalance.toLocaleString()}`, 20, doc.internal.pageSize.height - 30);
     });
     
     doc.save(`estados-cuenta-${new Date().toISOString().split('T')[0]}.pdf`);
@@ -176,12 +176,12 @@ export default function ReportsPage() {
     
     const summaryData = [
       ['Concepto', 'Monto'],
-      ['Total Cobrado', `RD$ ${totalPayments.toLocaleString()}`],
+      ['Total Cobrado', `$ ${totalPayments.toLocaleString()}`],
       ['Número de Pagos', payments.length.toString()],
-      ['Efectivo', `RD$ ${(paymentsByMethod.cash || 0).toLocaleString()}`],
-      ['Transferencias', `RD$ ${(paymentsByMethod.transfer || 0).toLocaleString()}`],
-      ['Cheques', `RD$ ${(paymentsByMethod.check || 0).toLocaleString()}`],
-      ['Tarjetas', `RD$ ${(paymentsByMethod.card || 0).toLocaleString()}`]
+      ['Efectivo', `$ ${(paymentsByMethod.cash || 0).toLocaleString()}`],
+      ['Transferencias', `$ ${(paymentsByMethod.transfer || 0).toLocaleString()}`],
+      ['Cheques', `$ ${(paymentsByMethod.check || 0).toLocaleString()}`],
+      ['Tarjetas', `$ ${(paymentsByMethod.card || 0).toLocaleString()}`]
     ];
     
     (doc as any).autoTable({
@@ -198,7 +198,7 @@ export default function ReportsPage() {
     const paymentData = payments.map(payment => [
       payment.date,
       payment.customerName,
-      `RD$ ${payment.amount.toLocaleString()}`,
+      `$ ${payment.amount.toLocaleString()}`,
       payment.paymentMethod === 'transfer' ? 'Transferencia' :
       payment.paymentMethod === 'check' ? 'Cheque' :
       payment.paymentMethod === 'cash' ? 'Efectivo' : 'Tarjeta'
@@ -229,12 +229,12 @@ export default function ReportsPage() {
       dateFrom && dateTo ? [`Período: ${dateFrom} al ${dateTo}`] : [],
       [''],
       ['RESUMEN DE COBRANZA'],
-      ['Total Cobrado', `RD$ ${totalPayments.toLocaleString()}`],
+      ['Total Cobrado', `$ ${totalPayments.toLocaleString()}`],
       ['Número de Pagos', payments.length.toString()],
-      ['Efectivo', `RD$ ${(paymentsByMethod.cash || 0).toLocaleString()}`],
-      ['Transferencias', `RD$ ${(paymentsByMethod.transfer || 0).toLocaleString()}`],
-      ['Cheques', `RD$ ${(paymentsByMethod.check || 0).toLocaleString()}`],
-      ['Tarjetas', `RD$ ${(paymentsByMethod.card || 0).toLocaleString()}`],
+      ['Efectivo', `$ ${(paymentsByMethod.cash || 0).toLocaleString()}`],
+      ['Transferencias', `$ ${(paymentsByMethod.transfer || 0).toLocaleString()}`],
+      ['Cheques', `$ ${(paymentsByMethod.check || 0).toLocaleString()}`],
+      ['Tarjetas', `$ ${(paymentsByMethod.card || 0).toLocaleString()}`],
       [''],
       ['DETALLE DE PAGOS'],
       ['Fecha', 'Cliente', 'Monto', 'Método'],
@@ -274,8 +274,8 @@ export default function ReportsPage() {
     doc.text('Resumen General', 20, 60);
     
     const summaryData = [
-      ['Total Saldos por Cobrar', `RD$ ${totalBalance.toLocaleString()}`],
-      ['Total Límites de Crédito', `RD$ ${totalCreditLimit.toLocaleString()}`],
+      ['Total Saldos por Cobrar', `$ ${totalBalance.toLocaleString()}`],
+      ['Total Límites de Crédito', `$ ${totalCreditLimit.toLocaleString()}`],
       ['Clientes Activos', activeCustomers.toString()],
       ['Clientes con Saldo', customersWithBalance.toString()],
       ['Utilización de Crédito', `${((totalBalance / totalCreditLimit) * 100).toFixed(1)}%`]
@@ -299,9 +299,9 @@ export default function ReportsPage() {
       
       return [
         customer.name,
-        `RD$ ${customer.currentBalance.toLocaleString()}`,
-        `RD$ ${customer.creditLimit.toLocaleString()}`,
-        `RD$ ${availableCredit.toLocaleString()}`,
+        `$ ${customer.currentBalance.toLocaleString()}`,
+        `$ ${customer.creditLimit.toLocaleString()}`,
+        `$ ${availableCredit.toLocaleString()}`,
         `${utilizationPercent}%`,
         customer.status
       ];
@@ -343,11 +343,11 @@ export default function ReportsPage() {
     
     const summaryData = [
       ['Total Facturas Vencidas', overdueInvoices.length.toString()],
-      ['Monto Total Vencido', `RD$ ${totalOverdue.toLocaleString()}`],
-      ['1-30 días', `${overdue1to30.length} facturas - RD$ ${overdue1to30.reduce((sum, inv) => sum + inv.balance, 0).toLocaleString()}`],
-      ['31-60 días', `${overdue31to60.length} facturas - RD$ ${overdue31to60.reduce((sum, inv) => sum + inv.balance, 0).toLocaleString()}`],
-      ['61-90 días', `${overdue61to90.length} facturas - RD$ ${overdue61to90.reduce((sum, inv) => sum + inv.balance, 0).toLocaleString()}`],
-      ['Más de 90 días', `${overdueOver90.length} facturas - RD$ ${overdueOver90.reduce((sum, inv) => sum + inv.balance, 0).toLocaleString()}`]
+      ['Monto Total Vencido', `$ ${totalOverdue.toLocaleString()}`],
+      ['1-30 días', `${overdue1to30.length} facturas - $ ${overdue1to30.reduce((sum, inv) => sum + inv.balance, 0).toLocaleString()}`],
+      ['31-60 días', `${overdue31to60.length} facturas - $ ${overdue31to60.reduce((sum, inv) => sum + inv.balance, 0).toLocaleString()}`],
+      ['61-90 días', `${overdue61to90.length} facturas - $ ${overdue61to90.reduce((sum, inv) => sum + inv.balance, 0).toLocaleString()}`],
+      ['Más de 90 días', `${overdueOver90.length} facturas - $ ${overdueOver90.reduce((sum, inv) => sum + inv.balance, 0).toLocaleString()}`]
     ];
     
     (doc as any).autoTable({
@@ -368,8 +368,8 @@ export default function ReportsPage() {
         invoice.customerName,
         invoice.dueDate,
         `${invoice.daysOverdue} días`,
-        `RD$ ${invoice.amount.toLocaleString()}`,
-        `RD$ ${invoice.balance.toLocaleString()}`
+        `$ ${invoice.amount.toLocaleString()}`,
+        `$ ${invoice.balance.toLocaleString()}`
       ]);
       
       (doc as any).autoTable({
@@ -433,13 +433,13 @@ export default function ReportsPage() {
     doc.text('Estadísticas Generales', 20, 60);
     
     const generalStats = [
-      ['Total Pagos Recibidos', `RD$ ${totalPaymentsAmount.toLocaleString()}`],
+      ['Total Pagos Recibidos', `$ ${totalPaymentsAmount.toLocaleString()}`],
       ['Número de Transacciones', payments.length.toString()],
-      ['Pago Promedio', `RD$ ${avgPaymentAmount.toLocaleString()}`],
-      ['Transferencias', `RD$ ${(methodStats.transfer || 0).toLocaleString()}`],
-      ['Cheques', `RD$ ${(methodStats.check || 0).toLocaleString()}`],
-      ['Efectivo', `RD$ ${(methodStats.cash || 0).toLocaleString()}`],
-      ['Tarjetas', `RD$ ${(methodStats.card || 0).toLocaleString()}`]
+      ['Pago Promedio', `$ ${avgPaymentAmount.toLocaleString()}`],
+      ['Transferencias', `$ ${(methodStats.transfer || 0).toLocaleString()}`],
+      ['Cheques', `$ ${(methodStats.check || 0).toLocaleString()}`],
+      ['Efectivo', `$ ${(methodStats.cash || 0).toLocaleString()}`],
+      ['Tarjetas', `$ ${(methodStats.card || 0).toLocaleString()}`]
     ];
     
     (doc as any).autoTable({
@@ -462,11 +462,11 @@ export default function ReportsPage() {
       
       return [
         analysis.customer,
-        `RD$ ${analysis.totalPaid.toLocaleString()}`,
+        `$ ${analysis.totalPaid.toLocaleString()}`,
         analysis.paymentFrequency.toString(),
-        `RD$ ${analysis.avgPayment.toLocaleString()}`,
+        `$ ${analysis.avgPayment.toLocaleString()}`,
         methodName,
-        `RD$ ${analysis.currentBalance.toLocaleString()}`
+        `$ ${analysis.currentBalance.toLocaleString()}`
       ];
     });
     
@@ -484,31 +484,31 @@ export default function ReportsPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Reportes de Cuentas por Cobrar</h1>
+      <div className="py-4 space-y-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-slate-50">Reportes de Cuentas por Cobrar</h1>
         </div>
 
         {/* Date Filter */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Filtros de Fecha</h3>
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-6 shadow-lg shadow-slate-900/60">
+          <h3 className="text-lg font-semibold text-slate-50 mb-4">Filtros de Fecha</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Fecha Desde</label>
+              <label className="block text-sm font-medium text-slate-200 mb-2">Fecha Desde</label>
               <input
                 type="date"
                 value={dateFrom}
                 onChange={(e) => setDateFrom(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Fecha Hasta</label>
+              <label className="block text-sm font-medium text-slate-200 mb-2">Fecha Hasta</label>
               <input
                 type="date"
                 value={dateTo}
                 onChange={(e) => setDateTo(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -517,16 +517,16 @@ export default function ReportsPage() {
         {/* Reports Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Aging Report */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Antigüedad de Saldos</h3>
-              <i className="ri-calendar-line text-2xl text-blue-600"></i>
+              <h3 className="text-lg font-semibold text-slate-50">Antigüedad de Saldos</h3>
+              <i className="ri-calendar-line text-2xl text-sky-400"></i>
             </div>
-            <p className="text-gray-600 mb-4">Análisis de vencimientos por cliente y períodos de antigüedad</p>
+            <p className="text-slate-300 mb-4">Análisis de vencimientos por cliente y períodos de antigüedad</p>
             <div className="flex space-x-2">
               <button 
                 onClick={handleGenerateAgingReport}
-                className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+                className="flex-1 bg-red-600 text-white py-2 px-4 rounded-xl hover:bg-red-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-red-500/40"
               >
                 <i className="ri-file-pdf-line mr-2"></i>PDF
               </button>
@@ -534,37 +534,37 @@ export default function ReportsPage() {
           </div>
 
           {/* Statement Report */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Estado de Cuenta</h3>
-              <i className="ri-file-list-line text-2xl text-green-600"></i>
+              <h3 className="text-lg font-semibold text-slate-50">Estado de Cuenta</h3>
+              <i className="ri-file-list-line text-2xl text-emerald-400"></i>
             </div>
-            <p className="text-gray-600 mb-4">Movimientos detallados por cliente con facturas y pagos</p>
+            <p className="text-slate-300 mb-4">Movimientos detallados por cliente con facturas y pagos</p>
             <button 
               onClick={handleGenerateStatementReport}
-              className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+              className="w-full bg-emerald-600 text-white py-2 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>Generar PDF
             </button>
           </div>
 
           {/* Collection Report */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Reporte de Cobranza</h3>
-              <i className="ri-money-dollar-circle-line text-2xl text-purple-600"></i>
+              <h3 className="text-lg font-semibold text-slate-50">Reporte de Cobranza</h3>
+              <i className="ri-money-dollar-circle-line text-2xl text-purple-400"></i>
             </div>
-            <p className="text-gray-600 mb-4">Resumen de pagos recibidos por período y método de pago</p>
+            <p className="text-slate-300 mb-4">Resumen de pagos recibidos por período y método de pago</p>
             <div className="flex space-x-2">
               <button 
                 onClick={handleGenerateCollectionReport}
-                className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+                className="flex-1 bg-red-600 text-white py-2 px-4 rounded-xl hover:bg-red-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-red-500/40"
               >
                 <i className="ri-file-pdf-line mr-2"></i>PDF
               </button>
               <button 
                 onClick={handleGenerateCollectionExcel}
-                className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+                className="flex-1 bg-emerald-600 text-white py-2 px-4 rounded-xl hover:bg-emerald-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-emerald-500/40"
               >
                 <i className="ri-file-excel-line mr-2"></i>Excel
               </button>
@@ -572,45 +572,45 @@ export default function ReportsPage() {
           </div>
 
           {/* Customer Balance Report */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Saldos por Cliente</h3>
-              <i className="ri-user-line text-2xl text-orange-600"></i>
+              <h3 className="text-lg font-semibold text-slate-50">Saldos por Cliente</h3>
+              <i className="ri-user-line text-2xl text-amber-300"></i>
             </div>
-            <p className="text-gray-600 mb-4">Listado de saldos actuales por cliente con límites de crédito</p>
+            <p className="text-slate-300 mb-4">Listado de saldos actuales por cliente con límites de crédito</p>
             <button 
               onClick={handleGenerateCustomerBalanceReport}
-              className="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transition-colors whitespace-nowrap"
+              className="w-full bg-amber-500 text-white py-2 rounded-xl hover:bg-amber-400 transition-colors whitespace-nowrap font-semibold shadow-md shadow-amber-500/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>Generar PDF
             </button>
           </div>
 
           {/* Overdue Report */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Facturas Vencidas</h3>
-              <i className="ri-alarm-warning-line text-2xl text-red-600"></i>
+              <h3 className="text-lg font-semibold text-slate-50">Facturas Vencidas</h3>
+              <i className="ri-alarm-warning-line text-2xl text-red-400"></i>
             </div>
-            <p className="text-gray-600 mb-4">Listado de facturas vencidas con días de atraso</p>
+            <p className="text-slate-300 mb-4">Listado de facturas vencidas con días de atraso</p>
             <button 
               onClick={handleGenerateOverdueReport}
-              className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
+              className="w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-red-500/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>Generar PDF
             </button>
           </div>
 
           {/* Payment Analysis */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg shadow-slate-900/60">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Análisis de Pagos</h3>
-              <i className="ri-bar-chart-line text-2xl text-indigo-600"></i>
+              <h3 className="text-lg font-semibold text-slate-50">Análisis de Pagos</h3>
+              <i className="ri-bar-chart-line text-2xl text-indigo-400"></i>
             </div>
-            <p className="text-gray-600 mb-4">Análisis estadístico de patrones de pago por cliente</p>
+            <p className="text-slate-300 mb-4">Análisis estadístico de patrones de pago por cliente</p>
             <button 
               onClick={handleGeneratePaymentAnalysisReport}
-              className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors whitespace-nowrap"
+              className="w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-500 transition-colors whitespace-nowrap font-semibold shadow-md shadow-indigo-500/40"
             >
               <i className="ri-file-pdf-line mr-2"></i>Generar PDF
             </button>
