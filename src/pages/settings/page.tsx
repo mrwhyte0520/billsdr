@@ -49,13 +49,6 @@ const settingsSections: SettingsSection[] = [
     href: '/settings/inventory'
   },
   {
-    id: 'payroll',
-    name: 'Configuración de Nómina',
-    description: 'Configurar conceptos de nómina, deducciones y beneficios',
-    icon: 'ri-money-dollar-circle-line',
-    href: '/settings/payroll'
-  },
-  {
     id: 'backup',
     name: 'Respaldos y Seguridad',
     description: 'Configurar respaldos automáticos y políticas de seguridad',
@@ -90,20 +83,16 @@ export default function SettingsPage() {
         companyInfo, 
         accountingSettings, 
         taxSettings, 
-        inventorySettings, 
-        payrollSettings,
+        inventorySettings,
         taxRates,
-        warehouses,
-        payrollConcepts
+        warehouses
       ] = await Promise.all([
         settingsService.getCompanyInfo(),
         settingsService.getAccountingSettings(),
         settingsService.getTaxSettings(),
         settingsService.getInventorySettings(),
-        settingsService.getPayrollSettings(),
         settingsService.getTaxRates(),
-        settingsService.getWarehouses(),
-        settingsService.getPayrollConcepts()
+        settingsService.getWarehouses()
       ]);
 
       // Crear objeto de configuración completa
@@ -118,10 +107,8 @@ export default function SettingsPage() {
         accountingSettings: accountingSettings || null,
         taxSettings: taxSettings || null,
         inventorySettings: inventorySettings || null,
-        payrollSettings: payrollSettings || null,
         taxRates: taxRates || [],
-        warehouses: warehouses || [],
-        payrollConcepts: payrollConcepts || []
+        warehouses: warehouses || []
       };
 
       // Crear y descargar archivo JSON
@@ -200,11 +187,6 @@ export default function SettingsPage() {
           importedSections++;
         }
 
-        if (configData.payrollSettings) {
-          await settingsService.savePayrollSettings(configData.payrollSettings);
-          importedSections++;
-        }
-
         // Importar tasas de impuestos
         if (configData.taxRates && Array.isArray(configData.taxRates)) {
           for (const rate of configData.taxRates) {
@@ -225,18 +207,6 @@ export default function SettingsPage() {
             } catch (error) {
               // Continuar si ya existe
               console.warn('Warehouse already exists or error creating:', error);
-            }
-          }
-        }
-
-        // Importar conceptos de nómina
-        if (configData.payrollConcepts && Array.isArray(configData.payrollConcepts)) {
-          for (const concept of configData.payrollConcepts) {
-            try {
-              await settingsService.createPayrollConcept(concept);
-            } catch (error) {
-              // Continuar si ya existe
-              console.warn('Payroll concept already exists or error creating:', error);
             }
           }
         }
@@ -296,21 +266,10 @@ export default function SettingsPage() {
         default_warehouse: 'Principal'
       };
 
-      const defaultPayrollSettings = {
-        pay_frequency: 'monthly',
-        overtime_rate: 1.5,
-        social_security_rate: 2.87,
-        afp_rate: 2.87,
-        sfs_rate: 3.04,
-        christmas_bonus: true,
-        vacation_days: 14
-      };
-
       await Promise.all([
         settingsService.saveAccountingSettings(defaultAccountingSettings),
         settingsService.saveTaxSettings(defaultTaxSettings),
-        settingsService.saveInventorySettings(defaultInventorySettings),
-        settingsService.savePayrollSettings(defaultPayrollSettings)
+        settingsService.saveInventorySettings(defaultInventorySettings)
       ]);
 
       setMessage({ 

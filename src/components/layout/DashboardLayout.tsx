@@ -29,31 +29,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       current: location.pathname.startsWith('/pos')
     },
     {
-      name: 'Nóminas',
-      href: '/payroll',
-      icon: 'ri-team-line',
-      current: location.pathname.startsWith('/payroll'),
-      submenu: [
-        { name: 'Configuración de Nóminas', href: '/payroll/configuration' },
-        { name: 'Empleados', href: '/payroll/employees' },
-        { name: 'Tipos de Empleados', href: '/payroll/employee-types' },
-        { name: 'Departamentos', href: '/payroll/departments' },
-        { name: 'Cargos / Posiciones', href: '/payroll/positions' },
-        { name: 'Tipos de Salarios', href: '/payroll/salary-types' },
-        { name: 'Tipos de Comisiones', href: '/payroll/commission-types' },
-        { name: 'Vacaciones', href: '/payroll/vacations' },
-        { name: 'Horas Extras', href: '/payroll/overtime' },
-        { name: 'Días Feriados', href: '/payroll/holidays' },
-        { name: 'Regalías', href: '/payroll/royalties' },
-        { name: 'Bonificaciones', href: '/payroll/bonuses' },
-        { name: 'Deducciones Periódicas', href: '/payroll/periodic-deductions' },
-        { name: 'Otras Deducciones', href: '/payroll/other-deductions' },
-        { name: 'Registro de Ausencias', href: '/payroll/absences' },
-        { name: 'Proceso de Pago Nómina', href: '/payroll/payment-process' },
-        { name: 'Entrada al Diario Nómina', href: '/payroll/journal-entry' }
-      ]
-    },
-    {
       name: 'Productos',
       href: '/products',
       icon: 'ri-product-hunt-line',
@@ -116,7 +91,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     'Panel de Control',
     'Punto de Ventas',
     'Facturación',
-    'Nóminas',
+    'Productos',
     'Cuentas por Cobrar',
     'Cuentas por Pagar',
   ];

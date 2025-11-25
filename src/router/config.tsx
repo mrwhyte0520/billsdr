@@ -3,22 +3,7 @@ import { lazy } from 'react';
 
 // Módulo de impuestos (República Dominicana) deshabilitado para la versión de EE.UU.
 
-// Payroll routes
-import PayrollPage from '../pages/payroll/page';
-import PayrollConfigurationPage from '../pages/payroll/configuration/page';
-import PayrollEmployeesPage from '../pages/payroll/employees/page';
-import PayrollEmployeeTypesPage from '../pages/payroll/employee-types/page';
-import PayrollDepartmentsPage from '../pages/payroll/departments/page';
-import PayrollPositionsPage from '../pages/payroll/positions/page';
-import PayrollSalaryTypesPage from '../pages/payroll/salary-types/page';
-import PayrollConceptsPage from '../pages/payroll/concepts/page';
-import PayrollPeriodsPage from '../pages/payroll/periods/page';
-import PayrollCommissionTypesPage from '../pages/payroll/commission-types/page';
-import PayrollVacationsPage from '../pages/payroll/vacations/page';
-import PayrollOvertimePage from '../pages/payroll/overtime/page';
-import PayrollHolidaysPage from '../pages/payroll/holidays/page';
-import PayrollBonusesPage from '../pages/payroll/bonuses/page';
-import PayrollRoyaltiesPage from '../pages/payroll/royalties/page';
+// Payroll module deshabilitado en esta versión
 
 const HomePage = lazy(() => import('../pages/home/page'));
 const DashboardPage = lazy(() => import('../pages/dashboard/page'));
@@ -41,7 +26,6 @@ const CompanySettingsPage = lazy(() => import('../pages/settings/company/page'))
 const UsersSettingsPage = lazy(() => import('../pages/settings/users/page'));
 const AccountingSettingsPage = lazy(() => import('../pages/settings/accounting/page'));
 const InventorySettingsPage = lazy(() => import('../pages/settings/inventory/page'));
-const PayrollSettingsPage = lazy(() => import('../pages/settings/payroll/page'));
 const BackupSettingsPage = lazy(() => import('../pages/settings/backup/page'));
 const IntegrationsSettingsPage = lazy(() => import('../pages/settings/integrations/page'));
 
@@ -81,66 +65,6 @@ const routes: RouteObject[] = [
   {
     path: '/dashboard',
     element: <DashboardPage />
-  },
-  {
-    path: '/payroll',
-    element: <PayrollPage />
-  },
-  {
-    path: '/payroll/configuration',
-    element: <PayrollConfigurationPage />
-  },
-  {
-    path: '/payroll/employees',
-    element: <PayrollEmployeesPage />
-  },
-  {
-    path: '/payroll/employee-types',
-    element: <PayrollEmployeeTypesPage />
-  },
-  {
-    path: '/payroll/departments',
-    element: <PayrollDepartmentsPage />
-  },
-  {
-    path: '/payroll/positions',
-    element: <PayrollPositionsPage />
-  },
-  {
-    path: '/payroll/salary-types',
-    element: <PayrollSalaryTypesPage />
-  },
-  {
-    path: '/payroll/concepts',
-    element: <PayrollConceptsPage />
-  },
-  {
-    path: '/payroll/periods',
-    element: <PayrollPeriodsPage />
-  },
-  {
-    path: '/payroll/commission-types',
-    element: <PayrollCommissionTypesPage />
-  },
-  {
-    path: '/payroll/vacations',
-    element: <PayrollVacationsPage />
-  },
-  {
-    path: '/payroll/overtime',
-    element: <PayrollOvertimePage />
-  },
-  {
-    path: '/payroll/holidays',
-    element: <PayrollHolidaysPage />
-  },
-  {
-    path: '/payroll/bonuses',
-    element: <PayrollBonusesPage />
-  },
-  {
-    path: '/payroll/royalties',
-    element: <PayrollRoyaltiesPage />
   },
   {
     path: '/pos',
@@ -273,10 +197,6 @@ const routes: RouteObject[] = [
   {
     path: '/settings/inventory',
     element: <InventorySettingsPage />
-  },
-  {
-    path: '/settings/payroll',
-    element: <PayrollSettingsPage />
   },
   {
     path: '/settings/backup',
