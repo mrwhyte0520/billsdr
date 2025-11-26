@@ -1089,31 +1089,36 @@ export default function InventoryPage() {
           </div>
           <div className="text-center">
             <p className="text-sm font-medium text-slate-400">Almacenes</p>
-                      />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="w-full p-3 border-2 border-dashed border-slate-700 rounded-xl hover:border-purple-400 transition-colors text-center bg-slate-900/80"
-                    >
-                      <i className="ri-upload-cloud-line text-2xl text-slate-400 mb-2 block"></i>
-                      <span className="text-sm text-slate-300">
-                        {formData.image_url ? 'Cambiar imagen' : 'Subir imagen'}
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
+            <p className="text-2xl font-bold text-rose-400">{warehouses.length}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
+  const renderModal = () => {
+    if (!showModal && modalType === '') return null;
+
+    return (
+      <div className="fixed inset-0 bg-slate-950/95 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-slate-900/95 border border-slate-700 rounded-2xl shadow-2xl shadow-slate-950/80 w-full max-w-2xl max-h-[85vh] overflow-y-auto">
+          <div className="sticky top-0 bg-slate-900/98 border-b border-slate-700 p-6 flex justify-between items-center">
+            <h3 className="text-xl font-bold text-slate-50">
+              {selectedItem
+                ? `Editar ${modalType === 'item' ? 'Producto' : modalType === 'movement' ? 'Movimiento' : 'Almacén'}`
+                : `Nuevo ${modalType === 'item' ? 'Producto' : modalType === 'movement' ? 'Movimiento' : 'Almacén'}`}
+            </h3>
+            <button
+              onClick={handleCloseModal}
+              className="text-slate-400 hover:text-slate-50 transition-colors"
+            >
+              <i className="ri-close-line text-2xl"></i>
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            {modalType === 'item' && (
+              <>
               <div>
                 <label className="block text-sm font-medium text-slate-200 mb-1">
                   SKU *
@@ -1179,6 +1184,10 @@ export default function InventoryPage() {
                   <option value="pack">Paquete</option>
                 </select>
               </div>
+              </>
+            )}
+
+            {modalType === 'movement' && (
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-200 mb-1">
@@ -1277,7 +1286,7 @@ export default function InventoryPage() {
                     required
                   />
                 </div>
-              </>
+              </div>
             )}
 
             {modalType === 'warehouse' && (
