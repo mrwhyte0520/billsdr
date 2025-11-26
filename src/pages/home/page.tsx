@@ -413,12 +413,6 @@ export default function HomePage() {
           <div className="border-t border-slate-900 mt-8 pt-8 text-center text-slate-500 text-xs">
             <p>
               &copy; 2024 BILLS DR. Todos los derechos reservados.
-              <a
-                href="https://readdy.ai/?origin=logo"
-                className="hover:text-slate-300 ml-1 cursor-pointer"
-              >
-                Powered by Readdy
-              </a>
             </p>
           </div>
         </div>
